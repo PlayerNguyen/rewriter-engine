@@ -31,7 +31,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 storybook-static
 
 # docker data
-.apps/data/
+.appdata/db/*
+!.appdata/db/.gitkeep
 
 # IntelliJ based IDEs
 .idea

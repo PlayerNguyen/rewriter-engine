@@ -12,7 +12,7 @@ Added PostgreSQL 16 as the primary database for the rewriter-engine project via 
 |------|-------------|
 | `docker-compose.yml` | PostgreSQL 16 Alpine service definition |
 | `.env.example` | Environment variable template |
-| `.apps/data/pg/.gitkeep` | Persistent data volume directory |
+| `.appdata/db/.gitkeep` | Persistent data volume directory |
 
 ## Configuration
 
@@ -22,13 +22,13 @@ Added PostgreSQL 16 as the primary database for the rewriter-engine project via 
 - **User**: `${POSTGRES_USER:-rewriter}`
 - **Password**: `${POSTGRES_PASSWORD:-rewriter_secret}`
 - **Database**: `${POSTGRES_DB:-rewriter}`
-- **Volume**: `.apps/data/pg` → `/var/lib/postgresql/data` (persistent, host-mounted)
+- **Volume**: `.appdata/db` → `/var/lib/postgresql/data` (persistent, host-mounted)
 - **Healthcheck**: `pg_isready` every 10s, 5 retries
 - **Restart policy**: `unless-stopped`
 
 ## Data Volume
 
-Data is mounted to `.apps/data/pg/` within the project directory (not a named Docker volume). This keeps data portable and easily accessible.
+Data is mounted to `.appdata/db/` within the project directory (not a named Docker volume). This keeps data portable and easily accessible.
 
 ## Usage
 
