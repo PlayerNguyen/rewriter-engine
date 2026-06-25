@@ -52,6 +52,15 @@ export const ErrorState: Story = {
   },
 };
 
+export const SuccessState: Story = {
+  args: {
+    options: fruitOptions,
+    label: "Fruit",
+    success: "Selection saved!",
+    defaultValue: "cherry",
+  },
+};
+
 export const WithPreselectedValue: Story = {
   args: {
     options: fruitOptions,

@@ -139,9 +139,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
             className={clsx(
               "absolute left-3 pointer-events-none",
               "transition-all duration-150 origin-left",
-              "text-sm",
+              "bg-surface-1 px-1 text-sm",
               floating
-                ? "top-1.5 -translate-y-0 scale-[0.75] text-primary"
+                ? "top-0 -translate-y-1/2 scale-[0.75] text-primary z-10"
                 : "top-3",
               error && floating && "text-semantic-error",
               success && floating && "text-semantic-success",

@@ -25,6 +25,7 @@ export interface SelectProps {
   label?: string;
   helperText?: string;
   error?: string;
+  success?: string;
   disabled?: boolean;
   required?: boolean;
   size?: "sm" | "md" | "lg";
@@ -53,6 +54,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       label,
       helperText,
       error,
+      success,
       disabled,
       required,
       size = "md",
@@ -169,62 +171,70 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         ref={containerRef}
         className={clsx("relative flex flex-col gap-1.5", containerClassName)}
       >
-        {label && (
-          <label
+        <div className="relative">
+          <button
+            ref={ref}
+            type="button"
+            role="combobox"
+            aria-expanded={isOpen}
+            aria-haspopup="listbox"
+            aria-controls={listboxId}
+            aria-activedescendant={
+              isOpen && activeIndex >= 0
+                ? `${autoId}-option-${activeIndex}`
+                : undefined
+            }
+            aria-describedby={describedBy}
+            aria-invalid={error ? "true" : undefined}
+            aria-required={required ? "true" : undefined}
+            disabled={disabled}
+            onClick={() => setIsOpen(!isOpen)}
+            onKeyDown={handleKeyDown}
             className={clsx(
-              "text-sm text-ink",
-              required &&
-                "after:content-['*'] after:text-semantic-error after:ml-0.5"
+              "flex items-center justify-between w-full bg-surface-1 text-ink border rounded-md",
+              "outline-none transition-all duration-150",
+              "focus-visible:ring-2 focus-visible:ring-primary-focus/50 focus-visible:border-primary-focus",
+              selectSizes[size],
+              error ? "border-semantic-error" : "border-hairline",
+              disabled && "opacity-50 cursor-not-allowed",
+              className
             )}
           >
-            {label}
-          </label>
-        )}
-        <button
-          ref={ref}
-          type="button"
-          role="combobox"
-          aria-expanded={isOpen}
-          aria-haspopup="listbox"
-          aria-controls={listboxId}
-          aria-activedescendant={
-            isOpen && activeIndex >= 0
-              ? `${autoId}-option-${activeIndex}`
-              : undefined
-          }
-          aria-describedby={describedBy}
-          aria-invalid={error ? "true" : undefined}
-          aria-required={required ? "true" : undefined}
-          disabled={disabled}
-          onClick={() => setIsOpen(!isOpen)}
-          onKeyDown={handleKeyDown}
-          className={clsx(
-            "flex items-center justify-between w-full bg-surface-1 text-ink border rounded-md",
-            "outline-none transition-all duration-150",
-            "focus-visible:ring-2 focus-visible:ring-primary-focus/50 focus-visible:border-primary-focus",
-            selectSizes[size],
-            error ? "border-semantic-error" : "border-hairline",
-            disabled && "opacity-50 cursor-not-allowed",
-            className
+            <span className={clsx("truncate", !selectedOption && "text-transparent")}>
+              {selectedOption ? selectedOption.label : placeholder}
+            </span>
+            <svg
+              className={clsx(
+                "w-4 h-4 text-ink-tertiary transition-transform duration-150",
+                isOpen && "rotate-180"
+              )}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          {label && (
+            <label
+              className={clsx(
+                "absolute left-3 pointer-events-none",
+                "transition-all duration-150 origin-left",
+                "bg-surface-1 px-1 text-sm",
+                isOpen || selectedOption
+                  ? "top-0 -translate-y-1/2 scale-[0.75] text-primary z-10"
+                  : "top-1/2 -translate-y-1/2 text-ink-tertiary",
+                error && (isOpen || selectedOption) && "text-semantic-error",
+                success && (isOpen || selectedOption) && "text-semantic-success"
+              )}
+            >
+              {label}
+              {required && <span className="text-semantic-error ml-0.5">*</span>}
+            </label>
           )}
-        >
-          <span className={clsx("truncate", !selectedOption && "text-ink-tertiary")}>
-            {selectedOption ? selectedOption.label : placeholder}
-          </span>
-          <svg
-            className={clsx(
-              "w-4 h-4 text-ink-tertiary transition-transform duration-150",
-              isOpen && "rotate-180"
-            )}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </button>
+        </div>
 
         {isOpen && (
           <ul
@@ -233,7 +243,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
             role="listbox"
             aria-label={label}
             className={clsx(
-              "absolute top-full left-0 right-0 z-50 mt-1",
+              "absolute top-full left-0 right-0 z-50",
               "bg-surface-2 border border-hairline-strong rounded-md",
               "shadow-lg overflow-auto max-h-60",
               "py-1"

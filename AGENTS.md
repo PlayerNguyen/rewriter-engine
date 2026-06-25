@@ -56,6 +56,26 @@ bun run --filter @rewriter/dashboard typecheck
 - All commits follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, etc.
 - Branches use prefix pattern: `feat/`, `fix/`, `chore/`, `docs/`.
 
+## Documentation Archive Policy
+
+When completing any significant task (feature, refactor, investigation, etc.), archive a summary report to the `.opencode/outcomes/` folder using this structure:
+
+```
+.opencode/outcomes/<YYYY-MM-DD>/<task-slug>/report.md
+```
+
+- **Date**: Use the current date in `YYYY-MM-DD` format
+- **Task slug**: Short kebab-case description (e.g., `basic-ui-components`, `kafka-integration`, `auth-flow`)
+- **Report**: Markdown file summarizing what was done, decisions made, and verification results
+
+Example:
+```
+.opencode/outcomes/2026-06-25/basic-ui-components/report.md
+.opencode/outcomes/2026-06-26/api-endpoints/report.md
+```
+
+This creates a searchable, dated archive of all work completed in the project.
+
 ## References
 
 - `.opencode/TARGET.md` — Full system design (Vietnamese). Read this before making architectural decisions.

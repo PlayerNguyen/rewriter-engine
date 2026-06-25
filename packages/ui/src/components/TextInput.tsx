@@ -127,9 +127,10 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             className={clsx(
               "absolute left-3 pointer-events-none",
               "transition-all duration-150 origin-left",
+              "bg-surface-1 px-1",
               labelSizes[size],
               floating
-                ? "top-1.5 -translate-y-0 scale-[0.75] text-primary"
+                ? "top-0 -translate-y-1/2 scale-[0.75] text-primary z-10"
                 : "top-1/2 -translate-y-1/2",
               error && floating && "text-semantic-error",
               success && floating && "text-semantic-success",
