@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rewriter-postgres
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-rewriter}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rewriter_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-rewriter}
+    volumes:
+      - .apps/data/pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rewriter} -d ${POSTGRES_DB:-rewriter}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
