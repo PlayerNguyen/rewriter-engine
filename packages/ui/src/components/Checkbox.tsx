@@ -93,6 +93,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       disabled,
       value,
       checked,
+      defaultChecked,
       onChange,
       ...rest
     },
@@ -102,6 +103,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const id = idProp || autoId;
     const group = useContext(CheckboxGroupContext);
     const isDisabled = disabled || group?.disabled;
+    const isInGroup = !!group;
     const isChecked = group ? group.value.includes(value as string) : checked;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,6 +113,10 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         onChange?.(e);
       }
     };
+
+    const inputProps = isInGroup || checked !== undefined
+      ? { checked: isChecked }
+      : { defaultChecked };
 
     return (
       <div className="flex items-start gap-2">
@@ -126,7 +132,6 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             name={group?.name}
             value={value}
-            checked={isChecked}
             disabled={isDisabled}
             onChange={handleChange}
             aria-checked={indeterminate ? "mixed" : isChecked}
@@ -143,6 +148,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               error && "border-semantic-error",
               className
             )}
+            {...inputProps}
             {...rest}
           />
           {(isChecked || indeterminate) && (

@@ -21,10 +21,25 @@ export default meta;
 type Story = StoryObj<typeof Modal>;
 
 export const Default: Story = {
-  args: {
-    open: true,
-    onClose: () => {},
-    children: <p className="text-sm text-ink-muted">This is a basic modal. Click the backdrop or press Escape to close.</p>,
+  render: () => {
+    const [open, setOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open Modal</Button>
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <ModalHeader onClose={() => setOpen(false)}>
+            <h2 className="text-lg font-semibold text-ink">Basic Modal</h2>
+          </ModalHeader>
+          <p className="text-sm text-ink-muted mt-2">
+            This is a basic modal. Click the backdrop, press Escape, or use the close button to dismiss.
+          </p>
+          <ModalFooter>
+            <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={() => setOpen(false)}>Confirm</Button>
+          </ModalFooter>
+        </Modal>
+      </>
+    );
   },
 };
 

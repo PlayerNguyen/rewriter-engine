@@ -86,13 +86,14 @@ RadioGroup.displayName = "RadioGroup";
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   (
-    { label, size = "md", className, id: idProp, disabled, value, checked, onChange, ...rest },
+    { label, size = "md", className, id: idProp, disabled, value, checked, defaultChecked, onChange, ...rest },
     ref
   ) => {
     const autoId = useId();
     const id = idProp || autoId;
     const group = useContext(RadioGroupContext);
     const isDisabled = disabled || group?.disabled;
+    const isInGroup = !!group;
     const isChecked = group ? group.value === value : checked;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +104,10 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       }
     };
 
+    const inputProps = isInGroup || checked !== undefined
+      ? { checked: isChecked }
+      : { defaultChecked };
+
     return (
       <div className="flex items-center gap-2">
         <div className="relative flex items-center justify-center">
@@ -112,7 +117,6 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             type="radio"
             name={group?.name}
             value={value}
-            checked={isChecked}
             disabled={isDisabled}
             onChange={handleChange}
             className={clsx(
@@ -126,6 +130,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
               isDisabled && "opacity-50 cursor-not-allowed",
               className
             )}
+            {...inputProps}
             {...rest}
           />
           {isChecked && (
