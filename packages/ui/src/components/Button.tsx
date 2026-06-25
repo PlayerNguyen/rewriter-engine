@@ -1,14 +1,21 @@
-import { forwardRef } from "react";
+import { forwardRef, type ReactNode } from "react";
 import clsx from "clsx";
 
-export type ButtonVariant = "primary" | "secondary" | "tertiary" | "inverse";
-export type ButtonSize = "sm" | "md" | "lg";
+// types & exports
+
+export type ButtonVariant = "primary" | "secondary" | "tertiary" | "inverse" | "ghost" | "danger";
+export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
+  icon?: ReactNode;
+  iconPosition?: "left" | "right";
+  fullWidth?: boolean;
 }
+
+// constants
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: clsx(
@@ -39,38 +46,72 @@ const variantStyles: Record<ButtonVariant, string> = {
     "active:opacity-80",
     "disabled:bg-inverse-canvas/50 disabled:text-inverse-ink/50"
   ),
+  ghost: clsx(
+    "bg-transparent text-ink-subtle",
+    "hover:text-ink hover:bg-surface-1",
+    "focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
+    "active:bg-surface-2",
+    "disabled:text-ink-tertiary"
+  ),
+  danger: clsx(
+    "bg-semantic-error text-white",
+    "hover:bg-semantic-error/90",
+    "focus-visible:ring-2 focus-visible:ring-semantic-error focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
+    "active:bg-semantic-error/80",
+    "disabled:bg-semantic-error/50 disabled:text-white/50"
+  ),
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "h-8 px-3 text-xs",
-  md: "h-9 px-3.5 text-button",
-  lg: "h-11 px-5 text-sm",
+  xs: "h-7 px-2 text-xs gap-1",
+  sm: "h-8 px-3 text-xs gap-1.5",
+  md: "h-9 px-3.5 text-button gap-2",
+  lg: "h-11 px-5 text-sm gap-2",
 };
 
+// component
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "primary", size = "md", loading, disabled, className, children, ...rest }, ref) => {
+  (
+    {
+      variant = "primary",
+      size = "md",
+      loading,
+      disabled,
+      icon,
+      iconPosition = "left",
+      fullWidth,
+      className,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
         className={clsx(
-          "inline-flex items-center justify-center gap-2",
+          "inline-flex items-center justify-center",
           "rounded-md font-medium",
-          "transition-colors duration-150",
+          "transition-all duration-150 ease-out",
+          "active:scale-[0.97]",
           "outline-none select-none",
-          "disabled:cursor-not-allowed",
+          "disabled:cursor-not-allowed disabled:active:scale-100",
           variantStyles[variant],
           sizeStyles[size],
+          fullWidth && "w-full",
           className
         )}
         {...rest}
       >
         {loading && (
           <svg
-            className="animate-spin h-4 w-4"
+            className={clsx("animate-spin", size === "xs" ? "h-3 w-3" : "h-4 w-4")}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path
@@ -80,7 +121,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             />
           </svg>
         )}
+        {!loading && icon && iconPosition === "left" && (
+          <span className="inline-flex shrink-0" aria-hidden="true">{icon}</span>
+        )}
         {children}
+        {!loading && icon && iconPosition === "right" && (
+          <span className="inline-flex shrink-0" aria-hidden="true">{icon}</span>
+        )}
       </button>
     );
   }

@@ -18,4 +18,35 @@
   --color-ink-tertiary: #62666d;
   --color-inverse-canvas: #ffffff;
   --color-inverse-ink: #010102;
+  --color-semantic-success: #27a644;
+  --color-semantic-error: #e5484d;
+  --color-semantic-warning: #f5a623;
+  --color-semantic-overlay: #000000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 150ms ease-out;
+  }
+  .animate-scaleIn {
+    animation: scaleIn 150ms ease-out;
+  }
+  .animate-slideUp {
+    animation: slideUp 150ms ease-out;
+  }
 }
