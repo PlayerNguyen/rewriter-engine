@@ -22,6 +22,40 @@ Data flow: Admin configures sources + prompts → Explorer crawls & cleans → K
 - System prompts are user-configurable via the admin dashboard, not hardcoded.
 - Kafka provides async buffering so the rewriter can process at its own pace.
 
+## Monorepo Structure
+
+```
+packages/ui/       — Shared React component library (@rewriter/ui)
+apps/dashboard/    — Admin dashboard app (@rewriter/dashboard, Vite + React)
+```
+
+- `packages/*` — shared libraries consumed by apps
+- `apps/*` — deployable applications
+
+## Dev Commands
+
+```bash
+bun install                                  # Install all workspace dependencies
+bun run --filter @rewriter/ui storybook      # Run Storybook for UI components (port 6006)
+bun run --filter @rewriter/dashboard dev     # Run dashboard dev server
+bun run --filter @rewriter/dashboard build   # Build dashboard for production
+bun run --filter @rewriter/ui build-storybook  # Build Storybook static site
+```
+
+## TypeScript Policy
+
+Always run `tsc --noEmit` and fix all compile errors before committing. Never leave type errors in the tree.
+
+```bash
+bun run --filter @rewriter/ui typecheck
+bun run --filter @rewriter/dashboard typecheck
+```
+
+## Commit & Branch Conventions
+
+- All commits follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, etc.
+- Branches use prefix pattern: `feat/`, `fix/`, `chore/`, `docs/`.
+
 ## References
 
 - `.opencode/TARGET.md` — Full system design (Vietnamese). Read this before making architectural decisions.

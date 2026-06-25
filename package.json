@@ -1,12 +1,22 @@
 {
   "name": "rewriter",
-  "module": "index.ts",
-  "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "typecheck": "bun run --filter '*' typecheck",
+    "build": "bun run --filter '*' build",
+    "storybook": "bun run --filter @rewriter/ui storybook",
+    "build-storybook": "bun run --filter @rewriter/ui build-storybook"
   },
-  "peerDependencies": {
+  "devDependencies": {
+    "@types/bun": "latest",
     "typescript": "^5"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1"
   }
 }

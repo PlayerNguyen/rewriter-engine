@@ -27,6 +27,9 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .cache
 *.tsbuildinfo
 
+# storybook
+storybook-static
+
 # IntelliJ based IDEs
 .idea
 
