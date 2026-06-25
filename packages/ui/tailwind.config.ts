@@ -22,6 +22,10 @@ export default {
         "ink-tertiary": "#62666d",
         "inverse-canvas": "#ffffff",
         "inverse-ink": "#010102",
+        "semantic-success": "#27a644",
+        "semantic-error": "#e5484d",
+        "semantic-warning": "#f5a623",
+        "semantic-overlay": "#000000",
       },
       borderRadius: {
         xs: "4px",
