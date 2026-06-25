@@ -94,9 +94,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={clsx(
           "inline-flex items-center justify-center",
           "rounded-md font-medium",
-          "transition-colors duration-150",
+          "transition-all duration-150 ease-out",
+          "active:scale-[0.97]",
           "outline-none select-none",
-          "disabled:cursor-not-allowed",
+          "disabled:cursor-not-allowed disabled:active:scale-100",
           variantStyles[variant],
           sizeStyles[size],
           fullWidth && "w-full",
