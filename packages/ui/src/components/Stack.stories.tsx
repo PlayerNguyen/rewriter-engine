@@ -1,17 +1,20 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Stack } from "./Stack";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Stack } from './Stack';
 
 const meta: Meta<typeof Stack> = {
-  title: "Layout/Stack",
+  title: 'Layout/Stack',
   component: Stack,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    direction: { control: "select", options: ["horizontal", "vertical"] },
-    align: { control: "select", options: ["start", "center", "end", "stretch", "baseline"] },
-    justify: { control: "select", options: ["start", "center", "end", "between", "around", "evenly"] },
-    gap: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl"] },
-    wrap: { control: "boolean" },
-    inline: { control: "boolean" },
+    direction: { control: 'select', options: ['horizontal', 'vertical'] },
+    align: { control: 'select', options: ['start', 'center', 'end', 'stretch', 'baseline'] },
+    justify: {
+      control: 'select',
+      options: ['start', 'center', 'end', 'between', 'around', 'evenly'],
+    },
+    gap: { control: 'select', options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'] },
+    wrap: { control: 'boolean' },
+    inline: { control: 'boolean' },
   },
 };
 
@@ -24,8 +27,8 @@ const Item = ({ children }: { children: string }) => (
 
 export const Vertical: Story = {
   args: {
-    direction: "vertical",
-    gap: "md",
+    direction: 'vertical',
+    gap: 'md',
     children: (
       <>
         <Item>First</Item>
@@ -38,8 +41,8 @@ export const Vertical: Story = {
 
 export const Horizontal: Story = {
   args: {
-    direction: "horizontal",
-    gap: "md",
+    direction: 'horizontal',
+    gap: 'md',
     children: (
       <>
         <Item>First</Item>
@@ -53,7 +56,7 @@ export const Horizontal: Story = {
 export const GapVariations: Story = {
   render: () => (
     <div className="space-y-6">
-      {(["xxs", "xs", "sm", "md", "lg", "xl", "xxl"] as const).map((gap) => (
+      {(['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'] as const).map((gap) => (
         <div key={gap}>
           <p className="text-xs text-gray-500 mb-1">gap: {gap}</p>
           <Stack direction="horizontal" gap={gap}>
@@ -69,8 +72,8 @@ export const GapVariations: Story = {
 
 export const WithDivider: Story = {
   args: {
-    direction: "horizontal",
-    gap: "md",
+    direction: 'horizontal',
+    gap: 'md',
     divider: <span className="text-gray-300">|</span>,
     children: (
       <>
@@ -84,8 +87,8 @@ export const WithDivider: Story = {
 
 export const VerticalWithDivider: Story = {
   args: {
-    direction: "vertical",
-    gap: "sm",
+    direction: 'vertical',
+    gap: 'sm',
     divider: <hr className="border-gray-200" />,
     children: (
       <>
@@ -99,9 +102,9 @@ export const VerticalWithDivider: Story = {
 
 export const JustifyBetween: Story = {
   args: {
-    direction: "horizontal",
-    justify: "between",
-    gap: "md",
+    direction: 'horizontal',
+    justify: 'between',
+    gap: 'md',
     children: (
       <>
         <Item>Left</Item>
@@ -113,9 +116,9 @@ export const JustifyBetween: Story = {
 
 export const Centered: Story = {
   args: {
-    direction: "vertical",
-    align: "center",
-    gap: "sm",
+    direction: 'vertical',
+    align: 'center',
+    gap: 'sm',
     children: (
       <>
         <Item>Centered</Item>
@@ -127,8 +130,8 @@ export const Centered: Story = {
 
 export const Wrapped: Story = {
   args: {
-    direction: "horizontal",
-    gap: "sm",
+    direction: 'horizontal',
+    gap: 'sm',
     wrap: true,
     children: (
       <>

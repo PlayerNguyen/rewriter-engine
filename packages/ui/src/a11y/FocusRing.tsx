@@ -1,5 +1,5 @@
-import { forwardRef } from "react";
-import clsx from "clsx";
+import clsx from 'clsx';
+import { forwardRef } from 'react';
 
 export interface FocusRingProps extends React.HTMLAttributes<HTMLDivElement> {
   within?: boolean;
@@ -12,19 +12,19 @@ export const FocusRing = forwardRef<HTMLDivElement, FocusRingProps>(
       <div
         ref={ref}
         className={clsx(
-          "relative",
+          'relative',
           visible && [
-            "focus-within:ring-2 focus-within:ring-primary-focus focus-within:ring-offset-2 focus-within:ring-offset-canvas",
-            within && "rounded-md",
+            'focus-within:ring-2 focus-within:ring-primary-focus focus-within:ring-offset-2 focus-within:ring-offset-canvas',
+            within && 'rounded-md',
           ],
-          className
+          className,
         )}
         {...rest}
       >
         {children}
       </div>
     );
-  }
+  },
 );
 
-FocusRing.displayName = "FocusRing";
+FocusRing.displayName = 'FocusRing';

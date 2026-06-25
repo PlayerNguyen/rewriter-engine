@@ -1,14 +1,14 @@
-import { forwardRef, useState, useId } from "react";
-import clsx from "clsx";
+import clsx from 'clsx';
+import { forwardRef, useId, useState } from 'react';
 
 // types & exports
 
-export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label: string;
   helperText?: string;
   error?: string;
   success?: string;
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   containerClassName?: string;
@@ -17,15 +17,15 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 // constants
 
 const inputSizes = {
-  sm: "h-8 text-xs px-2.5",
-  md: "h-10 text-sm px-3",
-  lg: "h-12 text-base px-4",
+  sm: 'h-8 text-xs px-2.5',
+  md: 'h-10 text-sm px-3',
+  lg: 'h-12 text-base px-4',
 };
 
 const labelSizes = {
-  sm: "text-xs",
-  md: "text-sm",
-  lg: "text-base",
+  sm: 'text-xs',
+  md: 'text-sm',
+  lg: 'text-base',
 };
 
 // component
@@ -37,7 +37,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       helperText,
       error,
       success,
-      size = "md",
+      size = 'md',
       leftIcon,
       rightIcon,
       containerClassName,
@@ -52,7 +52,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       required,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const autoId = useId();
     const id = idProp || autoId;
@@ -73,17 +73,19 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       onBlur?.(e);
     };
 
-    const describedBy = [error ? errorId : null, helperText ? helperId : null]
-      .filter(Boolean)
-      .join(" ") || undefined;
+    const describedBy =
+      [error ? errorId : null, helperText ? helperId : null].filter(Boolean).join(' ') || undefined;
 
     const floating = focused || hasValue || !!placeholder;
 
     return (
-      <div className={clsx("relative flex flex-col gap-1.5", containerClassName)}>
+      <div className={clsx('relative flex flex-col gap-1.5', containerClassName)}>
         <div className="relative">
           {leftIcon && (
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-tertiary" aria-hidden="true">
+            <span
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-tertiary"
+              aria-hidden="true"
+            >
               {leftIcon}
             </span>
           )}
@@ -93,12 +95,12 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             type="text"
             value={value}
             defaultValue={defaultValue}
-            placeholder={focused ? placeholder : " "}
+            placeholder={focused ? placeholder : ' '}
             disabled={disabled}
             required={required}
             aria-describedby={describedBy}
-            aria-invalid={error ? "true" : undefined}
-            aria-required={required ? "true" : undefined}
+            aria-invalid={error ? 'true' : undefined}
+            aria-required={required ? 'true' : undefined}
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={(e) => {
@@ -106,44 +108,47 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               rest.onChange?.(e);
             }}
             className={clsx(
-              "peer w-full bg-surface-1 text-ink border rounded-md",
-              "outline-none transition-all duration-150",
-              "placeholder:text-transparent",
-              leftIcon && "pl-10",
-              rightIcon && "pr-10",
+              'peer w-full bg-surface-1 text-ink border rounded-md',
+              'outline-none transition-all duration-150',
+              'placeholder:text-transparent',
+              leftIcon && 'pl-10',
+              rightIcon && 'pr-10',
               inputSizes[size],
               error
-                ? "border-semantic-error focus:ring-2 focus:ring-semantic-error/50"
+                ? 'border-semantic-error focus:ring-2 focus:ring-semantic-error/50'
                 : success
-                ? "border-semantic-success focus:ring-2 focus:ring-semantic-success/50"
-                : "border-hairline focus:ring-2 focus:ring-primary-focus/50 focus:border-primary-focus",
-              disabled && "opacity-50 cursor-not-allowed",
-              className
+                  ? 'border-semantic-success focus:ring-2 focus:ring-semantic-success/50'
+                  : 'border-hairline focus:ring-2 focus:ring-primary-focus/50 focus:border-primary-focus',
+              disabled && 'opacity-50 cursor-not-allowed',
+              className,
             )}
             {...rest}
           />
           <label
             htmlFor={id}
             className={clsx(
-              "absolute left-3 pointer-events-none",
-              "transition-all duration-150 origin-left",
-              "bg-surface-1 px-1",
+              'absolute left-3 pointer-events-none',
+              'transition-all duration-150 origin-left',
+              'bg-surface-1 px-1',
               labelSizes[size],
               floating
-                ? "top-0 -translate-y-1/2 scale-[0.75] text-primary z-10"
-                : "top-1/2 -translate-y-1/2",
-              error && floating && "text-semantic-error",
-              success && floating && "text-semantic-success",
-              !floating && "text-ink-tertiary",
-              leftIcon && floating && "left-3",
-              leftIcon && !floating && "left-10"
+                ? 'top-0 -translate-y-1/2 scale-[0.75] text-primary z-10'
+                : 'top-1/2 -translate-y-1/2',
+              error && floating && 'text-semantic-error',
+              success && floating && 'text-semantic-success',
+              !floating && 'text-ink-tertiary',
+              leftIcon && floating && 'left-3',
+              leftIcon && !floating && 'left-10',
             )}
           >
             {label}
             {required && <span className="text-semantic-error ml-0.5">*</span>}
           </label>
           {rightIcon && (
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-tertiary" aria-hidden="true">
+            <span
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-tertiary"
+              aria-hidden="true"
+            >
               {rightIcon}
             </span>
           )}
@@ -160,7 +165,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-TextInput.displayName = "TextInput";
+TextInput.displayName = 'TextInput';

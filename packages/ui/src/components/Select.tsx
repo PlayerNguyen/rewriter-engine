@@ -1,12 +1,5 @@
-import {
-  forwardRef,
-  useState,
-  useRef,
-  useCallback,
-  useId,
-  useEffect,
-} from "react";
-import clsx from "clsx";
+import clsx from 'clsx';
+import { forwardRef, useCallback, useEffect, useId, useRef, useState } from 'react';
 
 // types & exports
 
@@ -28,7 +21,7 @@ export interface SelectProps {
   success?: string;
   disabled?: boolean;
   required?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   containerClassName?: string;
   className?: string;
 }
@@ -36,9 +29,9 @@ export interface SelectProps {
 // constants
 
 const selectSizes = {
-  sm: "h-8 text-xs px-2.5",
-  md: "h-10 text-sm px-3",
-  lg: "h-12 text-base px-4",
+  sm: 'h-8 text-xs px-2.5',
+  md: 'h-10 text-sm px-3',
+  lg: 'h-12 text-base px-4',
 };
 
 // component
@@ -50,18 +43,18 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       defaultValue,
       onChange,
       options,
-      placeholder = "Select...",
+      placeholder = 'Select...',
       label,
       helperText,
       error,
       success,
       disabled,
       required,
-      size = "md",
+      size = 'md',
       containerClassName,
       className,
     },
-    ref
+    ref,
   ) => {
     const autoId = useId();
     const listboxId = `${autoId}-listbox`;
@@ -69,7 +62,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const errorId = `${autoId}-error`;
 
     const [isOpen, setIsOpen] = useState(false);
-    const [internalValue, setInternalValue] = useState(defaultValue || "");
+    const [internalValue, setInternalValue] = useState(defaultValue || '');
     const [activeIndex, setActiveIndex] = useState(-1);
     const containerRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLUListElement>(null);
@@ -87,14 +80,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         setIsOpen(false);
         setActiveIndex(-1);
       },
-      [controlledValue, onChange]
+      [controlledValue, onChange],
     );
 
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent) => {
         switch (event.key) {
-          case "Enter":
-          case " ":
+          case 'Enter':
+          case ' ':
             event.preventDefault();
             if (isOpen && activeIndex >= 0) {
               selectOption(options[activeIndex]!);
@@ -102,7 +95,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               setIsOpen(!isOpen);
             }
             break;
-          case "ArrowDown":
+          case 'ArrowDown':
             event.preventDefault();
             if (!isOpen) {
               setIsOpen(true);
@@ -115,7 +108,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               });
             }
             break;
-          case "ArrowUp":
+          case 'ArrowUp':
             event.preventDefault();
             if (isOpen) {
               setActiveIndex((prev) => {
@@ -125,22 +118,22 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               });
             }
             break;
-          case "Escape":
+          case 'Escape':
             event.preventDefault();
             setIsOpen(false);
             setActiveIndex(-1);
             break;
-          case "Home":
+          case 'Home':
             event.preventDefault();
             setActiveIndex(0);
             break;
-          case "End":
+          case 'End':
             event.preventDefault();
             setActiveIndex(options.length - 1);
             break;
         }
       },
-      [isOpen, activeIndex, options, selectOption]
+      [isOpen, activeIndex, options, selectOption],
     );
 
     useEffect(() => {
@@ -150,26 +143,24 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           setActiveIndex(-1);
         }
       };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     useEffect(() => {
       if (isOpen && activeIndex >= 0 && listRef.current) {
         const item = listRef.current.children[activeIndex] as HTMLElement;
-        item?.scrollIntoView({ block: "nearest" });
+        item?.scrollIntoView({ block: 'nearest' });
       }
     }, [activeIndex, isOpen]);
 
     const describedBy =
-      [error ? errorId : null, helperText ? helperId : null]
-        .filter(Boolean)
-        .join(" ") || undefined;
+      [error ? errorId : null, helperText ? helperId : null].filter(Boolean).join(' ') || undefined;
 
     return (
       <div
         ref={containerRef}
-        className={clsx("relative flex flex-col gap-1.5", containerClassName)}
+        className={clsx('relative flex flex-col gap-1.5', containerClassName)}
       >
         <div className="relative">
           <button
@@ -180,33 +171,31 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
             aria-haspopup="listbox"
             aria-controls={listboxId}
             aria-activedescendant={
-              isOpen && activeIndex >= 0
-                ? `${autoId}-option-${activeIndex}`
-                : undefined
+              isOpen && activeIndex >= 0 ? `${autoId}-option-${activeIndex}` : undefined
             }
             aria-describedby={describedBy}
-            aria-invalid={error ? "true" : undefined}
-            aria-required={required ? "true" : undefined}
+            aria-invalid={error ? 'true' : undefined}
+            aria-required={required ? 'true' : undefined}
             disabled={disabled}
             onClick={() => setIsOpen(!isOpen)}
             onKeyDown={handleKeyDown}
             className={clsx(
-              "flex items-center justify-between w-full bg-surface-1 text-ink border rounded-md",
-              "outline-none transition-all duration-150",
-              "focus-visible:ring-2 focus-visible:ring-primary-focus/50 focus-visible:border-primary-focus",
+              'flex items-center justify-between w-full bg-surface-1 text-ink border rounded-md',
+              'outline-none transition-all duration-150',
+              'focus-visible:ring-2 focus-visible:ring-primary-focus/50 focus-visible:border-primary-focus',
               selectSizes[size],
-              error ? "border-semantic-error" : "border-hairline",
-              disabled && "opacity-50 cursor-not-allowed",
-              className
+              error ? 'border-semantic-error' : 'border-hairline',
+              disabled && 'opacity-50 cursor-not-allowed',
+              className,
             )}
           >
-            <span className={clsx("truncate", !selectedOption && "text-transparent")}>
+            <span className={clsx('truncate', !selectedOption && 'text-transparent')}>
               {selectedOption ? selectedOption.label : placeholder}
             </span>
             <svg
               className={clsx(
-                "w-4 h-4 text-ink-tertiary transition-transform duration-150",
-                isOpen && "rotate-180"
+                'w-4 h-4 text-ink-tertiary transition-transform duration-150',
+                isOpen && 'rotate-180',
               )}
               viewBox="0 0 24 24"
               fill="none"
@@ -220,14 +209,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           {label && (
             <label
               className={clsx(
-                "absolute left-3 pointer-events-none",
-                "transition-all duration-150 origin-left",
-                "bg-surface-1 px-1 text-sm",
+                'absolute left-3 pointer-events-none',
+                'transition-all duration-150 origin-left',
+                'bg-surface-1 px-1 text-sm',
                 isOpen || selectedOption
-                  ? "top-0 -translate-y-1/2 scale-[0.75] text-primary z-10"
-                  : "top-1/2 -translate-y-1/2 text-ink-tertiary",
-                error && (isOpen || selectedOption) && "text-semantic-error",
-                success && (isOpen || selectedOption) && "text-semantic-success"
+                  ? 'top-0 -translate-y-1/2 scale-[0.75] text-primary z-10'
+                  : 'top-1/2 -translate-y-1/2 text-ink-tertiary',
+                error && (isOpen || selectedOption) && 'text-semantic-error',
+                success && (isOpen || selectedOption) && 'text-semantic-success',
               )}
             >
               {label}
@@ -243,10 +232,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
             role="listbox"
             aria-label={label}
             className={clsx(
-              "absolute top-full left-0 right-0 z-50",
-              "bg-surface-2 border border-hairline-strong rounded-md",
-              "shadow-lg overflow-auto max-h-60",
-              "py-1"
+              'absolute top-full left-0 right-0 z-50',
+              'bg-surface-2 border border-hairline-strong rounded-md',
+              'shadow-lg overflow-auto max-h-60',
+              'py-1',
             )}
           >
             {options.map((option, index) => (
@@ -257,13 +246,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
                 aria-selected={option.value === value}
                 aria-disabled={option.disabled}
                 className={clsx(
-                  "px-3 py-2 text-sm cursor-pointer transition-colors",
-                  option.value === value && "bg-primary/20 text-primary",
-                  index === activeIndex && "bg-surface-3",
-                  option.disabled && "opacity-50 cursor-not-allowed",
-                  !option.disabled &&
-                    option.value !== value &&
-                    "text-ink hover:bg-surface-3"
+                  'px-3 py-2 text-sm cursor-pointer transition-colors',
+                  option.value === value && 'bg-primary/20 text-primary',
+                  index === activeIndex && 'bg-surface-3',
+                  option.disabled && 'opacity-50 cursor-not-allowed',
+                  !option.disabled && option.value !== value && 'text-ink hover:bg-surface-3',
                 )}
                 onClick={() => selectOption(option)}
                 onMouseEnter={() => !option.disabled && setActiveIndex(index)}
@@ -286,7 +273,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-Select.displayName = "Select";
+Select.displayName = 'Select';

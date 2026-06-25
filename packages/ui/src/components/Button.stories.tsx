@@ -1,21 +1,21 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./Button";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {
-  title: "Components/Button",
+  title: 'Components/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["primary", "secondary", "tertiary", "inverse"],
+      control: 'select',
+      options: ['primary', 'secondary', 'tertiary', 'inverse'],
     },
     size: {
-      control: "select",
-      options: ["sm", "md", "lg"],
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
     },
-    loading: { control: "boolean" },
-    disabled: { control: "boolean" },
+    loading: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
 };
 
@@ -24,63 +24,63 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    children: "Get started",
-    variant: "primary",
+    children: 'Get started',
+    variant: 'primary',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    children: "Sign in",
-    variant: "secondary",
+    children: 'Sign in',
+    variant: 'secondary',
   },
 };
 
 export const Tertiary: Story = {
   args: {
-    children: "Read changelog",
-    variant: "tertiary",
+    children: 'Read changelog',
+    variant: 'tertiary',
   },
 };
 
 export const Inverse: Story = {
   args: {
-    children: "Try for free",
-    variant: "inverse",
+    children: 'Try for free',
+    variant: 'inverse',
   },
   parameters: {
-    backgrounds: { default: "light" },
+    backgrounds: { default: 'light' },
   },
 };
 
 export const Small: Story = {
   args: {
-    children: "Small button",
-    variant: "primary",
-    size: "sm",
+    children: 'Small button',
+    variant: 'primary',
+    size: 'sm',
   },
 };
 
 export const Large: Story = {
   args: {
-    children: "Large button",
-    variant: "primary",
-    size: "lg",
+    children: 'Large button',
+    variant: 'primary',
+    size: 'lg',
   },
 };
 
 export const Loading: Story = {
   args: {
-    children: "Loading...",
-    variant: "primary",
+    children: 'Loading...',
+    variant: 'primary',
     loading: true,
   },
 };
 
 export const Disabled: Story = {
   args: {
-    children: "Disabled",
-    variant: "primary",
+    children: 'Disabled',
+    variant: 'primary',
     disabled: true,
   },
 };

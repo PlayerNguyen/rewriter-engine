@@ -1,26 +1,26 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Select } from "./Select";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Select } from './Select';
 
 const fruitOptions = [
-  { value: "apple", label: "Apple" },
-  { value: "banana", label: "Banana" },
-  { value: "cherry", label: "Cherry" },
-  { value: "date", label: "Date" },
-  { value: "elderberry", label: "Elderberry" },
+  { value: 'apple', label: 'Apple' },
+  { value: 'banana', label: 'Banana' },
+  { value: 'cherry', label: 'Cherry' },
+  { value: 'date', label: 'Date' },
+  { value: 'elderberry', label: 'Elderberry' },
 ];
 
 const meta: Meta<typeof Select> = {
-  title: "Forms/Select",
+  title: 'Forms/Select',
   component: Select,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    size: { control: "select", options: ["sm", "md", "lg"] },
-    disabled: { control: "boolean" },
-    required: { control: "boolean" },
-    label: { control: "text" },
-    helperText: { control: "text" },
-    error: { control: "text" },
-    placeholder: { control: "text" },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
+    disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    label: { control: 'text' },
+    helperText: { control: 'text' },
+    error: { control: 'text' },
+    placeholder: { control: 'text' },
   },
 };
 
@@ -30,91 +30,91 @@ type Story = StoryObj<typeof Select>;
 export const Default: Story = {
   args: {
     options: fruitOptions,
-    placeholder: "Choose a fruit...",
+    placeholder: 'Choose a fruit...',
   },
 };
 
 export const WithLabelAndHelper: Story = {
   args: {
     options: fruitOptions,
-    label: "Favorite Fruit",
-    helperText: "Pick your favorite from the list.",
-    placeholder: "Select a fruit...",
+    label: 'Favorite Fruit',
+    helperText: 'Pick your favorite from the list.',
+    placeholder: 'Select a fruit...',
   },
 };
 
 export const ErrorState: Story = {
   args: {
     options: fruitOptions,
-    label: "Fruit",
-    error: "This field is required.",
-    placeholder: "Select...",
+    label: 'Fruit',
+    error: 'This field is required.',
+    placeholder: 'Select...',
   },
 };
 
 export const SuccessState: Story = {
   args: {
     options: fruitOptions,
-    label: "Fruit",
-    success: "Selection saved!",
-    defaultValue: "cherry",
+    label: 'Fruit',
+    success: 'Selection saved!',
+    defaultValue: 'cherry',
   },
 };
 
 export const WithPreselectedValue: Story = {
   args: {
     options: fruitOptions,
-    label: "Fruit",
-    defaultValue: "cherry",
+    label: 'Fruit',
+    defaultValue: 'cherry',
   },
 };
 
 export const Required: Story = {
   args: {
     options: fruitOptions,
-    label: "Fruit",
+    label: 'Fruit',
     required: true,
-    placeholder: "Select...",
+    placeholder: 'Select...',
   },
 };
 
 export const Disabled: Story = {
   args: {
     options: fruitOptions,
-    label: "Fruit",
+    label: 'Fruit',
     disabled: true,
-    defaultValue: "banana",
+    defaultValue: 'banana',
   },
 };
 
 export const WithDisabledOptions: Story = {
   args: {
     options: [
-      { value: "apple", label: "Apple" },
-      { value: "banana", label: "Banana (out of stock)", disabled: true },
-      { value: "cherry", label: "Cherry" },
-      { value: "date", label: "Date (out of stock)", disabled: true },
+      { value: 'apple', label: 'Apple' },
+      { value: 'banana', label: 'Banana (out of stock)', disabled: true },
+      { value: 'cherry', label: 'Cherry' },
+      { value: 'date', label: 'Date (out of stock)', disabled: true },
     ],
-    label: "Available Fruits",
-    placeholder: "Select...",
+    label: 'Available Fruits',
+    placeholder: 'Select...',
   },
 };
 
 export const SmallSize: Story = {
   args: {
     options: fruitOptions,
-    label: "Small select",
-    size: "sm",
-    placeholder: "Select...",
+    label: 'Small select',
+    size: 'sm',
+    placeholder: 'Select...',
   },
 };
 
 export const LargeSize: Story = {
   args: {
     options: fruitOptions,
-    label: "Large select",
-    size: "lg",
-    placeholder: "Select...",
+    label: 'Large select',
+    size: 'lg',
+    placeholder: 'Select...',
   },
 };
 
