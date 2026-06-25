@@ -1,19 +1,34 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Box } from "./Box";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Box } from './Box';
 
 const meta: Meta<typeof Box> = {
-  title: "Layout/Box",
+  title: 'Layout/Box',
   component: Box,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    as: { control: "text" },
-    p: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl", "section", 0] },
-    m: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl", "section", "auto", 0] },
-    bg: { control: "color" },
-    border: { control: "color" },
-    rounded: { control: "select", options: ["xs", "sm", "md", "lg", "xl", "xxl", "pill", "full"] },
-    shadow: { control: "select", options: ["none", "sm", "md", "lg"] },
-    display: { control: "select", options: ["block", "inline", "inline-block", "flex", "inline-flex", "grid", "inline-grid", "none"] },
+    as: { control: 'text' },
+    p: { control: 'select', options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'section', 0] },
+    m: {
+      control: 'select',
+      options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'section', 'auto', 0],
+    },
+    bg: { control: 'color' },
+    border: { control: 'color' },
+    rounded: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'pill', 'full'] },
+    shadow: { control: 'select', options: ['none', 'sm', 'md', 'lg'] },
+    display: {
+      control: 'select',
+      options: [
+        'block',
+        'inline',
+        'inline-block',
+        'flex',
+        'inline-flex',
+        'grid',
+        'inline-grid',
+        'none',
+      ],
+    },
   },
 };
 
@@ -22,35 +37,35 @@ type Story = StoryObj<typeof Box>;
 
 export const Default: Story = {
   args: {
-    p: "lg",
-    bg: "#f0f0f0",
-    children: "Box with padding and background",
+    p: 'lg',
+    bg: '#f0f0f0',
+    children: 'Box with padding and background',
   },
 };
 
 export const AsSection: Story = {
   args: {
-    as: "section",
-    p: "xl",
-    bg: "#e8f4fd",
-    rounded: "md",
-    children: "This box renders as a <section> element",
+    as: 'section',
+    p: 'xl',
+    bg: '#e8f4fd',
+    rounded: 'md',
+    children: 'This box renders as a <section> element',
   },
 };
 
 export const AsArticle: Story = {
   args: {
-    as: "article",
-    p: "lg",
-    bg: "#fff3e0",
-    rounded: "lg",
-    children: "This box renders as an <article> element",
+    as: 'article',
+    p: 'lg',
+    bg: '#fff3e0',
+    rounded: 'lg',
+    children: 'This box renders as an <article> element',
   },
 };
 
 export const WithMarginPadding: Story = {
   render: () => (
-    <div style={{ background: "#f5f5f5", padding: 16 }}>
+    <div style={{ background: '#f5f5f5', padding: 16 }}>
       <Box p="lg" mb="md" bg="#bbdefb" rounded="sm">
         padding lg, margin-bottom md
       </Box>
@@ -101,15 +116,21 @@ export const WithShadow: Story = {
 
 export const FlexDisplay: Story = {
   args: {
-    display: "flex",
-    p: "md",
-    bg: "#e3f2fd",
-    rounded: "md",
+    display: 'flex',
+    p: 'md',
+    bg: '#e3f2fd',
+    rounded: 'md',
     children: (
       <>
-        <Box p="sm" bg="#90caf9" rounded="sm">Item 1</Box>
-        <Box p="sm" bg="#90caf9" rounded="sm">Item 2</Box>
-        <Box p="sm" bg="#90caf9" rounded="sm">Item 3</Box>
+        <Box p="sm" bg="#90caf9" rounded="sm">
+          Item 1
+        </Box>
+        <Box p="sm" bg="#90caf9" rounded="sm">
+          Item 2
+        </Box>
+        <Box p="sm" bg="#90caf9" rounded="sm">
+          Item 3
+        </Box>
       </>
     ),
   },

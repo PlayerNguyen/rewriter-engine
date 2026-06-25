@@ -1,9 +1,6 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 export default {
-  content: [
-    "./src/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
-  ],
-  presets: [require("../../packages/ui/tailwind.config.ts")],
+  content: ['./src/**/*.{ts,tsx}', '../../packages/ui/src/**/*.{ts,tsx}'],
+  presets: [require('../../packages/ui/tailwind.config.ts')],
 } satisfies Config;

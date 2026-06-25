@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Grid, GridItem } from "./Grid";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Grid, GridItem } from './Grid';
 
 const meta: Meta<typeof Grid> = {
-  title: "Layout/Grid",
+  title: 'Layout/Grid',
   component: Grid,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    columns: { control: "text" },
-    rows: { control: "text" },
-    gap: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl"] },
-    columnGap: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl"] },
-    rowGap: { control: "select", options: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl"] },
-    minChildWidth: { control: "text" },
-    align: { control: "select", options: ["start", "center", "end", "stretch"] },
-    justify: { control: "select", options: ["start", "center", "end", "stretch"] },
+    columns: { control: 'text' },
+    rows: { control: 'text' },
+    gap: { control: 'select', options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'] },
+    columnGap: { control: 'select', options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'] },
+    rowGap: { control: 'select', options: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'] },
+    minChildWidth: { control: 'text' },
+    align: { control: 'select', options: ['start', 'center', 'end', 'stretch'] },
+    justify: { control: 'select', options: ['start', 'center', 'end', 'stretch'] },
   },
 };
 
@@ -21,13 +21,15 @@ export default meta;
 type Story = StoryObj<typeof Grid>;
 
 const Cell = ({ children }: { children: string }) => (
-  <div className="bg-blue-100 border border-blue-300 rounded p-4 text-sm text-center">{children}</div>
+  <div className="bg-blue-100 border border-blue-300 rounded p-4 text-sm text-center">
+    {children}
+  </div>
 );
 
 export const ThreeColumns: Story = {
   args: {
     columns: 3,
-    gap: "md",
+    gap: 'md',
     children: (
       <>
         <Cell>1</Cell>
@@ -43,8 +45,8 @@ export const ThreeColumns: Story = {
 
 export const ResponsiveGrid: Story = {
   args: {
-    minChildWidth: "200px",
-    gap: "md",
+    minChildWidth: '200px',
+    gap: 'md',
     children: (
       <>
         <Cell>Card 1</Cell>
@@ -76,7 +78,7 @@ export const WithSpans: Story = {
 export const TwoColumns: Story = {
   args: {
     columns: 2,
-    gap: "lg",
+    gap: 'lg',
     children: (
       <>
         <Cell>Left</Cell>
@@ -91,7 +93,7 @@ export const TwoColumns: Story = {
 export const FourColumns: Story = {
   args: {
     columns: 4,
-    gap: "sm",
+    gap: 'sm',
     children: (
       <>
         <Cell>A</Cell>
@@ -105,8 +107,8 @@ export const FourColumns: Story = {
 
 export const CustomTemplate: Story = {
   args: {
-    columns: "1fr 2fr 1fr",
-    gap: "md",
+    columns: '1fr 2fr 1fr',
+    gap: 'md',
     children: (
       <>
         <Cell>Sidebar</Cell>
@@ -120,8 +122,8 @@ export const CustomTemplate: Story = {
 export const ColumnAndRowGap: Story = {
   args: {
     columns: 3,
-    columnGap: "xl",
-    rowGap: "sm",
+    columnGap: 'xl',
+    rowGap: 'sm',
     children: (
       <>
         <Cell>1</Cell>

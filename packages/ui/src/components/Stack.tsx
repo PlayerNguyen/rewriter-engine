@@ -1,16 +1,22 @@
-import React, { forwardRef, type ReactNode } from "react";
-import clsx from "clsx";
+import clsx from 'clsx';
+import React, { forwardRef, type ReactNode } from 'react';
 
-type SpacingToken = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+type SpacingToken = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 const gapMap: Record<string, string> = {
-  xxs: "4px", xs: "8px", sm: "12px", md: "16px", lg: "24px", xl: "32px", xxl: "48px",
+  xxs: '4px',
+  xs: '8px',
+  sm: '12px',
+  md: '16px',
+  lg: '24px',
+  xl: '32px',
+  xxl: '48px',
 };
 
 export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
-  direction?: "horizontal" | "vertical";
-  align?: "start" | "center" | "end" | "stretch" | "baseline";
-  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+  direction?: 'horizontal' | 'vertical';
+  align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
+  justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
   gap?: SpacingToken;
   wrap?: boolean;
   divider?: ReactNode;
@@ -18,29 +24,29 @@ export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const alignMap = {
-  start: "items-start",
-  center: "items-center",
-  end: "items-end",
-  stretch: "items-stretch",
-  baseline: "items-baseline",
+  start: 'items-start',
+  center: 'items-center',
+  end: 'items-end',
+  stretch: 'items-stretch',
+  baseline: 'items-baseline',
 } as const;
 
 const justifyMap = {
-  start: "justify-start",
-  center: "justify-center",
-  end: "justify-end",
-  between: "justify-between",
-  around: "justify-around",
-  evenly: "justify-evenly",
+  start: 'justify-start',
+  center: 'justify-center',
+  end: 'justify-end',
+  between: 'justify-between',
+  around: 'justify-around',
+  evenly: 'justify-evenly',
 } as const;
 
 export const Stack = forwardRef<HTMLDivElement, StackProps>(
   (
     {
-      direction = "vertical",
-      align = "stretch",
-      justify = "start",
-      gap = "md",
+      direction = 'vertical',
+      align = 'stretch',
+      justify = 'start',
+      gap = 'md',
       wrap = false,
       divider,
       inline = false,
@@ -48,7 +54,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
       children,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const childrenArray = React.Children.toArray(children).filter(Boolean);
     const childrenWithDividers = divider
@@ -58,7 +64,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
             acc.push(
               <span key={`divider-${i}`} className="shrink-0" aria-hidden="true">
                 {divider}
-              </span>
+              </span>,
             );
           }
           return acc;
@@ -69,12 +75,12 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
       <div
         ref={ref}
         className={clsx(
-          inline ? "inline-flex" : "flex",
-          direction === "horizontal" ? "flex-row" : "flex-col",
+          inline ? 'inline-flex' : 'flex',
+          direction === 'horizontal' ? 'flex-row' : 'flex-col',
           alignMap[align],
           justifyMap[justify],
-          wrap && "flex-wrap",
-          className
+          wrap && 'flex-wrap',
+          className,
         )}
         style={{ gap: gapMap[gap] || gap }}
         {...rest}
@@ -82,7 +88,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
         {childrenWithDividers}
       </div>
     );
-  }
+  },
 );
 
-Stack.displayName = "Stack";
+Stack.displayName = 'Stack';

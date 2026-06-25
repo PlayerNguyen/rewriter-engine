@@ -1,20 +1,13 @@
-import {
-  forwardRef,
-  useId,
-  createContext,
-  useContext,
-  useCallback,
-  type ReactNode,
-} from "react";
-import clsx from "clsx";
+import clsx from 'clsx';
+import { createContext, forwardRef, type ReactNode, useCallback, useContext, useId } from 'react';
 
 // types & exports
 
 export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
   label?: string;
   indeterminate?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   error?: string;
 }
 
@@ -24,7 +17,7 @@ export interface CheckboxGroupProps {
   onChange: (value: string[]) => void;
   children: ReactNode;
   disabled?: boolean;
-  orientation?: "horizontal" | "vertical";
+  orientation?: 'horizontal' | 'vertical';
   label?: string;
 }
 
@@ -40,15 +33,15 @@ const CheckboxGroupContext = createContext<{
 // constants
 
 const checkboxSizes = {
-  sm: "w-4 h-4",
-  md: "w-5 h-5",
-  lg: "w-6 h-6",
+  sm: 'w-4 h-4',
+  md: 'w-5 h-5',
+  lg: 'w-6 h-6',
 };
 
 // CheckboxGroup component
 
 export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
-  ({ name, value, onChange, children, disabled, orientation = "vertical", label }, ref) => {
+  ({ name, value, onChange, children, disabled, orientation = 'vertical', label }, ref) => {
     const handleChange = useCallback(
       (itemValue: string) => {
         const newValue = value.includes(itemValue)
@@ -56,7 +49,7 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
           : [...value, itemValue];
         onChange(newValue);
       },
-      [value, onChange]
+      [value, onChange],
     );
 
     return (
@@ -65,8 +58,8 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
         role="group"
         aria-label={label}
         className={clsx(
-          "flex gap-3",
-          orientation === "horizontal" ? "flex-row flex-wrap" : "flex-col"
+          'flex gap-3',
+          orientation === 'horizontal' ? 'flex-row flex-wrap' : 'flex-col',
         )}
       >
         <CheckboxGroupContext.Provider value={{ name, value, onChange: handleChange, disabled }}>
@@ -74,10 +67,10 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(
         </CheckboxGroupContext.Provider>
       </div>
     );
-  }
+  },
 );
 
-CheckboxGroup.displayName = "CheckboxGroup";
+CheckboxGroup.displayName = 'CheckboxGroup';
 
 // Checkbox component
 
@@ -86,7 +79,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     {
       label,
       indeterminate,
-      size = "md",
+      size = 'md',
       error,
       className,
       id: idProp,
@@ -97,7 +90,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       onChange,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const autoId = useId();
     const id = idProp || autoId;
@@ -114,9 +107,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       }
     };
 
-    const inputProps = isInGroup || checked !== undefined
-      ? { checked: isChecked }
-      : { defaultChecked };
+    const inputProps =
+      isInGroup || checked !== undefined ? { checked: isChecked } : { defaultChecked };
 
     return (
       <div className="flex items-start gap-2">
@@ -124,9 +116,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           <input
             ref={(node) => {
               if (node) node.indeterminate = !!indeterminate;
-              if (typeof ref === "function") ref(node);
-              else if (ref)
-                (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
+              if (typeof ref === 'function') ref(node);
+              else if (ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
             }}
             id={id}
             type="checkbox"
@@ -134,19 +125,19 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             value={value}
             disabled={isDisabled}
             onChange={handleChange}
-            aria-checked={indeterminate ? "mixed" : isChecked}
-            aria-invalid={error ? "true" : undefined}
+            aria-checked={indeterminate ? 'mixed' : isChecked}
+            aria-invalid={error ? 'true' : undefined}
             className={clsx(
-              "peer appearance-none border rounded-xs cursor-pointer",
-              "transition-colors duration-150",
-              "focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
+              'peer appearance-none border rounded-xs cursor-pointer',
+              'transition-colors duration-150',
+              'focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:ring-offset-2 focus-visible:ring-offset-canvas',
               checkboxSizes[size],
               isChecked || indeterminate
-                ? "bg-primary border-primary"
-                : "bg-surface-1 border-hairline hover:border-hairline-strong",
-              isDisabled && "opacity-50 cursor-not-allowed",
-              error && "border-semantic-error",
-              className
+                ? 'bg-primary border-primary'
+                : 'bg-surface-1 border-hairline hover:border-hairline-strong',
+              isDisabled && 'opacity-50 cursor-not-allowed',
+              error && 'border-semantic-error',
+              className,
             )}
             {...inputProps}
             {...rest}
@@ -176,8 +167,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           <label
             htmlFor={id}
             className={clsx(
-              "text-sm text-ink leading-none cursor-pointer select-none",
-              isDisabled && "opacity-50 cursor-not-allowed"
+              'text-sm text-ink leading-none cursor-pointer select-none',
+              isDisabled && 'opacity-50 cursor-not-allowed',
             )}
           >
             {label}
@@ -185,7 +176,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-Checkbox.displayName = "Checkbox";
+Checkbox.displayName = 'Checkbox';

@@ -1,8 +1,17 @@
-import { forwardRef, useState, useRef, useCallback, useEffect, useId, type ReactNode, type ReactElement } from "react";
-import { createPortal } from "react-dom";
-import clsx from "clsx";
+import clsx from 'clsx';
+import {
+  forwardRef,
+  type ReactElement,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
+import { createPortal } from 'react-dom';
 
-type TooltipPlacement = "top" | "bottom" | "left" | "right";
+type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 export interface TooltipProps {
   content: ReactNode;
@@ -18,28 +27,28 @@ function getPosition(
   triggerRect: DOMRect,
   tooltipRect: DOMRect,
   placement: TooltipPlacement,
-  offset: number
+  offset: number,
 ): { top: number; left: number; arrowTop?: number; arrowLeft?: number } {
   const { top: tTop, left: tLeft, width: tWidth, height: tHeight } = triggerRect;
   const { width: ttWidth, height: ttHeight } = tooltipRect;
 
   switch (placement) {
-    case "top":
+    case 'top':
       return {
         top: tTop - ttHeight - offset,
         left: tLeft + tWidth / 2 - ttWidth / 2,
       };
-    case "bottom":
+    case 'bottom':
       return {
         top: tTop + tHeight + offset,
         left: tLeft + tWidth / 2 - ttWidth / 2,
       };
-    case "left":
+    case 'left':
       return {
         top: tTop + tHeight / 2 - ttHeight / 2,
         left: tLeft - ttWidth - offset,
       };
-    case "right":
+    case 'right':
       return {
         top: tTop + tHeight / 2 - ttHeight / 2,
         left: tLeft + tWidth + offset,
@@ -48,7 +57,7 @@ function getPosition(
 }
 
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  ({ content, children, placement = "top", delay = 200, offset = 8, disabled, className }, ref) => {
+  ({ content, children, placement = 'top', delay = 200, offset = 8, disabled, className }, ref) => {
     const tooltipId = useId();
     const triggerRef = useRef<HTMLElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
@@ -91,11 +100,11 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       if (visible) {
         updatePosition();
         const handleScroll = () => updatePosition();
-        window.addEventListener("scroll", handleScroll, true);
-        window.addEventListener("resize", handleScroll);
+        window.addEventListener('scroll', handleScroll, true);
+        window.addEventListener('resize', handleScroll);
         return () => {
-          window.removeEventListener("scroll", handleScroll, true);
-          window.removeEventListener("resize", handleScroll);
+          window.removeEventListener('scroll', handleScroll, true);
+          window.removeEventListener('resize', handleScroll);
         };
       }
     }, [visible, updatePosition]);
@@ -110,7 +119,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       onMouseLeave: hide,
       onFocus: show,
       onBlur: hide,
-      "aria-describedby": visible ? tooltipId : undefined,
+      'aria-describedby': visible ? tooltipId : undefined,
     };
 
     const clonedChild = children ? (
@@ -129,29 +138,29 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
               id={tooltipId}
               role="tooltip"
               className={clsx(
-                "fixed z-[100] px-2.5 py-1.5 text-xs text-inverse-ink bg-inverse-canvas rounded-md shadow-lg",
-                "pointer-events-none animate-fadeIn",
-                className
+                'fixed z-[100] px-2.5 py-1.5 text-xs text-inverse-ink bg-inverse-canvas rounded-md shadow-lg',
+                'pointer-events-none animate-fadeIn',
+                className,
               )}
               style={{ top: position.top, left: position.left }}
             >
               {content}
               <div
                 className={clsx(
-                  "absolute w-2 h-2 bg-inverse-canvas rotate-45",
-                  placement === "top" && "bottom-[-4px] left-1/2 -translate-x-1/2",
-                  placement === "bottom" && "top-[-4px] left-1/2 -translate-x-1/2",
-                  placement === "left" && "right-[-4px] top-1/2 -translate-y-1/2",
-                  placement === "right" && "left-[-4px] top-1/2 -translate-y-1/2"
+                  'absolute w-2 h-2 bg-inverse-canvas rotate-45',
+                  placement === 'top' && 'bottom-[-4px] left-1/2 -translate-x-1/2',
+                  placement === 'bottom' && 'top-[-4px] left-1/2 -translate-x-1/2',
+                  placement === 'left' && 'right-[-4px] top-1/2 -translate-y-1/2',
+                  placement === 'right' && 'left-[-4px] top-1/2 -translate-y-1/2',
                 )}
                 aria-hidden="true"
               />
             </div>,
-            document.body
+            document.body,
           )}
       </>
     );
-  }
+  },
 );
 
-Tooltip.displayName = "Tooltip";
+Tooltip.displayName = 'Tooltip';

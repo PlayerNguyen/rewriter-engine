@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Icon } from "./Icon";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Icon } from './Icon';
 
 const meta: Meta<typeof Icon> = {
-  title: "Media/Icon",
+  title: 'Media/Icon',
   component: Icon,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
-    color: { control: "color" },
-    decorative: { control: "boolean" },
-    label: { control: "text" },
-    spin: { control: "boolean" },
+    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+    color: { control: 'color' },
+    decorative: { control: 'boolean' },
+    label: { control: 'text' },
+    spin: { control: 'boolean' },
   },
 };
 
@@ -35,14 +35,14 @@ const SettingsSvg = () => (
 export const Default: Story = {
   args: {
     children: <HeartSvg />,
-    label: "Heart",
+    label: 'Heart',
   },
 };
 
 export const AllSizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
-      {(["xs", "sm", "md", "lg", "xl"] as const).map((size) => (
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <div key={size} className="text-center">
           <Icon size={size} label={`Heart ${size}`}>
             <HeartSvg />
@@ -57,15 +57,15 @@ export const AllSizes: Story = {
 export const WithLabel: Story = {
   args: {
     children: <StarSvg />,
-    size: "lg",
-    label: "Favorite",
+    size: 'lg',
+    label: 'Favorite',
   },
 };
 
 export const Decorative: Story = {
   args: {
     children: <HeartSvg />,
-    size: "md",
+    size: 'md',
     decorative: true,
   },
 };
@@ -73,19 +73,27 @@ export const Decorative: Story = {
 export const Spinning: Story = {
   args: {
     children: <SettingsSvg />,
-    size: "lg",
+    size: 'lg',
     spin: true,
-    label: "Loading",
+    label: 'Loading',
   },
 };
 
 export const CustomColor: Story = {
   render: () => (
     <div className="flex gap-4">
-      <Icon color="#ef4444" size="lg" label="Red heart"><HeartSvg /></Icon>
-      <Icon color="#22c55e" size="lg" label="Green heart"><HeartSvg /></Icon>
-      <Icon color="#3b82f6" size="lg" label="Blue heart"><HeartSvg /></Icon>
-      <Icon color="#f59e0b" size="lg" label="Yellow heart"><HeartSvg /></Icon>
+      <Icon color="#ef4444" size="lg" label="Red heart">
+        <HeartSvg />
+      </Icon>
+      <Icon color="#22c55e" size="lg" label="Green heart">
+        <HeartSvg />
+      </Icon>
+      <Icon color="#3b82f6" size="lg" label="Blue heart">
+        <HeartSvg />
+      </Icon>
+      <Icon color="#f59e0b" size="lg" label="Yellow heart">
+        <HeartSvg />
+      </Icon>
     </div>
   ),
 };
@@ -93,9 +101,15 @@ export const CustomColor: Story = {
 export const MultipleIcons: Story = {
   render: () => (
     <div className="flex gap-6">
-      <Icon size="lg" label="Heart"><HeartSvg /></Icon>
-      <Icon size="lg" label="Star"><StarSvg /></Icon>
-      <Icon size="lg" label="Settings"><SettingsSvg /></Icon>
+      <Icon size="lg" label="Heart">
+        <HeartSvg />
+      </Icon>
+      <Icon size="lg" label="Star">
+        <StarSvg />
+      </Icon>
+      <Icon size="lg" label="Settings">
+        <SettingsSvg />
+      </Icon>
     </div>
   ),
 };

@@ -1,35 +1,35 @@
 import {
-  Button,
   Box,
-  Stack,
-  Grid,
-  Text,
-  Icon,
-  TextInput,
-  TextArea,
+  Button,
   Checkbox,
   CheckboxGroup,
+  Grid,
+  Icon,
+  Modal,
   Radio,
   RadioGroup,
   Select,
-  Modal,
+  Stack,
+  Text,
+  TextArea,
+  TextInput,
   Tooltip,
   useTheme,
-} from "@rewriter/ui";
-import { useState } from "react";
+} from '@rewriter/ui';
+import { useState } from 'react';
 
 const selectOptions = [
-  { value: "explorer", label: "Explorer Engine" },
-  { value: "rewriter", label: "Rewriter Engine" },
-  { value: "dashboard", label: "Dashboard" },
+  { value: 'explorer', label: 'Explorer Engine' },
+  { value: 'rewriter', label: 'Rewriter Engine' },
+  { value: 'dashboard', label: 'Dashboard' },
 ];
 
 export function App() {
   const { theme, setTheme } = useTheme();
   const [modalOpen, setModalOpen] = useState(false);
   const [checkboxValues, setCheckboxValues] = useState<string[]>([]);
-  const [radioValue, setRadioValue] = useState("explorer");
-  const [selectValue, setSelectValue] = useState("");
+  const [radioValue, setRadioValue] = useState('explorer');
+  const [selectValue, setSelectValue] = useState('');
 
   return (
     <Box as="main" className="min-h-screen bg-canvas p-8">
@@ -41,9 +41,9 @@ export function App() {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           >
-            {theme === "dark" ? "Light" : "Dark"} Mode
+            {theme === 'dark' ? 'Light' : 'Dark'} Mode
           </Button>
         </Stack>
 
@@ -84,8 +84,12 @@ export function App() {
             <Text size="body-lg">Body Large</Text>
             <Text size="body">Body Default</Text>
             <Text size="body-sm">Body Small</Text>
-            <Text size="caption" color="ink-subtle">Caption</Text>
-            <Text size="eyebrow" color="primary">EYEBROW</Text>
+            <Text size="caption" color="ink-subtle">
+              Caption
+            </Text>
+            <Text size="eyebrow" color="primary">
+              EYEBROW
+            </Text>
             <Text size="mono">mono: 13px / JetBrains Mono</Text>
           </Stack>
         </Box>
@@ -107,14 +111,14 @@ export function App() {
               onChange={setSelectValue}
               placeholder="Choose a service..."
             />
-            <Select
-              label="With Error"
-              options={selectOptions}
-              error="Please select a service"
-            />
+            <Select label="With Error" options={selectOptions} error="Please select a service" />
           </Grid>
           <Box mt="lg">
-            <TextArea label="System Prompt" placeholder="Enter your prompt..." helperText="Describe how the rewriter should behave" />
+            <TextArea
+              label="System Prompt"
+              placeholder="Enter your prompt..."
+              helperText="Describe how the rewriter should behave"
+            />
           </Box>
         </Box>
 
@@ -135,12 +139,7 @@ export function App() {
               <Checkbox value="schedule" label="Scheduled runs" />
               <Checkbox value="notify" label="Notifications" />
             </CheckboxGroup>
-            <RadioGroup
-              name="engine"
-              value={radioValue}
-              onChange={setRadioValue}
-              label="Engine"
-            >
+            <RadioGroup name="engine" value={radioValue} onChange={setRadioValue} label="Engine">
               <Radio value="explorer" label="Explorer" />
               <Radio value="rewriter" label="Rewriter" />
               <Radio value="both" label="Both" />

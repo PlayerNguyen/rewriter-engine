@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { Modal, ModalHeader, ModalFooter } from "./Modal";
-import { Button } from "./Button";
+import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import { Button } from './Button';
+import { Modal, ModalFooter, ModalHeader } from './Modal';
 
 const meta: Meta<typeof Modal> = {
-  title: "Overlays/Modal",
+  title: 'Overlays/Modal',
   component: Modal,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    size: { control: "select", options: ["sm", "md", "lg", "xl", "full"] },
-    open: { control: "boolean" },
-    closeOnBackdrop: { control: "boolean" },
-    closeOnEsc: { control: "boolean" },
-    title: { control: "text" },
-    description: { control: "text" },
+    size: { control: 'select', options: ['sm', 'md', 'lg', 'xl', 'full'] },
+    open: { control: 'boolean' },
+    closeOnBackdrop: { control: 'boolean' },
+    closeOnEsc: { control: 'boolean' },
+    title: { control: 'text' },
+    description: { control: 'text' },
   },
 };
 
@@ -31,10 +31,13 @@ export const Default: Story = {
             <h2 className="text-lg font-semibold text-ink">Basic Modal</h2>
           </ModalHeader>
           <p className="text-sm text-ink-muted mt-2">
-            This is a basic modal. Click the backdrop, press Escape, or use the close button to dismiss.
+            This is a basic modal. Click the backdrop, press Escape, or use the close button to
+            dismiss.
           </p>
           <ModalFooter>
-            <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
             <Button onClick={() => setOpen(false)}>Confirm</Button>
           </ModalFooter>
         </Modal>
@@ -47,8 +50,8 @@ export const WithTitleAndDescription: Story = {
   args: {
     open: true,
     onClose: () => {},
-    title: "Confirm Action",
-    description: "Are you sure you want to proceed? This action cannot be undone.",
+    title: 'Confirm Action',
+    description: 'Are you sure you want to proceed? This action cannot be undone.',
     children: (
       <div className="flex justify-end gap-3 mt-4">
         <Button variant="secondary">Cancel</Button>
@@ -62,8 +65,8 @@ export const SmallSize: Story = {
   args: {
     open: true,
     onClose: () => {},
-    title: "Small Modal",
-    size: "sm",
+    title: 'Small Modal',
+    size: 'sm',
     children: <p className="text-sm text-ink-muted">A compact small-sized modal.</p>,
   },
 };
@@ -72,13 +75,13 @@ export const LargeSize: Story = {
   args: {
     open: true,
     onClose: () => {},
-    title: "Large Modal",
-    size: "lg",
+    title: 'Large Modal',
+    size: 'lg',
     children: (
       <div>
         <p className="text-sm text-ink-muted mb-4">
-          This is a large modal with more space for content. It can hold forms,
-          tables, or other complex layouts.
+          This is a large modal with more space for content. It can hold forms, tables, or other
+          complex layouts.
         </p>
         <div className="bg-surface-2 rounded p-4">
           <p className="text-sm">Nested content area</p>
@@ -92,8 +95,8 @@ export const ExtraLargeSize: Story = {
   args: {
     open: true,
     onClose: () => {},
-    title: "Extra Large Modal",
-    size: "xl",
+    title: 'Extra Large Modal',
+    size: 'xl',
     children: (
       <p className="text-sm text-ink-muted">
         An extra-large modal for displaying detailed information, wide tables, or dashboards.
@@ -106,8 +109,8 @@ export const FullSize: Story = {
   args: {
     open: true,
     onClose: () => {},
-    title: "Full Width Modal",
-    size: "full",
+    title: 'Full Width Modal',
+    size: 'full',
     children: (
       <p className="text-sm text-ink-muted">
         This modal takes up the full available width (with small margins).
@@ -148,8 +151,12 @@ export const Interactive: Story = {
             This modal opens and closes via state management.
           </p>
           <div className="flex justify-end gap-3">
-            <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={() => setOpen(false)}>Done</Button>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={() => setOpen(false)}>
+              Done
+            </Button>
           </div>
         </Modal>
       </>
@@ -160,7 +167,7 @@ export const Interactive: Story = {
 export const AllSizes: Story = {
   render: () => {
     const [activeSize, setActiveSize] = useState<string | null>(null);
-    const sizes = ["sm", "md", "lg", "xl", "full"] as const;
+    const sizes = ['sm', 'md', 'lg', 'xl', 'full'] as const;
     return (
       <>
         <div className="flex flex-wrap gap-2">
@@ -179,7 +186,9 @@ export const AllSizes: Story = {
           >
             <p className="text-sm text-ink-muted">Size: {activeSize}</p>
             <div className="flex justify-end mt-4">
-              <Button variant="secondary" onClick={() => setActiveSize(null)}>Close</Button>
+              <Button variant="secondary" onClick={() => setActiveSize(null)}>
+                Close
+              </Button>
             </div>
           </Modal>
         )}

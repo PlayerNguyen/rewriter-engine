@@ -1,14 +1,15 @@
-import { forwardRef, useState, useId, useRef, useCallback, useEffect } from "react";
-import clsx from "clsx";
+import clsx from 'clsx';
+import { forwardRef, useCallback, useEffect, useId, useRef, useState } from 'react';
 
 // types & exports
 
-export interface TextAreaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "size"> {
+export interface TextAreaProps
+  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   label: string;
   helperText?: string;
   error?: string;
   success?: string;
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   autoResize?: boolean;
   maxLength?: number;
   showCount?: boolean;
@@ -18,9 +19,9 @@ export interface TextAreaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
 // constants
 
 const textAreaSizes = {
-  sm: "text-xs px-2.5 py-1.5",
-  md: "text-sm px-3 py-2",
-  lg: "text-base px-4 py-3",
+  sm: 'text-xs px-2.5 py-1.5',
+  md: 'text-sm px-3 py-2',
+  lg: 'text-base px-4 py-3',
 };
 
 // component
@@ -32,7 +33,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       helperText,
       error,
       success,
-      size = "md",
+      size = 'md',
       autoResize = false,
       maxLength,
       showCount = false,
@@ -50,7 +51,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onChange,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const autoId = useId();
     const id = idProp || autoId;
@@ -60,12 +61,13 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 
     const [focused, setFocused] = useState(false);
     const [charCount, setCharCount] = useState(
-      (typeof value === "string" ? value : typeof defaultValue === "string" ? defaultValue : "").length
+      (typeof value === 'string' ? value : typeof defaultValue === 'string' ? defaultValue : '')
+        .length,
     );
 
     const resize = useCallback(() => {
       if (!autoResize || !internalRef.current) return;
-      internalRef.current.style.height = "auto";
+      internalRef.current.style.height = 'auto';
       internalRef.current.style.height = `${internalRef.current.scrollHeight}px`;
     }, [autoResize]);
 
@@ -89,63 +91,61 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onChange?.(e);
     };
 
-    const describedBy = [error ? errorId : null, helperText ? helperId : null]
-      .filter(Boolean)
-      .join(" ") || undefined;
+    const describedBy =
+      [error ? errorId : null, helperText ? helperId : null].filter(Boolean).join(' ') || undefined;
 
     const floating = focused || !!placeholder;
 
     return (
-      <div className={clsx("relative flex flex-col gap-1.5", containerClassName)}>
+      <div className={clsx('relative flex flex-col gap-1.5', containerClassName)}>
         <div className="relative">
           <textarea
             ref={(node) => {
               (internalRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
-              if (typeof ref === "function") ref(node);
-              else if (ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+              if (typeof ref === 'function') ref(node);
+              else if (ref)
+                (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
             }}
             id={id}
             rows={rows}
             maxLength={maxLength}
             value={value}
             defaultValue={defaultValue}
-            placeholder={focused ? placeholder : " "}
+            placeholder={focused ? placeholder : ' '}
             disabled={disabled}
             required={required}
             aria-describedby={describedBy}
-            aria-invalid={error ? "true" : undefined}
-            aria-required={required ? "true" : undefined}
+            aria-invalid={error ? 'true' : undefined}
+            aria-required={required ? 'true' : undefined}
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}
             className={clsx(
-              "peer w-full bg-surface-1 text-ink border rounded-md resize-y",
-              "outline-none transition-all duration-150",
-              "placeholder:text-transparent",
+              'peer w-full bg-surface-1 text-ink border rounded-md resize-y',
+              'outline-none transition-all duration-150',
+              'placeholder:text-transparent',
               textAreaSizes[size],
               error
-                ? "border-semantic-error focus:ring-2 focus:ring-semantic-error/50"
+                ? 'border-semantic-error focus:ring-2 focus:ring-semantic-error/50'
                 : success
-                ? "border-semantic-success focus:ring-2 focus:ring-semantic-success/50"
-                : "border-hairline focus:ring-2 focus:ring-primary-focus/50 focus:border-primary-focus",
-              autoResize && "resize-none overflow-hidden",
-              disabled && "opacity-50 cursor-not-allowed",
-              className
+                  ? 'border-semantic-success focus:ring-2 focus:ring-semantic-success/50'
+                  : 'border-hairline focus:ring-2 focus:ring-primary-focus/50 focus:border-primary-focus',
+              autoResize && 'resize-none overflow-hidden',
+              disabled && 'opacity-50 cursor-not-allowed',
+              className,
             )}
             {...rest}
           />
           <label
             htmlFor={id}
             className={clsx(
-              "absolute left-3 pointer-events-none",
-              "transition-all duration-150 origin-left",
-              "bg-surface-1 px-1 text-sm",
-              floating
-                ? "top-0 -translate-y-1/2 scale-[0.75] text-primary z-10"
-                : "top-3",
-              error && floating && "text-semantic-error",
-              success && floating && "text-semantic-success",
-              !floating && "text-ink-tertiary"
+              'absolute left-3 pointer-events-none',
+              'transition-all duration-150 origin-left',
+              'bg-surface-1 px-1 text-sm',
+              floating ? 'top-0 -translate-y-1/2 scale-[0.75] text-primary z-10' : 'top-3',
+              error && floating && 'text-semantic-error',
+              success && floating && 'text-semantic-success',
+              !floating && 'text-ink-tertiary',
             )}
           >
             {label}
@@ -166,18 +166,18 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           {(showCount || maxLength) && (
             <span
               className={clsx(
-                "text-xs ml-auto",
-                maxLength && charCount > maxLength ? "text-semantic-error" : "text-ink-tertiary"
+                'text-xs ml-auto',
+                maxLength && charCount > maxLength ? 'text-semantic-error' : 'text-ink-tertiary',
               )}
             >
               {charCount}
-              {maxLength ? `/${maxLength}` : ""}
+              {maxLength ? `/${maxLength}` : ''}
             </span>
           )}
         </div>
       </div>
     );
-  }
+  },
 );
 
-TextArea.displayName = "TextArea";
+TextArea.displayName = 'TextArea';

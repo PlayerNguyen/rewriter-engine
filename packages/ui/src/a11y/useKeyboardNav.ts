@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
 export interface KeyboardNavHandlers {
   onArrowUp?: () => void;
@@ -16,42 +16,42 @@ export function useKeyboardNav(handlers: KeyboardNavHandlers) {
   return useCallback(
     (event: React.KeyboardEvent) => {
       switch (event.key) {
-        case "ArrowUp":
+        case 'ArrowUp':
           event.preventDefault();
           handlers.onArrowUp?.();
           break;
-        case "ArrowDown":
+        case 'ArrowDown':
           event.preventDefault();
           handlers.onArrowDown?.();
           break;
-        case "ArrowLeft":
+        case 'ArrowLeft':
           event.preventDefault();
           handlers.onArrowLeft?.();
           break;
-        case "ArrowRight":
+        case 'ArrowRight':
           event.preventDefault();
           handlers.onArrowRight?.();
           break;
-        case "Enter":
+        case 'Enter':
           handlers.onEnter?.();
           break;
-        case " ":
+        case ' ':
           event.preventDefault();
           handlers.onSpace?.();
           break;
-        case "Escape":
+        case 'Escape':
           handlers.onEscape?.();
           break;
-        case "Home":
+        case 'Home':
           event.preventDefault();
           handlers.onHome?.();
           break;
-        case "End":
+        case 'End':
           event.preventDefault();
           handlers.onEnd?.();
           break;
       }
     },
-    [handlers]
+    [handlers],
   );
 }

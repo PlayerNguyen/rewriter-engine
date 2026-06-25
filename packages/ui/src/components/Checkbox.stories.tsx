@@ -1,17 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { Checkbox, CheckboxGroup } from "./Checkbox";
+import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import { Checkbox, CheckboxGroup } from './Checkbox';
 
 const meta: Meta<typeof Checkbox> = {
-  title: "Forms/Checkbox",
+  title: 'Forms/Checkbox',
   component: Checkbox,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    size: { control: "select", options: ["sm", "md", "lg"] },
-    disabled: { control: "boolean" },
-    indeterminate: { control: "boolean" },
-    label: { control: "text" },
-    error: { control: "text" },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
+    disabled: { control: 'boolean' },
+    indeterminate: { control: 'boolean' },
+    label: { control: 'text' },
+    error: { control: 'text' },
   },
 };
 
@@ -20,35 +20,35 @@ type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {
   args: {
-    label: "Accept terms and conditions",
+    label: 'Accept terms and conditions',
   },
 };
 
 export const Checked: Story = {
   args: {
-    label: "Already checked",
+    label: 'Already checked',
     defaultChecked: true,
   },
 };
 
 export const Indeterminate: Story = {
   args: {
-    label: "Indeterminate state",
+    label: 'Indeterminate state',
     indeterminate: true,
   },
 };
 
 export const Disabled: Story = {
   args: {
-    label: "Disabled checkbox",
+    label: 'Disabled checkbox',
     disabled: true,
   },
 };
 
 export const WithError: Story = {
   args: {
-    label: "Required checkbox",
-    error: "You must accept to continue.",
+    label: 'Required checkbox',
+    error: 'You must accept to continue.',
   },
 };
 
@@ -64,7 +64,7 @@ export const AllSizes: Story = {
 
 export const WithGroup: Story = {
   render: () => {
-    const [values, setValues] = useState<string[]>(["react"]);
+    const [values, setValues] = useState<string[]>(['react']);
     return (
       <CheckboxGroup
         name="frameworks"
@@ -102,7 +102,7 @@ export const HorizontalGroup: Story = {
 
 export const GroupWithDisabled: Story = {
   render: () => {
-    const [values, setValues] = useState<string[]>(["option1"]);
+    const [values, setValues] = useState<string[]>(['option1']);
     return (
       <CheckboxGroup
         name="options"

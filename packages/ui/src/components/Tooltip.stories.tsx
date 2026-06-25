@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip } from "./Tooltip";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Tooltip } from './Tooltip';
 
 const meta: Meta<typeof Tooltip> = {
-  title: "Overlays/Tooltip",
+  title: 'Overlays/Tooltip',
   component: Tooltip,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    placement: { control: "select", options: ["top", "bottom", "left", "right"] },
-    delay: { control: "number" },
-    offset: { control: "number" },
-    disabled: { control: "boolean" },
-    content: { control: "text" },
+    placement: { control: 'select', options: ['top', 'bottom', 'left', 'right'] },
+    delay: { control: 'number' },
+    offset: { control: 'number' },
+    disabled: { control: 'boolean' },
+    content: { control: 'text' },
   },
 };
 
@@ -25,39 +25,39 @@ const TriggerButton = ({ children }: { children: string }) => (
 
 export const Default: Story = {
   args: {
-    content: "This is a tooltip",
+    content: 'This is a tooltip',
     children: <TriggerButton>Hover me</TriggerButton>,
   },
 };
 
 export const PlacementTop: Story = {
   args: {
-    content: "Tooltip on top",
-    placement: "top",
+    content: 'Tooltip on top',
+    placement: 'top',
     children: <TriggerButton>Top</TriggerButton>,
   },
 };
 
 export const PlacementBottom: Story = {
   args: {
-    content: "Tooltip on bottom",
-    placement: "bottom",
+    content: 'Tooltip on bottom',
+    placement: 'bottom',
     children: <TriggerButton>Bottom</TriggerButton>,
   },
 };
 
 export const PlacementLeft: Story = {
   args: {
-    content: "Tooltip on left",
-    placement: "left",
+    content: 'Tooltip on left',
+    placement: 'left',
     children: <TriggerButton>Left</TriggerButton>,
   },
 };
 
 export const PlacementRight: Story = {
   args: {
-    content: "Tooltip on right",
-    placement: "right",
+    content: 'Tooltip on right',
+    placement: 'right',
     children: <TriggerButton>Right</TriggerButton>,
   },
 };
@@ -85,7 +85,7 @@ export const AllPlacements: Story = {
 
 export const WithDelay: Story = {
   args: {
-    content: "Appears after 1 second",
+    content: 'Appears after 1 second',
     delay: 1000,
     children: <TriggerButton>Slow tooltip (1s delay)</TriggerButton>,
   },
@@ -93,7 +93,7 @@ export const WithDelay: Story = {
 
 export const NoDelay: Story = {
   args: {
-    content: "Appears instantly",
+    content: 'Appears instantly',
     delay: 0,
     children: <TriggerButton>Instant tooltip</TriggerButton>,
   },
@@ -101,7 +101,7 @@ export const NoDelay: Story = {
 
 export const Disabled: Story = {
   args: {
-    content: "You should not see this",
+    content: 'You should not see this',
     disabled: true,
     children: <TriggerButton>Disabled tooltip</TriggerButton>,
   },
@@ -109,8 +109,9 @@ export const Disabled: Story = {
 
 export const LongContent: Story = {
   args: {
-    content: "This is a tooltip with a much longer content that demonstrates how the component handles multi-line text.",
-    placement: "top",
+    content:
+      'This is a tooltip with a much longer content that demonstrates how the component handles multi-line text.',
+    placement: 'top',
     children: <TriggerButton>Long tooltip</TriggerButton>,
   },
 };
@@ -123,7 +124,7 @@ export const RichContent: Story = {
         <p className="text-xs opacity-80">With formatted content</p>
       </div>
     ),
-    placement: "top",
+    placement: 'top',
     children: <TriggerButton>Rich content</TriggerButton>,
   },
 };

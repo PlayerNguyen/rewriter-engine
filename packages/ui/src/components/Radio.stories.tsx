@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { Radio, RadioGroup } from "./Radio";
+import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import { Radio, RadioGroup } from './Radio';
 
 const meta: Meta<typeof Radio> = {
-  title: "Forms/Radio",
+  title: 'Forms/Radio',
   component: Radio,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
-    size: { control: "select", options: ["sm", "md", "lg"] },
-    disabled: { control: "boolean" },
-    label: { control: "text" },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
+    disabled: { control: 'boolean' },
+    label: { control: 'text' },
   },
 };
 
@@ -18,26 +18,26 @@ type Story = StoryObj<typeof Radio>;
 
 export const Default: Story = {
   args: {
-    label: "Option A",
-    name: "default",
-    value: "a",
+    label: 'Option A',
+    name: 'default',
+    value: 'a',
   },
 };
 
 export const Checked: Story = {
   args: {
-    label: "Selected option",
-    name: "checked",
-    value: "a",
+    label: 'Selected option',
+    name: 'checked',
+    value: 'a',
     defaultChecked: true,
   },
 };
 
 export const Disabled: Story = {
   args: {
-    label: "Disabled radio",
-    name: "disabled",
-    value: "a",
+    label: 'Disabled radio',
+    name: 'disabled',
+    value: 'a',
     disabled: true,
   },
 };
@@ -54,14 +54,9 @@ export const AllSizes: Story = {
 
 export const WithGroup: Story = {
   render: () => {
-    const [value, setValue] = useState("option1");
+    const [value, setValue] = useState('option1');
     return (
-      <RadioGroup
-        name="options"
-        value={value}
-        onChange={setValue}
-        label="Choose an option"
-      >
+      <RadioGroup name="options" value={value} onChange={setValue} label="Choose an option">
         <Radio value="option1" label="Option 1" />
         <Radio value="option2" label="Option 2" />
         <Radio value="option3" label="Option 3" />
@@ -72,7 +67,7 @@ export const WithGroup: Story = {
 
 export const HorizontalGroup: Story = {
   render: () => {
-    const [value, setValue] = useState("small");
+    const [value, setValue] = useState('small');
     return (
       <RadioGroup
         name="size"
@@ -91,7 +86,7 @@ export const HorizontalGroup: Story = {
 
 export const GroupWithError: Story = {
   render: () => {
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState('');
     return (
       <RadioGroup
         name="required"
@@ -110,7 +105,7 @@ export const GroupWithError: Story = {
 
 export const GroupDisabled: Story = {
   render: () => {
-    const [value, setValue] = useState("a");
+    const [value, setValue] = useState('a');
     return (
       <RadioGroup
         name="disabled-group"
