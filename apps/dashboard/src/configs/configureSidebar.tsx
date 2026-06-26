@@ -9,24 +9,24 @@ export function configureSidebar(t: TFunction): SidebarConfigItem[] {
       label: t('sidebar.content'),
       defaultExpanded: true,
       children: [
-        { icon: Newspaper, label: t('sidebar.articles'), active: true },
-        { icon: FileText, label: t('sidebar.rewrites') },
+        { icon: Newspaper, label: t('sidebar.articles'), to: '/articles' },
+        { icon: FileText, label: t('sidebar.rewrites'), to: '/rewrites' },
       ],
     },
     {
       icon: Link,
       label: t('sidebar.configuration'),
       children: [
-        { icon: Link, label: t('sidebar.sources') },
-        { icon: Bot, label: t('sidebar.prompts') },
+        { icon: Link, label: t('sidebar.sources'), to: '/sources' },
+        { icon: Bot, label: t('sidebar.prompts'), to: '/prompts' },
       ],
     },
     {
       icon: Settings,
       label: t('sidebar.system'),
       children: [
-        { icon: Settings, label: t('sidebar.settings') },
-        { icon: ScrollText, label: t('sidebar.logs') },
+        { icon: Settings, label: t('sidebar.settings'), to: '/settings' },
+        { icon: ScrollText, label: t('sidebar.logs'), to: '/logs' },
       ],
     },
   ];

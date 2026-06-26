@@ -7,12 +7,13 @@ import {
   Search,
   X,
 } from 'lucide-react';
-import { forwardRef, useCallback, useMemo, useState } from 'react';
+import { forwardRef, useCallback, useMemo, useState, type ElementType } from 'react';
 import { Tooltip } from './Tooltip';
 
 export interface SidebarLeaf {
   icon: LucideIcon;
   label: string;
+  to?: string;
   active?: boolean;
   onClick?: () => void;
 }
@@ -34,6 +35,7 @@ export interface SidebarProps {
   onSearch?: (query: string) => void;
   footer?: React.ReactNode;
   className?: string;
+  linkComponent?: ElementType<{ to: string; className?: string; children: React.ReactNode }>;
 }
 
 function isGroup(item: SidebarConfigItem): item is SidebarGroup {
@@ -42,7 +44,7 @@ function isGroup(item: SidebarConfigItem): item is SidebarGroup {
 
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   (
-    { expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, footer, className },
+    { expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, footer, className, linkComponent },
     ref,
   ) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -224,17 +226,27 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                     <div className="ml-2 mt-0.5 space-y-0.5">
                       {item.children.map((child) => {
                         const ChildIcon = child.icon;
+                        const childClassName = clsx(
+                          'flex items-center w-full h-8 px-2 rounded-md',
+                          'transition-colors duration-150',
+                          child.active
+                            ? 'bg-surface-2 text-primary'
+                            : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
+                        );
+                        if (linkComponent && child.to) {
+                          const Link = linkComponent;
+                          return (
+                            <Link key={child.label} to={child.to} className={childClassName}>
+                              <ChildIcon className="w-4 h-4 shrink-0" />
+                              <span className="ml-2.5 text-sm truncate">{child.label}</span>
+                            </Link>
+                          );
+                        }
                         return (
                           <button
                             key={child.label}
                             onClick={child.onClick}
-                            className={clsx(
-                              'flex items-center w-full h-8 px-2 rounded-md',
-                              'transition-colors duration-150',
-                              child.active
-                                ? 'bg-surface-2 text-primary'
-                                : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
-                            )}
+                            className={childClassName}
                           >
                             <ChildIcon className="w-4 h-4 shrink-0" />
                             <span className="ml-2.5 text-sm truncate">{child.label}</span>
@@ -248,19 +260,37 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
             }
 
             const LeafIcon = item.icon;
+            const leafClassName = clsx(
+              'flex items-center w-full h-8 px-2 rounded-md',
+              'transition-colors duration-150',
+              item.active
+                ? 'bg-surface-2 text-primary'
+                : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
+            );
 
             if (!expanded) {
+              const collapsedClassName = clsx(
+                'flex items-center justify-center w-12 h-9 rounded-md',
+                'transition-colors duration-150',
+                item.active
+                  ? 'bg-surface-2 text-primary'
+                  : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
+              );
+              if (linkComponent && item.to) {
+                const Link = linkComponent;
+                return (
+                  <Tooltip key={item.label} content={item.label} placement="right">
+                    <Link to={item.to} className={collapsedClassName} aria-label={item.label}>
+                      <LeafIcon className="w-4 h-4" />
+                    </Link>
+                  </Tooltip>
+                );
+              }
               return (
                 <Tooltip key={item.label} content={item.label} placement="right">
                   <button
                     onClick={item.onClick}
-                    className={clsx(
-                      'flex items-center justify-center w-12 h-9 rounded-md',
-                      'transition-colors duration-150',
-                      item.active
-                        ? 'bg-surface-2 text-primary'
-                        : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
-                    )}
+                    className={collapsedClassName}
                     aria-label={item.label}
                   >
                     <LeafIcon className="w-4 h-4" />
@@ -269,17 +299,20 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
               );
             }
 
+            if (linkComponent && item.to) {
+              const Link = linkComponent;
+              return (
+                <Link key={item.label} to={item.to} className={leafClassName}>
+                  <LeafIcon className="w-4 h-4 shrink-0" />
+                  <span className="ml-2.5 text-sm truncate">{item.label}</span>
+                </Link>
+              );
+            }
             return (
               <button
                 key={item.label}
                 onClick={item.onClick}
-                className={clsx(
-                  'flex items-center w-full h-8 px-2 rounded-md',
-                  'transition-colors duration-150',
-                  item.active
-                    ? 'bg-surface-2 text-primary'
-                    : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
-                )}
+                className={leafClassName}
               >
                 <LeafIcon className="w-4 h-4 shrink-0" />
                 <span className="ml-2.5 text-sm truncate">{item.label}</span>

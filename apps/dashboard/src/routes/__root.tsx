@@ -1,10 +1,15 @@
-import { DashboardLayout, Sidebar, Text } from '@rewriter/ui';
+import { DashboardLayout, Sidebar } from '@rewriter/ui';
+import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SettingsMenu } from './components/SettingsMenu';
-import { configureSidebar } from './configs/configureSidebar';
+import { SettingsMenu } from '../components/SettingsMenu';
+import { configureSidebar } from '../configs/configureSidebar';
 
-export function App() {
+export const Route = createRootRoute({
+  component: RootLayout,
+});
+
+function RootLayout() {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(true);
   const items = useMemo(() => configureSidebar(t), [t]);
@@ -21,10 +26,11 @@ export function App() {
           onToggle={() => setExpanded(!expanded)}
           items={items}
           footer={<SettingsMenu expanded={expanded} />}
+          linkComponent={Link}
         />
       }
     >
-      <Text size="headline">{t('dashboard')}</Text>
+      <Outlet />
     </DashboardLayout>
   );
 }
