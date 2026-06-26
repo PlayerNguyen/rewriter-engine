@@ -1,7 +1,7 @@
 {
   "pageTitle": "Bảng điều khiển Rewriter",
-  "dashboard": "Bảng điều khiển",
   "sidebar": {
+    "home": "Trang chủ",
     "content": "Nội dung",
     "articles": "Bài viết",
     "rewrites": "Bài viết đã viết lại",
@@ -11,6 +11,18 @@
     "system": "Hệ thống",
     "settings": "Cài đặt",
     "logs": "Nhật ký"
+  },
+  "home": {
+    "title": "Bảng điều khiển",
+    "totalArticles": "Tổng bài viết",
+    "totalRewrites": "Tổng bài đã viết lại",
+    "activeSources": "Nguồn đang hoạt động",
+    "activePrompts": "Prompt đang dùng",
+    "systemStatus": "Trạng thái hệ thống",
+    "systemOperational": "Tất cả hệ thống đang hoạt động",
+    "recentActivity": "Hoạt động gần đây",
+    "noActivity": "Chưa có hoạt động nào",
+    "statsSubtext": "Tổng quan pipeline viết lại của bạn"
   },
   "settings": {
     "label": "Cài đặt",

@@ -1,9 +1,14 @@
 import type { SidebarConfigItem } from '@rewriter/ui';
-import { Bot, FileText, Link, Newspaper, ScrollText, Settings } from '@rewriter/ui';
+import { Bot, FileText, LayoutDashboard, Link, Newspaper, ScrollText, Settings } from '@rewriter/ui';
 import type { TFunction } from 'i18next';
 
 export function configureSidebar(t: TFunction): SidebarConfigItem[] {
   return [
+    {
+      icon: LayoutDashboard,
+      label: t('sidebar.home'),
+      to: '/',
+    },
     {
       icon: Newspaper,
       label: t('sidebar.content'),
