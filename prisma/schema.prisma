@@ -17,7 +17,56 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  roles UserHasRole[]
+
   @@map("users")
+}
+
+model Role {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+
+  users       UserHasRole[]
+  permissions RoleHasPermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String @id @default(uuid())
+  name        String @unique
+  description Json
+
+  roles RoleHasPermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("permissions")
+}
+
+model UserHasRole {
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId String
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_has_roles")
+}
+
+model RoleHasPermission {
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_has_permissions")
 }
 
 // ─── Content Sources ────────────────────────────────────────────
