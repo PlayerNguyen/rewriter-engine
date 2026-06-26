@@ -39,7 +39,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
       style,
       onError,
       onLoad,
-      ...rest
+      ..._rest
     },
     ref,
   ) => {

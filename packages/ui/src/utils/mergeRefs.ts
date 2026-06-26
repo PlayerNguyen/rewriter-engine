@@ -1,4 +1,4 @@
-import type { Ref, RefCallback } from 'react';
+import type { Ref } from 'react';
 
 type PossibleRef<T> = Ref<T> | null | undefined;
 

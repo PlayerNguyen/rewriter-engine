@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { getPosition, type Placement } from '../utils/position';
 
 type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
@@ -23,41 +24,11 @@ export interface TooltipProps {
   className?: string;
 }
 
-function getPosition(
-  triggerRect: DOMRect,
-  tooltipRect: DOMRect,
-  placement: TooltipPlacement,
-  offset: number,
-): { top: number; left: number; arrowTop?: number; arrowLeft?: number } {
-  const { top: tTop, left: tLeft, width: tWidth, height: tHeight } = triggerRect;
-  const { width: ttWidth, height: ttHeight } = tooltipRect;
-
-  switch (placement) {
-    case 'top':
-      return {
-        top: tTop - ttHeight - offset,
-        left: tLeft + tWidth / 2 - ttWidth / 2,
-      };
-    case 'bottom':
-      return {
-        top: tTop + tHeight + offset,
-        left: tLeft + tWidth / 2 - ttWidth / 2,
-      };
-    case 'left':
-      return {
-        top: tTop + tHeight / 2 - ttHeight / 2,
-        left: tLeft - ttWidth - offset,
-      };
-    case 'right':
-      return {
-        top: tTop + tHeight / 2 - ttHeight / 2,
-        left: tLeft + tWidth + offset,
-      };
-  }
-}
-
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  ({ content, children, placement = 'top', delay = 200, offset = 8, disabled, className }, ref) => {
+  (
+    { content, children, placement = 'top', delay = 200, offset = 8, disabled, className },
+    _ref,
+  ) => {
     const tooltipId = useId();
     const triggerRef = useRef<HTMLElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
@@ -69,19 +40,13 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       if (!triggerRef.current || !tooltipRef.current) return;
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const tooltipRect = tooltipRef.current.getBoundingClientRect();
-      const pos = getPosition(triggerRect, tooltipRect, placement, offset);
-
-      const adjusted = { ...pos };
-      if (pos.left < 8) adjusted.left = 8;
-      if (pos.left + tooltipRect.width > window.innerWidth - 8) {
-        adjusted.left = window.innerWidth - tooltipRect.width - 8;
-      }
-      if (pos.top < 8) adjusted.top = 8;
-      if (pos.top + tooltipRect.height > window.innerHeight - 8) {
-        adjusted.top = window.innerHeight - tooltipRect.height - 8;
-      }
-
-      setPosition(adjusted);
+      const pos = getPosition({
+        triggerRect,
+        contentRect: tooltipRect,
+        placement: placement as Placement,
+        offset,
+      });
+      setPosition({ top: pos.top, left: pos.left });
     }, [placement, offset]);
 
     const show = useCallback(() => {

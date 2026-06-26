@@ -1,5 +1,25 @@
 // tokens
 
+// icons (re-exported from lucide-react for sidebar config)
+export type { LucideIcon } from 'lucide-react';
+export {
+  Bot,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  FileText,
+  Languages,
+  LayoutDashboard,
+  Link,
+  LogOut,
+  Newspaper,
+  PanelLeftClose,
+  PanelLeftOpen,
+  ScrollText,
+  Search,
+  Settings,
+  X,
+} from 'lucide-react';
 export type { FocusRingProps } from './a11y/FocusRing';
 export { FocusRing } from './a11y/FocusRing';
 export type { UseFocusTrapOptions } from './a11y/useFocusTrap';
@@ -18,6 +38,8 @@ export type { ButtonProps, ButtonSize, ButtonVariant } from './components/Button
 export { Button } from './components/Button';
 export type { CheckboxGroupProps, CheckboxProps } from './components/Checkbox';
 export { Checkbox, CheckboxGroup } from './components/Checkbox';
+export type { DashboardLayoutProps } from './components/DashboardLayout';
+export { DashboardLayout } from './components/DashboardLayout';
 export type { GridItemProps, GridProps } from './components/Grid';
 export { Grid, GridItem } from './components/Grid';
 export type { IconProps } from './components/Icon';
@@ -27,10 +49,19 @@ export { Image } from './components/Image';
 export type { ModalFooterProps, ModalHeaderProps, ModalProps } from './components/Modal';
 // overlay components
 export { Modal, ModalFooter, ModalHeader } from './components/Modal';
+export type { PopoverProps } from './components/Popover';
+export { Popover } from './components/Popover';
 export type { RadioGroupProps, RadioProps } from './components/Radio';
 export { Radio, RadioGroup } from './components/Radio';
 export type { SelectOption, SelectProps } from './components/Select';
 export { Select } from './components/Select';
+export type {
+  SidebarConfigItem,
+  SidebarGroup,
+  SidebarLeaf,
+  SidebarProps,
+} from './components/Sidebar';
+export { Sidebar } from './components/Sidebar';
 export type { StackProps } from './components/Stack';
 export { Stack } from './components/Stack';
 export type { TextProps } from './components/Text';
@@ -42,6 +73,8 @@ export type { TextInputProps } from './components/TextInput';
 export { TextInput } from './components/TextInput';
 export type { TooltipProps } from './components/Tooltip';
 export { Tooltip } from './components/Tooltip';
+// hooks
+export { useClickOutside } from './hooks/useClickOutside';
 export type { ThemeMode, ThemeProviderProps } from './theme/ThemeProvider';
 // theme
 export { ThemeProvider } from './theme/ThemeProvider';
@@ -71,3 +104,5 @@ export type {
   PolymorphicProps,
   PolymorphicRef,
 } from './utils/polymorphic';
+export type { Placement } from './utils/position';
+export { getPosition } from './utils/position';

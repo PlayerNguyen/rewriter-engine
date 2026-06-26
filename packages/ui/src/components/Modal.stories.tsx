@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button } from './Button';
-import { Modal, ModalFooter, ModalHeader } from './Modal';
+import { Modal, ModalFooter, ModalHeader, type ModalProps } from './Modal';
 
 const meta: Meta<typeof Modal> = {
   title: 'Overlays/Modal',
@@ -182,7 +182,7 @@ export const AllSizes: Story = {
             open={!!activeSize}
             onClose={() => setActiveSize(null)}
             title={`${activeSize.toUpperCase()} Modal`}
-            size={activeSize as any}
+            size={activeSize as ModalProps['size']}
           >
             <p className="text-sm text-ink-muted">Size: {activeSize}</p>
             <div className="flex justify-end mt-4">

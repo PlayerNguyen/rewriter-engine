@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { forwardRef, useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useClickOutside } from '../hooks/useClickOutside';
 
 // types & exports
 
@@ -136,16 +137,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       [isOpen, activeIndex, options, selectOption],
     );
 
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-          setIsOpen(false);
-          setActiveIndex(-1);
-        }
-      };
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    useClickOutside(
+      [containerRef],
+      () => {
+        setIsOpen(false);
+        setActiveIndex(-1);
+      },
+      isOpen,
+    );
 
     useEffect(() => {
       if (isOpen && activeIndex >= 0 && listRef.current) {
