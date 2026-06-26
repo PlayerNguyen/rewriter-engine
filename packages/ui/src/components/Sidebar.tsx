@@ -1,5 +1,12 @@
 import clsx from 'clsx';
-import { type LucideIcon, Search, X, PanelLeftClose, PanelLeftOpen, ChevronDown } from 'lucide-react';
+import {
+  ChevronDown,
+  type LucideIcon,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Search,
+  X,
+} from 'lucide-react';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
 import { Tooltip } from './Tooltip';
 
@@ -34,7 +41,10 @@ function isGroup(item: SidebarConfigItem): item is SidebarGroup {
 }
 
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
-  ({ expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, footer, className }, ref) => {
+  (
+    { expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, footer, className },
+    ref,
+  ) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
       const initial = new Set<string>();
@@ -56,9 +66,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
             const matchedChildren = item.children.filter((child) =>
               child.label.toLowerCase().includes(q),
             );
-            return matchedChildren.length > 0
-              ? { ...item, children: matchedChildren }
-              : null;
+            return matchedChildren.length > 0 ? { ...item, children: matchedChildren } : null;
           }
           return item.label.toLowerCase().includes(q) ? item : null;
         })
@@ -145,29 +153,29 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
               </Tooltip>
             </>
           ) : (
-            <>
-              <Tooltip content="Expand sidebar" placement="right">
-                <button
-                  onClick={onToggle}
-                  className={clsx(
-                    'flex items-center justify-center w-8 h-8 rounded-md',
-                    'text-ink-subtle hover:text-ink hover:bg-surface-2',
-                    'transition-colors duration-150',
-                  )}
-                  aria-label="Expand sidebar"
-                >
-                  <PanelLeftOpen className="w-4 h-4" />
-                </button>
-              </Tooltip>
-            </>
+            <Tooltip content="Expand sidebar" placement="right">
+              <button
+                onClick={onToggle}
+                className={clsx(
+                  'flex items-center justify-center w-8 h-8 rounded-md',
+                  'text-ink-subtle hover:text-ink hover:bg-surface-2',
+                  'transition-colors duration-150',
+                )}
+                aria-label="Expand sidebar"
+              >
+                <PanelLeftOpen className="w-4 h-4" />
+              </button>
+            </Tooltip>
           )}
         </div>
 
         {/* Navigation */}
-        <nav className={clsx(
-          'flex-1 overflow-y-auto p-2 space-y-0.5',
-          !expanded && 'flex flex-col items-center',
-        )}>
+        <nav
+          className={clsx(
+            'flex-1 overflow-y-auto p-2 space-y-0.5',
+            !expanded && 'flex flex-col items-center',
+          )}
+        >
           {filteredItems.map((item) => {
             if (isGroup(item)) {
               const groupExpanded = isSearching || expandedGroups.has(item.label);
@@ -282,10 +290,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
 
         {/* Footer */}
         {footer && (
-          <div className={clsx(
-            'border-t border-hairline p-2',
-            !expanded && 'flex justify-center',
-          )}>
+          <div className={clsx('border-t border-hairline p-2', !expanded && 'flex justify-center')}>
             {footer}
           </div>
         )}

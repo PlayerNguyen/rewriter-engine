@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type ReactNode, forwardRef } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 
 export interface DashboardLayoutProps {
   sidebar: ReactNode;
@@ -18,9 +18,7 @@ export const DashboardLayout = forwardRef<HTMLDivElement, DashboardLayoutProps>(
         {/* Main Content Area */}
         <div className="flex flex-col flex-1 overflow-hidden">
           {header && (
-            <header className="shrink-0 border-b border-hairline bg-surface-1">
-              {header}
-            </header>
+            <header className="shrink-0 border-b border-hairline bg-surface-1">{header}</header>
           )}
           <main className="flex-1 overflow-auto p-lg">{children}</main>
         </div>

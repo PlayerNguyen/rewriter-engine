@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { type RefObject, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { forwardRef, type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useClickOutside } from '../hooks/useClickOutside';
-import { type Placement, getPosition } from '../utils/position';
+import { getPosition, type Placement } from '../utils/position';
 
 export interface PopoverProps {
   open: boolean;
@@ -15,7 +15,10 @@ export interface PopoverProps {
 }
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  ({ open, onClose, anchorRef, children, placement = 'bottom-end', offset = 8, className }, ref) => {
+  (
+    { open, onClose, anchorRef, children, placement = 'bottom-end', offset = 8, className },
+    ref,
+  ) => {
     const popoverRef = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState({ top: 0, left: 0 });
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef } from 'react';
 
 type SpacingToken = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 

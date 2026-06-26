@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type ElementType, forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 type TextAs =
   | 'h1'
@@ -112,6 +112,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(
 
     return (
       <Component
+        // biome-ignore lint/suspicious/noExplicitAny: polymorphic ref typing
         ref={ref as any}
         className={clsx(
           sizeStyles[size],
@@ -125,7 +126,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(
           align === 'right' && 'text-right',
           align === 'justify' && 'text-justify',
           truncate === true && 'truncate',
-          typeof truncate === 'number' && 'line-clamp-' + truncate,
+          typeof truncate === 'number' && `line-clamp-${truncate}`,
           italic && 'italic',
           underline && 'underline',
           className,

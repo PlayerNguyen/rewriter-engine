@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { type Placement, getPosition } from '../utils/position';
+import { getPosition, type Placement } from '../utils/position';
 
 type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
@@ -25,7 +25,10 @@ export interface TooltipProps {
 }
 
 export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  ({ content, children, placement = 'top', delay = 200, offset = 8, disabled, className }, ref) => {
+  (
+    { content, children, placement = 'top', delay = 200, offset = 8, disabled, className },
+    _ref,
+  ) => {
     const tooltipId = useId();
     const triggerRef = useRef<HTMLElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
@@ -37,7 +40,12 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       if (!triggerRef.current || !tooltipRef.current) return;
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const tooltipRect = tooltipRef.current.getBoundingClientRect();
-      const pos = getPosition({ triggerRect, contentRect: tooltipRect, placement: placement as Placement, offset });
+      const pos = getPosition({
+        triggerRect,
+        contentRect: tooltipRect,
+        placement: placement as Placement,
+        offset,
+      });
       setPosition({ top: pos.top, left: pos.left });
     }, [placement, offset]);
 

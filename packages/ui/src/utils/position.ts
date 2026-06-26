@@ -78,7 +78,7 @@ export function getPosition({
   let actualPlacement = placement;
 
   // Flip if overflowing top or bottom
-  if (pos.top < margin && (placement.startsWith('top'))) {
+  if (pos.top < margin && placement.startsWith('top')) {
     actualPlacement = flip(placement);
     pos = compute(actualPlacement);
   } else if (pos.top + cHeight > window.innerHeight - margin && placement.startsWith('bottom')) {

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type ComponentPropsWithRef, type ElementType, forwardRef } from 'react';
+import { type ElementType, forwardRef } from 'react';
 
 type SpacingToken = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'section' | 'auto' | 0;
 type RadiusToken = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'pill' | 'full';

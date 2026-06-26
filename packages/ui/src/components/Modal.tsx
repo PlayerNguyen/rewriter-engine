@@ -49,7 +49,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
   ) => {
     const titleId = useId();
     const descId = useId();
-    const previousFocusRef = useCallback(() => document.activeElement as HTMLElement, []);
+    const _previousFocusRef = useCallback(() => document.activeElement as HTMLElement, []);
 
     const trapFocus = useCallback(
       (event: KeyboardEvent) => {

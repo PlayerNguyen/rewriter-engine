@@ -137,10 +137,14 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       [isOpen, activeIndex, options, selectOption],
     );
 
-    useClickOutside([containerRef], () => {
-      setIsOpen(false);
-      setActiveIndex(-1);
-    }, isOpen);
+    useClickOutside(
+      [containerRef],
+      () => {
+        setIsOpen(false);
+        setActiveIndex(-1);
+      },
+      isOpen,
+    );
 
     useEffect(() => {
       if (isOpen && activeIndex >= 0 && listRef.current) {
