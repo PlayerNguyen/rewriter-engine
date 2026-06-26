@@ -30,7 +30,10 @@
     "paths": {
       "@rewriter/ui": ["./packages/ui/src/index.ts"],
       "@rewriter/ui/*": ["./packages/ui/src/*"],
-      "@rewriter/db": ["./packages/db/src/index.ts"]
+      "@rewriter/db": ["./packages/db/src/index.ts"],
+      "@rewriter/db/*": ["./packages/db/src/*"],
+      "@rewriter/logger": ["./packages/logger/src/index.ts"],
+      "@rewriter/logger/*": ["./packages/logger/src/*"]
     }
   }
 }
