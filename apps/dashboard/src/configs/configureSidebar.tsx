@@ -12,7 +12,6 @@ export function configureSidebar(t: TFunction): SidebarConfigItem[] {
     {
       icon: Newspaper,
       label: t('sidebar.content'),
-      defaultExpanded: true,
       children: [
         { icon: Newspaper, label: t('sidebar.articles'), to: '/articles' },
         { icon: FileText, label: t('sidebar.rewrites'), to: '/rewrites' },
