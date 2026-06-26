@@ -1,10 +1,5 @@
 import clsx from 'clsx';
-import {
-  ChevronDown,
-  type LucideIcon,
-  PanelLeftClose,
-  PanelLeftOpen,
-} from 'lucide-react';
+import { ChevronDown, type LucideIcon, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { type ElementType, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { CommandInput } from './CommandInput';
 import { Tooltip } from './Tooltip';
