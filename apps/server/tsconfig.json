@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@rewriter/db": ["../../packages/db/src/index.ts"],
+      "@rewriter/db/*": ["../../packages/db/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

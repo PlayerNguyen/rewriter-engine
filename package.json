@@ -12,6 +12,7 @@
     "storybook": "bun run --filter @rewriter/ui storybook",
     "build-storybook": "bun run --filter @rewriter/ui build-storybook",
     "dev:dashboard": "bun run --filter @rewriter/dashboard dev",
+    "dev:server": "bun run --filter @rewriter/server dev",
     "lint": "bunx --bun @biomejs/biome check .",
     "lint:fix": "bunx --bun @biomejs/biome check --write .",
     "format": "bunx --bun @biomejs/biome format --write .",
