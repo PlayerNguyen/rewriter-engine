@@ -1,7 +1,7 @@
 {
   "pageTitle": "Rewriter Dashboard",
-  "dashboard": "Dashboard",
   "sidebar": {
+    "home": "Home",
     "content": "Content",
     "articles": "Articles",
     "rewrites": "Rewrites",
@@ -11,6 +11,18 @@
     "system": "System",
     "settings": "Settings",
     "logs": "Logs"
+  },
+  "home": {
+    "title": "Dashboard",
+    "totalArticles": "Total Articles",
+    "totalRewrites": "Total Rewrites",
+    "activeSources": "Active Sources",
+    "activePrompts": "Active Prompts",
+    "systemStatus": "System Status",
+    "systemOperational": "All systems operational",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity",
+    "statsSubtext": "Overview of your rewriting pipeline"
   },
   "settings": {
     "label": "Settings",

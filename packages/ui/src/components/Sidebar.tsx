@@ -1,18 +1,13 @@
 import clsx from 'clsx';
-import {
-  ChevronDown,
-  type LucideIcon,
-  PanelLeftClose,
-  PanelLeftOpen,
-  Search,
-  X,
-} from 'lucide-react';
-import { forwardRef, useCallback, useMemo, useState } from 'react';
+import { ChevronDown, type LucideIcon, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { type ElementType, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { CommandInput } from './CommandInput';
 import { Tooltip } from './Tooltip';
 
 export interface SidebarLeaf {
   icon: LucideIcon;
   label: string;
+  to?: string;
   active?: boolean;
   onClick?: () => void;
 }
@@ -34,6 +29,7 @@ export interface SidebarProps {
   onSearch?: (query: string) => void;
   footer?: React.ReactNode;
   className?: string;
+  linkComponent?: ElementType<{ to: string; className?: string; children: React.ReactNode }>;
 }
 
 function isGroup(item: SidebarConfigItem): item is SidebarGroup {
@@ -42,7 +38,16 @@ function isGroup(item: SidebarConfigItem): item is SidebarGroup {
 
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   (
-    { expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, footer, className },
+    {
+      expanded,
+      onToggle,
+      items,
+      searchPlaceholder = 'Search...',
+      onSearch,
+      footer,
+      className,
+      linkComponent,
+    },
     ref,
   ) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -55,6 +60,21 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       });
       return initial;
     });
+
+    useEffect(() => {
+      setExpandedGroups((prev) => {
+        const next = new Set<string>();
+        items.forEach((item) => {
+          if (isGroup(item) && item.defaultExpanded) {
+            next.add(item.label);
+          }
+        });
+        if (prev.size === next.size && [...prev].every((k) => next.has(k))) {
+          return prev;
+        }
+        return next;
+      });
+    }, [items]);
 
     const filteredItems = useMemo(() => {
       if (!searchQuery.trim()) return items;
@@ -86,17 +106,12 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
     }, []);
 
     const handleSearchChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value);
-        onSearch?.(e.target.value);
+      (value: string) => {
+        setSearchQuery(value);
+        onSearch?.(value);
       },
       [onSearch],
     );
-
-    const clearSearch = useCallback(() => {
-      setSearchQuery('');
-      onSearch?.('');
-    }, [onSearch]);
 
     const isSearching = searchQuery.trim().length > 0;
 
@@ -114,30 +129,12 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         <div className="flex items-center gap-1 p-2 border-b border-hairline">
           {expanded ? (
             <>
-              <div className="relative flex-1">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-tertiary" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  placeholder={searchPlaceholder}
-                  className={clsx(
-                    'w-full h-8 pl-8 pr-8 text-sm bg-surface-2 text-ink border border-hairline rounded-md',
-                    'outline-none transition-all duration-150',
-                    'placeholder:text-ink-tertiary',
-                    'focus:ring-2 focus:ring-primary-focus/50 focus:border-primary-focus',
-                  )}
-                />
-                {searchQuery && (
-                  <button
-                    onClick={clearSearch}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-tertiary hover:text-ink transition-colors"
-                    aria-label="Clear search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
+              <CommandInput
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder={searchPlaceholder}
+                className="flex-1"
+              />
               <Tooltip content="Collapse sidebar" placement="right">
                 <button
                   onClick={onToggle}
@@ -224,17 +221,27 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
                     <div className="ml-2 mt-0.5 space-y-0.5">
                       {item.children.map((child) => {
                         const ChildIcon = child.icon;
+                        const childClassName = clsx(
+                          'flex items-center w-full h-8 px-2 rounded-md',
+                          'transition-colors duration-150',
+                          child.active
+                            ? 'bg-surface-2 text-primary'
+                            : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
+                        );
+                        if (linkComponent && child.to) {
+                          const Link = linkComponent;
+                          return (
+                            <Link key={child.label} to={child.to} className={childClassName}>
+                              <ChildIcon className="w-4 h-4 shrink-0" />
+                              <span className="ml-2.5 text-sm truncate">{child.label}</span>
+                            </Link>
+                          );
+                        }
                         return (
                           <button
                             key={child.label}
                             onClick={child.onClick}
-                            className={clsx(
-                              'flex items-center w-full h-8 px-2 rounded-md',
-                              'transition-colors duration-150',
-                              child.active
-                                ? 'bg-surface-2 text-primary'
-                                : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
-                            )}
+                            className={childClassName}
                           >
                             <ChildIcon className="w-4 h-4 shrink-0" />
                             <span className="ml-2.5 text-sm truncate">{child.label}</span>
@@ -248,19 +255,37 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
             }
 
             const LeafIcon = item.icon;
+            const leafClassName = clsx(
+              'flex items-center w-full h-8 px-2 rounded-md',
+              'transition-colors duration-150',
+              item.active
+                ? 'bg-surface-2 text-primary'
+                : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
+            );
 
             if (!expanded) {
+              const collapsedClassName = clsx(
+                'flex items-center justify-center w-12 h-9 rounded-md',
+                'transition-colors duration-150',
+                item.active
+                  ? 'bg-surface-2 text-primary'
+                  : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
+              );
+              if (linkComponent && item.to) {
+                const Link = linkComponent;
+                return (
+                  <Tooltip key={item.label} content={item.label} placement="right">
+                    <Link to={item.to} className={collapsedClassName} aria-label={item.label}>
+                      <LeafIcon className="w-4 h-4" />
+                    </Link>
+                  </Tooltip>
+                );
+              }
               return (
                 <Tooltip key={item.label} content={item.label} placement="right">
                   <button
                     onClick={item.onClick}
-                    className={clsx(
-                      'flex items-center justify-center w-12 h-9 rounded-md',
-                      'transition-colors duration-150',
-                      item.active
-                        ? 'bg-surface-2 text-primary'
-                        : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
-                    )}
+                    className={collapsedClassName}
                     aria-label={item.label}
                   >
                     <LeafIcon className="w-4 h-4" />
@@ -269,18 +294,17 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
               );
             }
 
+            if (linkComponent && item.to) {
+              const Link = linkComponent;
+              return (
+                <Link key={item.label} to={item.to} className={leafClassName}>
+                  <LeafIcon className="w-4 h-4 shrink-0" />
+                  <span className="ml-2.5 text-sm truncate">{item.label}</span>
+                </Link>
+              );
+            }
             return (
-              <button
-                key={item.label}
-                onClick={item.onClick}
-                className={clsx(
-                  'flex items-center w-full h-8 px-2 rounded-md',
-                  'transition-colors duration-150',
-                  item.active
-                    ? 'bg-surface-2 text-primary'
-                    : 'text-ink-subtle hover:text-ink hover:bg-surface-2',
-                )}
-              >
+              <button key={item.label} onClick={item.onClick} className={leafClassName}>
                 <LeafIcon className="w-4 h-4 shrink-0" />
                 <span className="ml-2.5 text-sm truncate">{item.label}</span>
               </button>

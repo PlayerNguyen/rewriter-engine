@@ -76,6 +76,10 @@ Example:
 
 This creates a searchable, dated archive of all work completed in the project.
 
+## Pull Request Policy
+
+Follow the template in `.github/PULL_REQUEST_TEMPLATE.md` when creating pull requests. Use `gh pr create` and fill out all relevant sections (description, type of change, testing, checklist). Do not skip the template.
+
 ## References
 
 - `.opencode/TARGET.md` — Full system design (Vietnamese). Read this before making architectural decisions.

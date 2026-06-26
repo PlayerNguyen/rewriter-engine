@@ -20,7 +20,7 @@ export const DashboardLayout = forwardRef<HTMLDivElement, DashboardLayoutProps>(
           {header && (
             <header className="shrink-0 border-b border-hairline bg-surface-1">{header}</header>
           )}
-          <main className="flex-1 overflow-auto p-lg">{children}</main>
+          <main className="flex-1 overflow-auto p-8">{children}</main>
         </div>
       </div>
     );
