@@ -52,3 +52,9 @@ Setting (key-value config)
 - ✅ `bun run typecheck` — passes (all packages)
 - ✅ `bun run lint` — no new errors (pre-existing warnings in `packages/ui/` only)
 - ✅ `bun run db:generate` — Prisma Client generated successfully
+
+## Follow-up Change
+
+- Removed `packages/db/src/generated/` from git tracking
+- Added `.gitignore` rule: `packages/db/src/generated/`
+- Generated files are now a build artifact — developers run `bun run db:generate` after clone
