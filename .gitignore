@@ -39,3 +39,6 @@ storybook-static
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Prisma generated client (regenerate with `bun run db:generate`)
+packages/db/src/generated/
