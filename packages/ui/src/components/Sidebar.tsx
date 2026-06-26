@@ -4,10 +4,9 @@ import {
   type LucideIcon,
   PanelLeftClose,
   PanelLeftOpen,
-  Search,
-  X,
 } from 'lucide-react';
 import { type ElementType, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { CommandInput } from './CommandInput';
 import { Tooltip } from './Tooltip';
 
 export interface SidebarLeaf {
@@ -112,17 +111,12 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
     }, []);
 
     const handleSearchChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value);
-        onSearch?.(e.target.value);
+      (value: string) => {
+        setSearchQuery(value);
+        onSearch?.(value);
       },
       [onSearch],
     );
-
-    const clearSearch = useCallback(() => {
-      setSearchQuery('');
-      onSearch?.('');
-    }, [onSearch]);
 
     const isSearching = searchQuery.trim().length > 0;
 
@@ -140,30 +134,12 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
         <div className="flex items-center gap-1 p-2 border-b border-hairline">
           {expanded ? (
             <>
-              <div className="relative flex-1">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-tertiary" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  placeholder={searchPlaceholder}
-                  className={clsx(
-                    'w-full h-8 pl-8 pr-8 text-sm bg-surface-2 text-ink border border-hairline rounded-md',
-                    'outline-none transition-all duration-150',
-                    'placeholder:text-ink-tertiary',
-                    'focus:ring-2 focus:ring-primary-focus/50 focus:border-primary-focus',
-                  )}
-                />
-                {searchQuery && (
-                  <button
-                    onClick={clearSearch}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-tertiary hover:text-ink transition-colors"
-                    aria-label="Clear search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
+              <CommandInput
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder={searchPlaceholder}
+                className="flex-1"
+              />
               <Tooltip content="Collapse sidebar" placement="right">
                 <button
                   onClick={onToggle}
