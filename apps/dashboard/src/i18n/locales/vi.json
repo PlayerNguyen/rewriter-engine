@@ -1,0 +1,25 @@
+{
+  "pageTitle": "Bảng điều khiển Rewriter",
+  "dashboard": "Bảng điều khiển",
+  "sidebar": {
+    "content": "Nội dung",
+    "articles": "Bài viết",
+    "rewrites": "Bài viết đã viết lại",
+    "configuration": "Cấu hình",
+    "sources": "Nguồn",
+    "prompts": "Prompt",
+    "system": "Hệ thống",
+    "settings": "Cài đặt",
+    "logs": "Nhật ký"
+  },
+  "settings": {
+    "label": "Cài đặt",
+    "language": "Ngôn ngữ",
+    "logout": "Đăng xuất"
+  },
+  "languageSwitcher": {
+    "label": "Ngôn ngữ",
+    "en": "English",
+    "vi": "Tiếng Việt"
+  }
+}

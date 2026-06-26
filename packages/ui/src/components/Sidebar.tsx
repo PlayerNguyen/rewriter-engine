@@ -25,6 +25,7 @@ export interface SidebarProps {
   items: SidebarConfigItem[];
   searchPlaceholder?: string;
   onSearch?: (query: string) => void;
+  footer?: React.ReactNode;
   className?: string;
 }
 
@@ -33,7 +34,7 @@ function isGroup(item: SidebarConfigItem): item is SidebarGroup {
 }
 
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
-  ({ expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, className }, ref) => {
+  ({ expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, footer, className }, ref) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
       const initial = new Set<string>();
@@ -278,6 +279,16 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
             );
           })}
         </nav>
+
+        {/* Footer */}
+        {footer && (
+          <div className={clsx(
+            'border-t border-hairline p-2',
+            !expanded && 'flex justify-center',
+          )}>
+            {footer}
+          </div>
+        )}
       </div>
     );
   },

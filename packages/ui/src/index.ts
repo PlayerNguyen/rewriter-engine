@@ -27,6 +27,8 @@ export { Image } from './components/Image';
 export type { ModalFooterProps, ModalHeaderProps, ModalProps } from './components/Modal';
 // overlay components
 export { Modal, ModalFooter, ModalHeader } from './components/Modal';
+export type { PopoverProps } from './components/Popover';
+export { Popover } from './components/Popover';
 export type { RadioGroupProps, RadioProps } from './components/Radio';
 export { Radio, RadioGroup } from './components/Radio';
 export type { SelectOption, SelectProps } from './components/Select';
@@ -52,6 +54,10 @@ export {
   PanelLeftOpen,
   ChevronDown,
   LayoutDashboard,
+  Languages,
+  Check,
+  LogOut,
+  ChevronRight,
 } from 'lucide-react';
 export type { TextProps } from './components/Text';
 // display components
@@ -85,9 +91,15 @@ export {
 // utils
 export { cn } from './utils/cn';
 export { mergeRefs } from './utils/mergeRefs';
+export type { Placement } from './utils/position';
+export {
+  getPosition,
+} from './utils/position';
 export type {
   AsProp,
   PolymorphicComponent,
   PolymorphicProps,
   PolymorphicRef,
 } from './utils/polymorphic';
+// hooks
+export { useClickOutside } from './hooks/useClickOutside';

@@ -1,31 +1,32 @@
 import type { SidebarConfigItem } from '@rewriter/ui';
-import { Newspaper, FileText, Link, Bot, Settings, ScrollText } from '@rewriter/ui';
+import { Bot, FileText, Link, Newspaper, ScrollText, Settings } from '@rewriter/ui';
+import type { TFunction } from 'i18next';
 
-export function configureSidebar(): SidebarConfigItem[] {
+export function configureSidebar(t: TFunction): SidebarConfigItem[] {
   return [
     {
       icon: Newspaper,
-      label: 'Content',
+      label: t('sidebar.content'),
       defaultExpanded: true,
       children: [
-        { icon: Newspaper, label: 'Articles', active: true },
-        { icon: FileText, label: 'Rewrites' },
+        { icon: Newspaper, label: t('sidebar.articles'), active: true },
+        { icon: FileText, label: t('sidebar.rewrites') },
       ],
     },
     {
       icon: Link,
-      label: 'Configuration',
+      label: t('sidebar.configuration'),
       children: [
-        { icon: Link, label: 'Sources' },
-        { icon: Bot, label: 'Prompts' },
+        { icon: Link, label: t('sidebar.sources') },
+        { icon: Bot, label: t('sidebar.prompts') },
       ],
     },
     {
       icon: Settings,
-      label: 'System',
+      label: t('sidebar.system'),
       children: [
-        { icon: Settings, label: 'Settings' },
-        { icon: ScrollText, label: 'Logs' },
+        { icon: Settings, label: t('sidebar.settings') },
+        { icon: ScrollText, label: t('sidebar.logs') },
       ],
     },
   ];

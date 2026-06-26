@@ -1,0 +1,25 @@
+{
+  "pageTitle": "Rewriter Dashboard",
+  "dashboard": "Dashboard",
+  "sidebar": {
+    "content": "Content",
+    "articles": "Articles",
+    "rewrites": "Rewrites",
+    "configuration": "Configuration",
+    "sources": "Sources",
+    "prompts": "Prompts",
+    "system": "System",
+    "settings": "Settings",
+    "logs": "Logs"
+  },
+  "settings": {
+    "label": "Settings",
+    "language": "Language",
+    "logout": "Log out"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "vi": "Tiếng Việt"
+  }
+}

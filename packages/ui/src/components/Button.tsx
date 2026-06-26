@@ -12,6 +12,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   loading?: boolean;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
+  iconOnly?: boolean;
   fullWidth?: boolean;
 }
 
@@ -69,6 +70,13 @@ const sizeStyles: Record<ButtonSize, string> = {
   lg: 'h-11 px-5 text-sm gap-2',
 };
 
+const iconOnlySizeStyles: Record<ButtonSize, string> = {
+  xs: 'h-7 w-7',
+  sm: 'h-8 w-8',
+  md: 'h-9 w-9',
+  lg: 'h-11 w-11',
+};
+
 // component
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -80,6 +88,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       icon,
       iconPosition = 'left',
+      iconOnly,
       fullWidth,
       className,
       children,
@@ -99,7 +108,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'outline-none select-none',
           'disabled:cursor-not-allowed disabled:active:scale-100',
           variantStyles[variant],
-          sizeStyles[size],
+          iconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
           fullWidth && 'w-full',
           className,
         )}
@@ -128,13 +137,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             />
           </svg>
         )}
-        {!loading && icon && iconPosition === 'left' && (
+        {!loading && icon && (iconOnly || iconPosition === 'left') && (
           <span className="inline-flex shrink-0" aria-hidden="true">
             {icon}
           </span>
         )}
-        {children}
-        {!loading && icon && iconPosition === 'right' && (
+        {!iconOnly && children}
+        {!loading && icon && !iconOnly && iconPosition === 'right' && (
           <span className="inline-flex shrink-0" aria-hidden="true">
             {icon}
           </span>
