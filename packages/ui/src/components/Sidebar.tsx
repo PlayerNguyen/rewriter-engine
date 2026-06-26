@@ -7,7 +7,7 @@ import {
   Search,
   X,
 } from 'lucide-react';
-import { forwardRef, useCallback, useEffect, useMemo, useState, type ElementType } from 'react';
+import { type ElementType, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { Tooltip } from './Tooltip';
 
 export interface SidebarLeaf {
@@ -44,7 +44,16 @@ function isGroup(item: SidebarConfigItem): item is SidebarGroup {
 
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   (
-    { expanded, onToggle, items, searchPlaceholder = 'Search...', onSearch, footer, className, linkComponent },
+    {
+      expanded,
+      onToggle,
+      items,
+      searchPlaceholder = 'Search...',
+      onSearch,
+      footer,
+      className,
+      linkComponent,
+    },
     ref,
   ) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -324,11 +333,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
               );
             }
             return (
-              <button
-                key={item.label}
-                onClick={item.onClick}
-                className={leafClassName}
-              >
+              <button key={item.label} onClick={item.onClick} className={leafClassName}>
                 <LeafIcon className="w-4 h-4 shrink-0" />
                 <span className="ml-2.5 text-sm truncate">{item.label}</span>
               </button>

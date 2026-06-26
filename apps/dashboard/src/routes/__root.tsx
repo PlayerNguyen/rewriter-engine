@@ -1,5 +1,5 @@
 import { DashboardLayout, Sidebar } from '@rewriter/ui';
-import { Link, Outlet, createRootRoute, useRouterState } from '@tanstack/react-router';
+import { createRootRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SettingsMenu } from '../components/SettingsMenu';

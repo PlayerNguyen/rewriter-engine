@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Newspaper, FileText, Link, Bot, Stack, Text } from '@rewriter/ui';
+import { Bot, Box, FileText, Grid, GridItem, Link, Newspaper, Stack, Text } from '@rewriter/ui';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
@@ -6,7 +6,15 @@ export const Route = createFileRoute('/')({
   component: DashboardHome,
 });
 
-function StatCard({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+}) {
   return (
     <Box bg="var(--colors-surface-1)" border="var(--colors-hairline)" rounded="lg" p="lg">
       <Stack direction="horizontal" align="center" gap="sm">
