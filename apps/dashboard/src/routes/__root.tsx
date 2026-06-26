@@ -1,5 +1,5 @@
 import { DashboardLayout, Sidebar } from '@rewriter/ui';
-import { Link, Outlet, createRootRoute } from '@tanstack/react-router';
+import { Link, Outlet, createRootRoute, useRouterState } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SettingsMenu } from '../components/SettingsMenu';
@@ -12,7 +12,25 @@ export const Route = createRootRoute({
 function RootLayout() {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(true);
-  const items = useMemo(() => configureSidebar(t), [t]);
+  const { location } = useRouterState();
+
+  const items = useMemo(() => {
+    const pathname = location.pathname;
+    return configureSidebar(t).map((item) => {
+      if ('children' in item) {
+        const hasActiveChild = item.children.some((c) => c.to === pathname);
+        return {
+          ...item,
+          defaultExpanded: item.defaultExpanded || hasActiveChild,
+          children: item.children.map((child) => ({
+            ...child,
+            active: child.to === pathname,
+          })),
+        };
+      }
+      return { ...item, active: item.to === pathname };
+    });
+  }, [t, location.pathname]);
 
   useEffect(() => {
     document.title = t('pageTitle');

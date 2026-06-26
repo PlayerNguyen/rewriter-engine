@@ -7,7 +7,7 @@ import {
   Search,
   X,
 } from 'lucide-react';
-import { forwardRef, useCallback, useMemo, useState, type ElementType } from 'react';
+import { forwardRef, useCallback, useEffect, useMemo, useState, type ElementType } from 'react';
 import { Tooltip } from './Tooltip';
 
 export interface SidebarLeaf {
@@ -57,6 +57,20 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       });
       return initial;
     });
+
+    useEffect(() => {
+      setExpandedGroups((prev) => {
+        const next = new Set(prev);
+        let changed = false;
+        items.forEach((item) => {
+          if (isGroup(item) && item.defaultExpanded && !next.has(item.label)) {
+            next.add(item.label);
+            changed = true;
+          }
+        });
+        return changed ? next : prev;
+      });
+    }, [items]);
 
     const filteredItems = useMemo(() => {
       if (!searchQuery.trim()) return items;
