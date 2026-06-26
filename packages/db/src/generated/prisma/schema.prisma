@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../packages/db/src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Admin Users ────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// ─── Content Sources ────────────────────────────────────────────
+
+model Source {
+  id          String     @id @default(uuid())
+  name        String
+  url         String
+  type        SourceType @default(RSS)
+  isActive    Boolean    @default(true)
+  lastFetched DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  articles Article[]
+
+  @@map("sources")
+}
+
+enum SourceType {
+  RSS
+  WEB
+  API
+}
+
+// ─── System Prompts ─────────────────────────────────────────────
+
+model SystemPrompt {
+  id          String   @id @default(uuid())
+  name        String
+  content     String   @db.Text
+  description String?
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  rewrittenArticles RewrittenArticle[]
+
+  @@map("system_prompts")
+}
+
+// ─── Articles (raw from Explorer) ───────────────────────────────
+
+model Article {
+  id           String        @id @default(uuid())
+  title        String
+  content      String        @db.Text
+  url          String        @unique
+  author       String?
+  publishedAt  DateTime?
+  fetchedAt    DateTime      @default(now())
+  status       ArticleStatus @default(PENDING)
+  errorMessage String?       @db.Text
+
+  sourceId String
+  source   Source @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  rewrittenArticle RewrittenArticle?
+
+  createdAt DateTime @default(now())
+
+  @@index([sourceId, status])
+  @@index([status])
+  @@map("articles")
+}
+
+enum ArticleStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// ─── Rewritten Articles (output from LLM) ───────────────────────
+
+model RewrittenArticle {
+  id             String   @id @default(uuid())
+  title          String
+  content        String   @db.Text
+  llmModel       String
+  tokensUsed     Int?
+  processingTime Int? // milliseconds
+  createdAt      DateTime @default(now())
+
+  originalArticleId String  @unique
+  originalArticle   Article @relation(fields: [originalArticleId], references: [id], onDelete: Cascade)
+
+  systemPromptId String
+  systemPrompt   SystemPrompt @relation(fields: [systemPromptId], references: [id])
+
+  @@index([systemPromptId])
+  @@index([createdAt])
+  @@map("rewritten_articles")
+}
+
+// ─── System Settings ────────────────────────────────────────────
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
