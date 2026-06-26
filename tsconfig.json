@@ -29,7 +29,8 @@
     // Path aliases
     "paths": {
       "@rewriter/ui": ["./packages/ui/src/index.ts"],
-      "@rewriter/ui/*": ["./packages/ui/src/*"]
+      "@rewriter/ui/*": ["./packages/ui/src/*"],
+      "@rewriter/db": ["./packages/db/src/index.ts"]
     }
   }
 }
