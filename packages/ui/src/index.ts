@@ -33,6 +33,26 @@ export type { SelectOption, SelectProps } from './components/Select';
 export { Select } from './components/Select';
 export type { StackProps } from './components/Stack';
 export { Stack } from './components/Stack';
+export type { SidebarProps, SidebarLeaf, SidebarGroup, SidebarConfigItem } from './components/Sidebar';
+export { Sidebar } from './components/Sidebar';
+export type { DashboardLayoutProps } from './components/DashboardLayout';
+export { DashboardLayout } from './components/DashboardLayout';
+// icons (re-exported from lucide-react for sidebar config)
+export type { LucideIcon } from 'lucide-react';
+export {
+  Newspaper,
+  FileText,
+  Link,
+  Bot,
+  Settings,
+  ScrollText,
+  Search,
+  X,
+  PanelLeftClose,
+  PanelLeftOpen,
+  ChevronDown,
+  LayoutDashboard,
+} from 'lucide-react';
 export type { TextProps } from './components/Text';
 // display components
 export { Text } from './components/Text';
