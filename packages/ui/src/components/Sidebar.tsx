@@ -60,15 +60,16 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
 
     useEffect(() => {
       setExpandedGroups((prev) => {
-        const next = new Set(prev);
-        let changed = false;
+        const next = new Set<string>();
         items.forEach((item) => {
-          if (isGroup(item) && item.defaultExpanded && !next.has(item.label)) {
+          if (isGroup(item) && item.defaultExpanded) {
             next.add(item.label);
-            changed = true;
           }
         });
-        return changed ? next : prev;
+        if (prev.size === next.size && [...prev].every((k) => next.has(k))) {
+          return prev;
+        }
+        return next;
       });
     }, [items]);
 

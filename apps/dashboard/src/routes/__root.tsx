@@ -16,12 +16,17 @@ function RootLayout() {
 
   const items = useMemo(() => {
     const pathname = location.pathname;
-    return configureSidebar(t).map((item) => {
+    const rawItems = configureSidebar(t);
+    const anyChildActive = rawItems.some((item) =>
+      'children' in item && item.children.some((c) => c.to === pathname),
+    );
+
+    return rawItems.map((item) => {
       if ('children' in item) {
         const hasActiveChild = item.children.some((c) => c.to === pathname);
         return {
           ...item,
-          defaultExpanded: item.defaultExpanded || hasActiveChild,
+          defaultExpanded: hasActiveChild || (!anyChildActive && item.defaultExpanded),
           children: item.children.map((child) => ({
             ...child,
             active: child.to === pathname,
