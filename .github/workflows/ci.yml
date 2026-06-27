@@ -43,9 +43,12 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
+      - run: bun run db:generate
+        env:
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
       - run: |
           set -o pipefail
-          bun test --exclude '__e2e__' 2>&1 | tee /tmp/test.log
+          bun test --exclude '**/__e2e__/*' 2>&1 | tee /tmp/test.log
           EXIT_CODE=$?
           if [ $EXIT_CODE -ne 0 ]; then
             if grep -q 'did not match any test files' /tmp/test.log; then
