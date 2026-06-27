@@ -1,5 +1,5 @@
 import { db } from '@rewriter/db';
-import type { SortDto, TableResponse } from '@rewriter/table-core';
+import type { TableResponse } from '@rewriter/table-core';
 import { type DefaultTableRequest, TableHandler } from '@rewriter/table-core';
 import type { Context } from 'hono';
 
@@ -13,6 +13,13 @@ const SORTABLE_FIELDS = [
   'createdAt',
 ] as const;
 
+/**
+ * Table handler for the **articles** entity.
+ *
+ * Supports full-text search across `title` and `url`,
+ * sortable by any field in {@link SORTABLE_FIELDS},
+ * with a default sort of `createdAt:desc`.
+ */
 export class ArticlesTableHandler extends TableHandler {
   readonly tableId = 'articles';
 
@@ -26,7 +33,7 @@ export class ArticlesTableHandler extends TableHandler {
         }
       : {};
 
-    const orderBy = this.toOrderBy(request.sort);
+    const orderBy = this.toOrderBy(request.sort, SORTABLE_FIELDS);
 
     const [data, total] = await Promise.all([
       db.article.findMany({
@@ -45,13 +52,5 @@ export class ArticlesTableHandler extends TableHandler {
       limit: request.limit,
       totalPages: Math.ceil(total / request.limit),
     };
-  }
-
-  private toOrderBy(sort?: SortDto): Record<string, 'asc' | 'desc'> {
-    if (!sort) return { createdAt: 'desc' };
-    if (SORTABLE_FIELDS.includes(sort.fieldName as (typeof SORTABLE_FIELDS)[number])) {
-      return { [sort.fieldName]: sort.direction };
-    }
-    return { createdAt: 'desc' };
   }
 }

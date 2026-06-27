@@ -96,6 +96,7 @@
       "version": "0.0.1",
       "dependencies": {
         "hono": "^4",
+        "zod": "^3.23.0",
       },
       "devDependencies": {
         "typescript": "^5.0.0",

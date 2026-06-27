@@ -1,5 +1,8 @@
 import type { Context } from 'hono';
-import type { DefaultTableRequest, TableRequest, TableResponse } from './models';
+import type { z } from 'zod';
+import type { DefaultTableRequest, SortDto, TableRequest, TableResponse } from './models';
+import type { TableQuery } from './schemas';
+import { tableQuerySchema } from './schemas';
 
 /**
  * Abstract base class for a table handler.
@@ -54,6 +57,51 @@ export abstract class TableHandler<T = unknown> {
    */
   isAssociate(request: TableRequest): boolean {
     return request.id === this.tableId;
+  }
+
+  /**
+   * Returns the Zod validation schema for incoming table query parameters.
+   *
+   * The base schema validates `id`, `page`, `limit`, `sort`, `search`,
+   * and `filters`. Override in subclasses to add entity-specific
+   * constraints (e.g. allowed filter keys, sortable field names).
+   *
+   * @returns A Zod schema whose input is a flat `Record<string, string>`
+   *          (raw query params) and whose output is a validated
+   *          {@link TableQuery}.
+   *
+   * @example
+   * // Subclass extending validation with allowed filter keys
+   * class SourcesTableHandler extends TableHandler {
+   *   getValidationSchema() {
+   *     return super.getValidationSchema().extend({
+   *       filters: z.record(z.enum(['type', 'isActive'])).optional(),
+   *     });
+   *   }
+   * }
+   */
+  getValidationSchema(): z.ZodSchema<TableQuery> {
+    return tableQuerySchema as z.ZodSchema<TableQuery>;
+  }
+
+  /**
+   * Builds a Prisma-compatible `orderBy` clause from a {@link SortDto}.
+   * Falls back to `{ createdAt: 'desc' }` when `sort` is undefined
+   * or the requested field is not in the allowlist.
+   *
+   * @param sort           - Sort specification from the request.
+   * @param sortableFields - Allowlisted field names for this entity.
+   * @returns A single-key sort record safe for Prisma queries.
+   */
+  protected toOrderBy(
+    sort: SortDto | undefined,
+    sortableFields: readonly string[],
+  ): Record<string, 'asc' | 'desc'> {
+    if (!sort) return { createdAt: 'desc' };
+    if (sortableFields.includes(sort.fieldName)) {
+      return { [sort.fieldName]: sort.direction };
+    }
+    return { createdAt: 'desc' };
   }
 
   /**

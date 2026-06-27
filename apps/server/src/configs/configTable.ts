@@ -11,4 +11,8 @@ const registry = tableRegistryFactory.create([
   new RewrittenArticlesTableHandler(),
 ]);
 
+/**
+ * App-wide singleton {@link TableService} with all entity handlers
+ * pre-registered. Mounted at `/api/v1/table` in {@link createApp}.
+ */
 export const tableService = new TableService(registry);

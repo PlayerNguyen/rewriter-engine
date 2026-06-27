@@ -1,15 +1,17 @@
 import type { Context } from 'hono';
 import { Hono } from 'hono';
 import { HandlerNotFoundError } from './errors';
+import type { TableHandler } from './handler';
 import { DefaultTableRequest } from './models';
 import type { TableRegistry } from './registry';
+import { tableQuerySchema } from './schemas';
 
 /**
  * Service layer that bridges Hono HTTP requests to the {@link TableRegistry}.
  *
  * Responsibilities:
  * - Parse incoming query params into a {@link DefaultTableRequest}.
- * - Guard JSON.parse with try/catch → 400 on malformed sort/filters.
+ * - Validate via Zod (positive integers, JSON parse for sort/filters, etc.).
  * - Resolve the correct {@link TableHandler} from the registry.
  * - Delegate to the handler and wrap the {@link TableResponse} with ctx.json().
  * - Surface {@link HandlerNotFoundError} as a 404 JSON response.
@@ -44,8 +46,10 @@ export class TableService {
    *   - `search` — full-text search term
    *   - `filters` — JSON-encoded key-value map
    *
-   * Malformed `sort` or `filters` JSON returns a **400 Bad Request**
-   * instead of a 500 crash. Missing `id` also returns 400.
+   * Validation uses the handler's {@link TableHandler.getValidationSchema | getValidationSchema()},
+   * which defaults to the base {@link tableQuerySchema} and can be extended
+   * by subclasses for entity-specific constraints. Invalid or missing
+   * parameters return a **400 Bad Request** with a descriptive error message.
    *
    * @returns A Hono instance to be mounted via `app.route(path, ...)`.
    */
@@ -54,45 +58,46 @@ export class TableService {
 
     router.get('/', async (c) => {
       const q = c.req.query();
-      if (!q.id) {
-        return c.json({ error: 'Missing required parameter: id' }, 400);
-      }
 
-      let sort: { fieldName: string; direction: 'asc' | 'desc' } | undefined;
-      if (q.sort) {
-        try {
-          sort = JSON.parse(q.sort);
-        } catch {
-          return c.json({ error: 'Invalid sort parameter: must be valid JSON' }, 400);
-        }
-      }
-
-      let filters: Record<string, string> | undefined;
-      if (q.filters) {
-        try {
-          filters = JSON.parse(q.filters);
-        } catch {
-          return c.json({ error: 'Invalid filters parameter: must be valid JSON' }, 400);
-        }
+      const parsed = tableQuerySchema.safeParse(q);
+      if (!parsed.success) {
+        return c.json(
+          { error: parsed.error.issues[0]?.message ?? 'Invalid query parameters' },
+          400,
+        );
       }
 
       const request = new DefaultTableRequest({
-        id: q.id,
-        page: q.page ? Number(q.page) : undefined,
-        limit: q.limit ? Number(q.limit) : undefined,
-        sort,
-        search: q.search,
-        filters,
+        id: parsed.data.id,
+        page: parsed.data.page,
+        limit: parsed.data.limit,
+        sort: parsed.data.sort,
+        search: parsed.data.search,
+        filters: parsed.data.filters,
       });
 
+      let handler: TableHandler;
       try {
-        return await this.handle(request, c);
+        handler = this.registry.resolve(request);
       } catch (e) {
         if (e instanceof HandlerNotFoundError) {
           return c.json({ error: e.message }, 404);
         }
         throw e;
       }
+
+      const handlerSchema = handler.getValidationSchema();
+      if (handlerSchema !== tableQuerySchema) {
+        const handlerParsed = handlerSchema.safeParse(q);
+        if (!handlerParsed.success) {
+          return c.json(
+            { error: handlerParsed.error.issues[0]?.message ?? 'Invalid query parameters' },
+            400,
+          );
+        }
+      }
+
+      return await this.handle(request, c);
     });
 
     return router;
