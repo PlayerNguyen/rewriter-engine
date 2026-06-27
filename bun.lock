@@ -53,6 +53,7 @@
         "@prisma/client": "^7.8.0",
         "@rewriter/db": "workspace:*",
         "@rewriter/logger": "workspace:*",
+        "@rewriter/table-core": "workspace:*",
         "@scalar/hono-api-reference": "^0.7.0",
         "hono": "^4",
         "hono-openapi": "^0.4.0",
@@ -85,6 +86,17 @@
       "dependencies": {
         "pino": "^9.6.0",
         "pino-pretty": "^13.0.0",
+      },
+      "devDependencies": {
+        "typescript": "^5.0.0",
+      },
+    },
+    "packages/table-core": {
+      "name": "@rewriter/table-core",
+      "version": "0.0.1",
+      "dependencies": {
+        "hono": "^4",
+        "zod": "^3.23.0",
       },
       "devDependencies": {
         "typescript": "^5.0.0",
@@ -327,6 +339,8 @@
     "@rewriter/logger": ["@rewriter/logger@workspace:packages/logger"],
 
     "@rewriter/server": ["@rewriter/server@workspace:apps/server"],
+
+    "@rewriter/table-core": ["@rewriter/table-core@workspace:packages/table-core"],
 
     "@rewriter/ui": ["@rewriter/ui@workspace:packages/ui"],
 

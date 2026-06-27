@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "start": "bun run src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "bun test __e2e__/"
   },
   "dependencies": {
     "@hono/standard-validator": "^0.1.0",
@@ -15,6 +16,7 @@
     "@prisma/client": "^7.8.0",
     "@rewriter/db": "workspace:*",
     "@rewriter/logger": "workspace:*",
+    "@rewriter/table-core": "workspace:*",
     "@scalar/hono-api-reference": "^0.7.0",
     "hono": "^4",
     "hono-openapi": "^0.4.0",

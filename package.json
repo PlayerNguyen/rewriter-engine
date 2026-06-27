@@ -22,7 +22,8 @@
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "bun run prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "test:e2e": "bun run --filter '@rewriter/server' test:e2e"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
