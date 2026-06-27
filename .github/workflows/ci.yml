@@ -23,6 +23,8 @@ jobs:
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
       - run: bun run db:generate
+        env:
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
       - run: bun run typecheck
 
   unit-tests:
