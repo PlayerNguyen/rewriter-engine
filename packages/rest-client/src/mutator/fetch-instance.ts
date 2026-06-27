@@ -7,9 +7,7 @@ export type RequestParams = {
   signal?: AbortSignal;
 };
 
-export const customFetchInstance = async <T>(
-  requestParams: RequestParams,
-): Promise<T> => {
+export const customFetchInstance = async <T>(requestParams: RequestParams): Promise<T> => {
   const baseURL = process.env.API_URL ?? 'http://localhost:3001';
 
   const headers: Record<string, string> = {
@@ -20,7 +18,7 @@ export const customFetchInstance = async <T>(
   if (typeof document !== 'undefined') {
     const token = localStorage.getItem('token');
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
   }
 
