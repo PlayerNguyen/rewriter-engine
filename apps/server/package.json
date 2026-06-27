@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "start": "bun run src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "bun test __e2e__/"
   },
   "dependencies": {
     "@hono/standard-validator": "^0.1.0",
