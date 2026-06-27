@@ -78,7 +78,7 @@ This creates a searchable, dated archive of all work completed in the project.
 
 ## Pull Request Policy
 
-Follow the template in `.github/PULL_REQUEST_TEMPLATE.md` when creating pull requests. Use `gh pr create` and fill out all relevant sections (description, type of change, testing, checklist). Do not skip the template.
+When creating a new PR, you **MUST** use the template in `.github/PULL_REQUEST_TEMPLATE.md`. Use `gh pr create` and fill out **every** section: description, type of change, workspaces affected, testing (screenshots, verification commands, automated test coverage), and checklist. Do not skip the template or leave sections blank. The template ensures every PR has a consistent structure and sufficient context for reviewers.
 
 ## CodeGraph (MCP)
 
