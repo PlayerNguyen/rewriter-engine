@@ -22,9 +22,6 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
-      - run: bun run db:generate
-        env:
-          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
       - run: bun run typecheck
 
   unit-tests:
@@ -43,9 +40,6 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
-      - run: bun run db:generate
-        env:
-          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
       - run: |
           bun test --exclude '**/__e2e__/*' 2>&1 | tee /tmp/test.log || true
           EXIT_CODE=${PIPESTATUS[0]}
@@ -87,9 +81,6 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
-      - run: bun run db:generate
-        env:
-          DATABASE_URL: postgresql://rewriter:rewriter_secret@localhost:5432/rewriter
       - run: bun run db:migrate:deploy
         env:
           DATABASE_URL: postgresql://rewriter:rewriter_secret@localhost:5432/rewriter
