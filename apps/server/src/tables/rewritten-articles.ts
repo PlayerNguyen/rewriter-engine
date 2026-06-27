@@ -1,6 +1,6 @@
 import { db } from '@rewriter/db';
-import type { SortDto, TableResponse } from '@rewriter/table';
-import { type DefaultTableRequest, TableHandler } from '@rewriter/table';
+import type { SortDto, TableResponse } from '@rewriter/table-core';
+import { type DefaultTableRequest, TableHandler } from '@rewriter/table-core';
 import type { Context } from 'hono';
 
 const SORTABLE_FIELDS = ['title', 'llmModel', 'tokensUsed', 'processingTime', 'createdAt'] as const;

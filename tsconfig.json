@@ -34,8 +34,8 @@
       "@rewriter/db/*": ["./packages/db/src/*"],
       "@rewriter/logger": ["./packages/logger/src/index.ts"],
       "@rewriter/logger/*": ["./packages/logger/src/*"],
-      "@rewriter/table": ["./packages/table/src/index.ts"],
-      "@rewriter/table/*": ["./packages/table/src/*"]
+      "@rewriter/table-core": ["./packages/table-core/src/index.ts"],
+      "@rewriter/table-core/*": ["./packages/table-core/src/*"]
     }
   }
 }

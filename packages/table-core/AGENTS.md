@@ -1,4 +1,4 @@
-# @rewriter/table — Shared Table Domain Package
+# @rewriter/table-core — Backend Table Domain Package
 
 Reusable table handler registry and Hono-integrated service for the rewriter monorepo. Every app registers its table handlers once at bootstrap and exposes them through a single `GET /api/v1/table` endpoint.
 
@@ -11,8 +11,8 @@ import {
   tableRegistryFactory,
   TableService,
   DefaultTableRequest,
-} from '@rewriter/table';
-import type { TableRequest, TableResponse, SortDto } from '@rewriter/table';
+} from '@rewriter/table-core';
+import type { TableRequest, TableResponse, SortDto } from '@rewriter/table-core';
 import { db } from '@rewriter/db';
 
 // 1. Define a handler
@@ -120,7 +120,7 @@ isAssociate(req: TableRequest): boolean {
 ### Error Handling
 
 ```typescript
-import { HandlerNotFoundError } from '@rewriter/table';
+import { HandlerNotFoundError } from '@rewriter/table-core';
 
 try {
   await tableService.handle(request, ctx);
@@ -146,6 +146,6 @@ try {
 ## Commands
 
 ```bash
-bun run --filter @rewriter/table typecheck    # Type-check this package
+bun run --filter @rewriter/table-core typecheck    # Type-check this package
 bun run typecheck                             # Type-check all workspaces
 ```

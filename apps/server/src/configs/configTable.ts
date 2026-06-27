@@ -1,4 +1,4 @@
-import { TableService, tableRegistryFactory } from '@rewriter/table';
+import { TableService, tableRegistryFactory } from '@rewriter/table-core';
 import { ArticlesTableHandler } from '../tables/articles';
 import { RewrittenArticlesTableHandler } from '../tables/rewritten-articles';
 import { SourcesTableHandler } from '../tables/sources';
