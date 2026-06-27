@@ -22,6 +22,7 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
+      - run: bun run db:generate
       - run: bun run typecheck
 
   unit-tests:
