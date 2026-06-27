@@ -1,8 +1,10 @@
 import type { Context } from 'hono';
 import { Hono } from 'hono';
+import { describeRoute } from 'hono-openapi';
 import { HandlerNotFoundError } from './errors';
 import type { TableHandler } from './handler';
 import { DefaultTableRequest } from './models';
+import { tableRouteOpenApiDocs } from './openapi';
 import type { TableRegistry } from './registry';
 import { tableQuerySchema } from './schemas';
 
@@ -56,7 +58,7 @@ export class TableService {
   registerToHono(): Hono {
     const router = new Hono();
 
-    router.get('/', async (c) => {
+    router.get('/', describeRoute(tableRouteOpenApiDocs), async (c) => {
       const q = c.req.query();
 
       const parsed = tableQuerySchema.safeParse(q);
