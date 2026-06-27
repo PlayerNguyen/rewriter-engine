@@ -11,7 +11,7 @@
     "./model/*": "./src/generated/model/*.ts"
   },
   "scripts": {
-    "generate": "orval --config ./orval.config.ts",
+    "generate": "orval --config ./orval.config.ts && bun run scripts/generate-barrel.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

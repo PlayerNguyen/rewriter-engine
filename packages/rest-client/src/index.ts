@@ -1,5 +1,4 @@
-export * from './generated/api/health/health';
-export * from './generated/api/table/table';
-export type * from './generated/model';
+export * from './generated/api/index';
+export type * from './generated/model/index';
 export type { RequestParams } from './mutator/fetch-instance';
 export { customFetchInstance } from './mutator/fetch-instance';
