@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-cache-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-cache-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+
+  unit-tests:
+    name: Unit Tests
+    needs: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-cache-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-cache-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: |
+          bun test --exclude '**/__e2e__/*' 2>&1 | tee /tmp/test.log || true
+          EXIT_CODE=${PIPESTATUS[0]}
+          if [ $EXIT_CODE -ne 0 ]; then
+            if grep -q 'did not match any test files' /tmp/test.log; then
+              echo 'No unit tests found — OK'
+              exit 0
+            fi
+            exit $EXIT_CODE
+          fi
+
+  e2e-tests:
+    name: E2E Tests
+    needs: typecheck
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: rewriter
+          POSTGRES_PASSWORD: rewriter_secret
+          POSTGRES_DB: rewriter
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U rewriter -d rewriter"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-cache-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-cache-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun run db:migrate:deploy
+        env:
+          DATABASE_URL: postgresql://rewriter:rewriter_secret@localhost:5432/rewriter
+      - run: bun run test:e2e
+        env:
+          DATABASE_URL: postgresql://rewriter:rewriter_secret@localhost:5432/rewriter
+          NODE_ENV: test
+
+  build:
+    name: Build
+    needs: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-cache-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-cache-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun run --filter @rewriter/dashboard build
+      - run: bun run --filter @rewriter/ui build-storybook
