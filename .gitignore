@@ -37,6 +37,9 @@ storybook-static
 # IntelliJ based IDEs
 .idea
 
+# generated REST client (regenerated from openapi.json)
+packages/rest-client/src/generated/
+
 # Finder (MacOS) folder config
 .DS_Store
 
