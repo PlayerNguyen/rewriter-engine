@@ -129,3 +129,4 @@ export type {
 } from './utils/polymorphic';
 export type { Placement } from './utils/position';
 export { getPosition } from './utils/position';
+export { TableFactory } from './utils/TableFactory';

@@ -7,6 +7,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { TableFactory } from '../utils/TableFactory';
 import {
   Table,
   TableBody,
@@ -446,4 +447,27 @@ export const FooterCustom: Story = {
       </TableFooter>
     </Table>
   ),
+};
+
+type User = { id: number; name: string; email: string; role: string; status: string };
+
+const userColumns: ColumnDef<User>[] = [
+  { accessorKey: 'name', header: 'Name' },
+  { accessorKey: 'email', header: 'Email' },
+  { accessorKey: 'role', header: 'Role' },
+  { accessorKey: 'status', header: 'Status' },
+];
+
+export const FactoryDemo: Story = {
+  render: () => {
+    const users: User[] = sampleData;
+    const factory = new TableFactory(users, userColumns);
+
+    return (
+      <Table bordered>
+        {factory.renderHeader()}
+        {factory.renderBody()}
+      </Table>
+    );
+  },
 };

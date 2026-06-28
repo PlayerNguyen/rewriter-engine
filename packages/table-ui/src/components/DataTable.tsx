@@ -21,14 +21,14 @@ import { useTableData } from '../hooks/useTableData';
 import { deriveColumns } from '../utils/deriveColumns';
 import { DataTablePagination } from './DataTablePagination';
 
-export interface DataTableProps {
+export interface DataTableProps<TData = unknown> {
   /** Table identifier passed to the API (e.g. "sources", "articles"). */
   tableId: string;
   /**
    * Column definitions. If omitted, columns are auto-generated from the
    * first data row's keys.
    */
-  columns?: ColumnDef<unknown>[];
+  columns?: ColumnDef<TData>[];
   /** Results per page. @default 10 */
   pageSize?: number;
   /** Show a debounced search input above the table. */
@@ -44,6 +44,8 @@ export interface DataTableProps {
  * Uses {@link useTableData} for API fetching and TanStack Table v8 for
  * headless rendering. Delegates markup to the generic `Table` components
  * from `@rewriter/ui` (`Table`, `TableHead`, `TableCell`, etc.).
+ *
+ * @typeParam TData - The shape of each row in the table.
  *
  * @example
  * // Minimal — auto-generated columns from API response
@@ -62,13 +64,13 @@ export interface DataTableProps {
  *   onSortChange={(sort) => console.log(sort)}
  * />
  */
-export function DataTable({
+export function DataTable<TData = unknown>({
   tableId,
   columns: columnsProp,
   pageSize = 10,
   searchable = false,
   onSortChange,
-}: DataTableProps) {
+}: DataTableProps<TData>) {
   const {
     data,
     total,
@@ -92,7 +94,7 @@ export function DataTable({
   }, [debouncedSearch, setSearch]);
 
   const columns = useMemo(() => {
-    return columnsProp ?? deriveColumns(data);
+    return columnsProp ?? (deriveColumns(data) as ColumnDef<TData>[]);
   }, [columnsProp, data]);
 
   const sorting: SortingState = useMemo(() => {
@@ -130,9 +132,9 @@ export function DataTable({
     setPage(next.pageIndex + 1);
   };
 
-  const table = useReactTable({
+  const table = useReactTable<unknown>({
     data,
-    columns,
+    columns: columns as ColumnDef<unknown>[],
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
     manualSorting: true,

@@ -2,6 +2,7 @@ import type { SortDirection } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import { forwardRef } from 'react';
+import { Button } from './Button';
 
 /**
  * Minimal subset of TanStack Table's `Column` that `TableHead` needs
@@ -168,16 +169,16 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
         className={clsx('px-4 py-3 text-left border-b border-hairline', className)}
         {...props}
       >
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={handleClick}
-          className="inline-flex items-center gap-1 text-sm font-semibold text-ink-muted text-left cursor-pointer hover:text-ink transition-colors"
+          icon={<SortIcon size={14} />}
+          iconPosition="right"
+          className="text-ink-muted hover:text-ink"
         >
           {children}
-          <span className="text-ink-muted w-4 flex items-center justify-center">
-            <SortIcon size={14} />
-          </span>
-        </button>
+        </Button>
       </th>
     );
   },
