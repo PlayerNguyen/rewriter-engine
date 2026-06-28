@@ -66,6 +66,26 @@ export type {
 export { Sidebar } from './components/Sidebar';
 export type { StackProps } from './components/Stack';
 export { Stack } from './components/Stack';
+export type {
+  TableBodyProps,
+  TableCellProps,
+  TableFooterProps,
+  TableHeaderProps,
+  TableHeadProps,
+  TableProps,
+  TableRowProps,
+  TableSortDirection,
+  TableSortState,
+} from './components/Table';
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './components/Table';
 export type { TextProps } from './components/Text';
 // display components
 export { Text } from './components/Text';
@@ -77,6 +97,7 @@ export type { TooltipProps } from './components/Tooltip';
 export { Tooltip } from './components/Tooltip';
 // hooks
 export { useClickOutside } from './hooks/useClickOutside';
+export { useDebounce } from './hooks/useDebounce';
 export type { ThemeMode, ThemeProviderProps } from './theme/ThemeProvider';
 // theme
 export { ThemeProvider } from './theme/ThemeProvider';
@@ -108,3 +129,4 @@ export type {
 } from './utils/polymorphic';
 export type { Placement } from './utils/position';
 export { getPosition } from './utils/position';
+export { TableFactory } from './utils/TableFactory';

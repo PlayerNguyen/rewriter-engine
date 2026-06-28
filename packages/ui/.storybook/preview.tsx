@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import { ThemeProvider } from '../src/theme/ThemeProvider';
 import '../src/globals.css';
 
 const preview: Preview = {
@@ -11,6 +12,13 @@ const preview: Preview = {
       ],
     },
   },
+  decorators: [
+    (Story) => (
+      <ThemeProvider defaultTheme="dark">
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
 };
 
 export default preview;
