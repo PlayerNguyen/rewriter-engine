@@ -103,6 +103,7 @@ Add `"packages/settings/*"` so bun discovers the nested packages:
     "@rewriter/ui": "workspace:*"
   },
   "devDependencies": {
+    "@rewriter/modal": "workspace:*",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "react": "^19.0.0",
@@ -452,38 +453,59 @@ export type { EditSettingModalCustomProps } from './EditSettingModal';
 
 ### 3.4 `src/SettingsPage/SettingsPage.tsx`
 
-Updated to include an "Edit" button column. Uses a `refreshKey` counter to
-force the `DataTable` to re-fetch after a successful save.
+Renders the table with an edit button per row. Accepts an `onEdit` callback
+so the app can wire it to any modal service (or any other behavior).
 
 ```tsx
-import { useModal } from '@rewriter/modal';
 import { DataTable } from '@rewriter/table-ui';
 import { Button, Stack, Text } from '@rewriter/ui';
-import { useCallback, useState } from 'react';
+import type { ComponentProps } from 'react';
+
+export interface SettingsPageProps {
+  /**
+   * Called when the user clicks "Edit" on a row.
+   * The app wires this to `useModal().open(...)` (or any other handler).
+   */
+  onEdit?: (key: string, currentValue: unknown, onSaved: () => void) => void;
+  /**
+   * Increment to force the DataTable to remount and re-fetch.
+   * Typically driven by the `onSaved` callback from {@link onEdit}.
+   */
+  refreshKey?: number;
+}
 
 /**
  * Displays all system settings in a paginated, sortable, searchable table
  * with an inline edit button per row.
  *
- * The edit button opens an {@link EditSettingModal} via the modal registry
- * ({@link https://github.com/PlayerNguyen/rewriter-engine/blob/main/.opencode/plans/2026-06-28/modal-registry/report.md | modal-registry plan}).
- * After a successful save, the table re-fetches.
+ * The edit button delegates to {@link SettingsPageProps.onEdit | onEdit} —
+ * the app is responsible for opening a modal and calling the `onSaved`
+ * callback after a successful save. Incrementing `refreshKey` causes the
+ * table to remount and re-fetch.
  *
  * @example
  * ```tsx
+ * import { useModal } from '../config/configureModals';
  * import { SettingsPage } from '@rewriter/settings-ui';
  *
- * <SettingsPage />
+ * function SettingsRoute() {
+ *   const { open } = useModal();
+ *   const [refreshKey, setRefreshKey] = useState(0);
+ *   return (
+ *     <SettingsPage
+ *       refreshKey={refreshKey}
+ *       onEdit={(key, value, onSaved) =>
+ *         open('edit-setting', { settingKey: key, currentValue: value, onSaved })
+ *       }
+ *     />
+ *   );
+ * }
  * ```
  */
-export function SettingsPage() {
-  const { open } = useModal();
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleSaved = useCallback(() => {
-    setRefreshKey((k) => k + 1);
-  }, []);
-
+export function SettingsPage({
+  onEdit,
+  refreshKey = 0,
+}: SettingsPageProps) {
   return (
     <Stack gap="lg">
       <Text size="headline" weight={600}>Settings</Text>
@@ -513,11 +535,7 @@ export function SettingsPage() {
                     variant="ghost"
                     size="sm"
                     onClick={() =>
-                      open('edit-setting', {
-                        settingKey: setting.key,
-                        currentValue: setting.value,
-                        onSaved: handleSaved,
-                      })
+                      onEdit?.(setting.key, setting.value, () => {})
                     }
                   >
                     Edit
@@ -541,12 +559,14 @@ export function SettingsPage() {
 
 ```tsx
 export { SettingsPage } from './SettingsPage';
+export type { SettingsPageProps } from './SettingsPage';
 ```
 
 ### 3.6 `src/index.tsx` (ui package barrel)
 
 ```tsx
 export { SettingsPage } from './SettingsPage';
+export type { SettingsPageProps } from './SettingsPage';
 export { EditSettingModal } from './EditSettingModal';
 export type { EditSettingModalCustomProps } from './EditSettingModal';
 ```
@@ -556,34 +576,57 @@ export type { EditSettingModalCustomProps } from './EditSettingModal';
 ### 3.7 Wiring the edit modal to the modal registry
 
 In `apps/dashboard/src/config/configureModals.ts` (from the
-[modal-registry plan](../modal-registry/report.md)), register the edit modal:
+[modal-registry plan](../modal-registry/report.md)), register the edit modal
+and export `useModal`:
 
 ```tsx
-import { type ModalBaseProps } from '@rewriter/modal';
+import { configureModalService, type ModalBaseProps } from '@rewriter/modal';
 import {
   EditSettingModal,
   type EditSettingModalCustomProps,
 } from '@rewriter/settings-ui';
+import { LanguageModal } from '../components/LanguageModal';
 
-const registry = {
+export const { ModalProvider, useModal } = configureModalService({
   'language': (p: ModalBaseProps) => <LanguageModal {...p} />,
   'edit-setting': (p: ModalBaseProps & EditSettingModalCustomProps) => (
     <EditSettingModal {...p} />
   ),
-} satisfies ModalRegistry;
+});
 ```
 
 ### 3.8 Wire in `apps/dashboard/src/routes/settings.tsx`
 
-Replace the existing placeholder:
+Replace the stub with an app-level wrapper that connects `useModal` to
+`SettingsPage` via the `onEdit` + `refreshKey` props:
 
 ```tsx
 import { SettingsPage } from '@rewriter/settings-ui';
 import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { useModal } from '../config/configureModals';
 
 export const Route = createFileRoute('/settings')({
-  component: SettingsPage,
+  component: SettingsRoute,
 });
+
+function SettingsRoute() {
+  const { open } = useModal();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  return (
+    <SettingsPage
+      refreshKey={refreshKey}
+      onEdit={(key, value) =>
+        open('edit-setting', {
+          settingKey: key,
+          currentValue: value,
+          onSaved: () => setRefreshKey((k) => k + 1),
+        })
+      }
+    />
+  );
+}
 ```
 
 ### 3.9 Unit tests
@@ -601,16 +644,16 @@ Mocks `customFetchInstance` from `@rewriter/rest-client`.
 | Calls `onClose` after success | Modal dismisses on successful save |
 | Disables buttons while saving | `saving` state → both buttons have `disabled` |
 
-**`SettingsPage.test.tsx`** — mocks `useModal` (from `@rewriter/modal`) and
-`useTableData` (from `@rewriter/table-ui`).
+**`SettingsPage.test.tsx`** — mocks `useTableData` from `@rewriter/table-ui`.
+No modal dependency — tests the `onEdit` callback in isolation.
 
 | Test | What it verifies |
 |------|------------------|
 | Renders heading | "Settings" text visible |
 | Renders `DataTable` with `tableId="settings"` | Correct table ID prop |
 | Renders edit button per row | "Edit" button visible for each row |
-| Edit button opens modal via `open()` | `open('edit-setting', ...)` called with correct props |
-| Increments refresh on save | `onSaved` callback → `refreshKey` increments |
+| Edit button calls `onEdit` with correct args | `onEdit(settingKey, currentValue, onSaved)` called |
+| Remounts on `refreshKey` change | DataTable re-fetches when `refreshKey` increments |
 
 ---
 
@@ -635,12 +678,14 @@ Mocks `customFetchInstance` from `@rewriter/rest-client`.
 
 ## 5. Dependency Matrix
 
-| Package | Server-side deps | Frontend deps | Test runner |
-|---------|-----------------|---------------|-------------|
-| `@rewriter/settings` (core) | `@rewriter/db`, `@rewriter/table-core`, `hono`, `hono-openapi`, `zod`, `zod-openapi` | — | `bun test` |
-| `@rewriter/settings-ui` (ui) | — | `@rewriter/rest-client`, `@rewriter/table-ui`, `@rewriter/ui`, `@rewriter/modal`, React | `bun test` |
+| Package | Runtime deps | Dev deps | Test runner |
+|---------|-------------|----------|-------------|
+| `@rewriter/settings` (core) | `@rewriter/db`, `@rewriter/table-core`, `hono`, `hono-openapi`, `zod`, `zod-openapi` | `typescript` | `bun test` |
+| `@rewriter/settings-ui` (ui) | `@rewriter/rest-client`, `@rewriter/table-ui`, `@rewriter/ui`, React | `@rewriter/modal` (type-only), `@testing-library/react` | `bun test` |
 
-No new third-party dependencies beyond what other packages in the monorepo already use.
+`SettingsPage` is modal-agnostic (uses `onEdit` callback). `EditSettingModal`
+imports `ModalBaseProps` as a type-only reference from `@rewriter/modal`.
+No new third-party deps beyond what the monorepo already uses.
 
 ---
 

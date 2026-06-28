@@ -1,8 +1,9 @@
 # Modal Registry — Plan
 
 > **Goal**: A reusable, type-safe modal stack service with a registry pattern.
-> Any component can open a modal via `modalService.useModal().open('key', props)`
-> with full IntelliSense on both the modal name and its custom props.
+> Any component can call `useModal().open('key', props)` with full IntelliSense
+> on both the modal name and its custom props. Types are preserved end-to-end
+> via a `configureModalService()` factory — no `any` casts, no explicit type parameters.
 
 ---
 
@@ -14,13 +15,12 @@ packages/modal/
 ├── tsconfig.json
 ├── AGENTS.md
 └── src/
-    ├── index.tsx               # Barrel — ModalService, ModalProvider, useModal, types
-    ├── types.ts                # ModalBaseProps, ModalFactory, ModalRegistry
-    ├── ModalService.ts         # Class: registry, stack, subscribe/notify
-    ├── ModalProvider.tsx        # React context + stack renderer
-    ├── useModal.ts             # Hook: useSyncExternalStore bridge
-    ├── ModalService.test.ts    # Unit tests for the class
-    └── ModalProvider.test.tsx  # Unit tests for the provider + hook
+    ├── index.tsx                         # Barrel — configureModalService, types
+    ├── types.ts                          # ModalBaseProps, ModalFactory, ModalRegistry, CustomProps
+    ├── ModalService.ts                   # Class: registry, stack, subscribe/notify
+    ├── configureModalService.ts           # Factory → { ModalProvider, useModal, service }
+    ├── ModalService.test.ts              # Unit tests for the class
+    └── configureModalService.test.tsx    # Unit tests for factory + hook + provider
 ```
 
 ### 1.1 `package.json`
@@ -42,6 +42,7 @@ packages/modal/
     "@rewriter/ui": "workspace:*"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "react": "^19.0.0",
@@ -92,7 +93,6 @@ export type ModalFactory<TCustom = Record<string, never>> = (
  * @example
  * const registry = {
  *   'edit-setting': (p: ModalBaseProps & { settingId: string }) => <EditSettingModal {...p} />,
- *   'confirm-delete': (p: ModalBaseProps & { title: string; onConfirm: () => void }) => <ConfirmModal {...p} />,
  * };
  */
 export type ModalRegistry = Record<string, ModalFactory<any>>;
@@ -110,16 +110,16 @@ export type CustomProps<TFactory extends ModalFactory<any>> = Omit<
 
 ### 3.1 `src/ModalService.ts`
 
-Singleton-style class — created once per app, passed to `<ModalProvider>`.
+Plain class — no React dependency. Created internally by `configureModalService()`.
 
 ```ts
-import type { ModalBaseProps, ModalFactory, ModalRegistry, CustomProps } from './types';
+import type { ModalBaseProps, ModalRegistry, CustomProps } from './types';
 
 export class ModalService<TRegistry extends ModalRegistry> {
   private stack: Array<{ key: keyof TRegistry & string; customProps: any }> = [];
   private listeners = new Set<() => void>();
 
-  /** Read-only access to the registry (used by ModalProvider). */
+  /** Read-only access to the registry. */
   constructor(readonly registry: TRegistry) {}
 
   /** Snapshot of the current stack (used by useSyncExternalStore). */
@@ -187,161 +187,153 @@ export class ModalService<TRegistry extends ModalRegistry> {
 
 ---
 
-## 4. `ModalProvider` — React Context + Stack Renderer
+## 4. `configureModalService` — Factory (the core of type safety)
 
-### 4.1 `src/ModalProvider.tsx`
+### 4.1 `src/configureModalService.ts`
 
-Wraps the app tree. Subscribes to the service via `useSyncExternalStore`,
-renders every modal in the stack (only the top one is `open: true`).
+Creates a dedicated React context scoped to the registry type, so `useModal()`
+inherits the exact `TRegistry` without any `any` cast.
 
 ```tsx
-import { createContext, useContext, useSyncExternalStore } from 'react';
-import type { ModalService } from './ModalService';
-import type { ModalRegistry } from './types';
-
-const ModalServiceContext = createContext<ModalService<any> | null>(null);
-
-export function useModalService<T extends ModalRegistry = any>(): ModalService<T> {
-  const svc = useContext(ModalServiceContext);
-  if (!svc) throw new Error('useModalService must be used within <ModalProvider>');
-  return svc;
-}
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useSyncExternalStore,
+} from 'react';
+import { ModalService } from './ModalService';
+import type { ModalRegistry, CustomProps } from './types';
 
 /**
- * Provides modal stack management to the React tree.
+ * Creates a pre-typed modal service, provider, and hook bound to a registry.
  *
- * Renders the modal stack behind children — the topmost modal in the stack
- * receives `open: true`, all others sit behind it with `open: false`.
+ * This is the only public API for consuming the modal system. The returned
+ * `useModal` hook and `ModalProvider` component are fully typed against the
+ * registry — no explicit type parameters needed anywhere.
+ *
+ * @typeParam TRegistry - Inferred from the registry argument.
+ *
+ * @returns `{ ModalProvider, useModal, service }`
  *
  * @example
  * ```tsx
- * import { ModalProvider } from '@rewriter/modal';
- * import { modalService } from './config/configureModals';
+ * import { configureModalService } from '@rewriter/modal';
  *
- * <ModalProvider service={modalService}>
- *   <App />
- * </ModalProvider>
+ * export const { ModalProvider, useModal } = configureModalService({
+ *   'edit-setting': (p: ModalBaseProps & { settingId: string }) => (
+ *     <EditSettingModal {...p} />
+ *   ),
+ * });
  * ```
  */
-export function ModalProvider({
-  service,
-  children,
-}: {
-  service: ModalService<any>;
-  children: React.ReactNode;
-}) {
-  return (
-    <ModalServiceContext.Provider value={service}>
-      {children}
-      <ModalStackRenderer service={service} />
-    </ModalServiceContext.Provider>
-  );
-}
+export function configureModalService<TRegistry extends ModalRegistry>(
+  registry: TRegistry,
+) {
+  const Context = createContext<ModalService<TRegistry> | null>(null);
+  const service = new ModalService(registry);
 
-function ModalStackRenderer({ service }: { service: ModalService<any> }) {
-  const stack = useSyncExternalStore(
-    (cb) => service.subscribe(cb),
-    () => service.getStack(),
-  );
+  /**
+   * Wraps the app tree. Renders the modal stack behind children —
+   * the topmost modal receives `open: true`, all others `open: false`.
+   */
+  function ModalProvider({ children }: { children: React.ReactNode }) {
+    const stack = useSyncExternalStore(
+      (cb) => service.subscribe(cb),
+      () => service.getStack(),
+    );
 
-  return (
-    <>
-      {stack.map((entry, index) => {
-        const isTop = index === stack.length - 1;
-        const factory = service.registry[entry.key];
-        if (!factory) return null;
-        const props = service.resolveProps(entry, isTop);
-        return <span key={`${entry.key}-${index}`}>{factory(props)}</span>;
-      })}
-    </>
-  );
-}
-```
+    return (
+      <Context.Provider value={service}>
+        {children}
+        {stack.map((entry, index) => {
+          const isTop = index === stack.length - 1;
+          const factory = registry[entry.key];
+          if (!factory) return null;
+          return (
+            <span key={`${entry.key}-${index}`}>
+              {factory(service.resolveProps(entry, isTop))}
+            </span>
+          );
+        })}
+      </Context.Provider>
+    );
+  }
 
-> **Note**: Using `<span key={...}>` as a wrapper — `Fragment` with a key works in React but
-> the explicit `<span>` avoids any edge-case behavior. Each modal is its own subtree.
+  /**
+   * Hook for opening and closing modals. Because this closure captures
+   * the exact `TRegistry` type, `open('key', props)` has full IntelliSense
+   * — TypeScript knows which keys exist and what custom props each requires.
+   *
+   * @throws If called outside the {@link ModalProvider} returned by this factory.
+   */
+  function useModal() {
+    const svc = useContext(Context);
+    if (!svc) {
+      throw new Error(
+        'useModal must be used within the ModalProvider returned by configureModalService',
+      );
+    }
 
----
+    const open = useCallback(
+      <K extends keyof TRegistry & string>(
+        key: K,
+        customProps: CustomProps<TRegistry[K]>,
+      ) => {
+        svc.open(key, customProps);
+      },
+      [svc],
+    );
 
-## 5. `useModal` Hook
+    const close = useCallback(() => svc.close(), [svc]);
+    const closeTop = useCallback(() => svc.closeTop(), [svc]);
+    const closeAll = useCallback(() => svc.closeAll(), [svc]);
 
-### 5.1 `src/useModal.ts`
+    return { open, close, closeTop, closeAll };
+  }
 
-Per-component access to `open`, `close`, `closeTop`, `closeAll` with full type safety.
-
-```ts
-import { useCallback } from 'react';
-import { useModalService } from './ModalProvider';
-import type { ModalRegistry, CustomProps } from './types';
-
-export function useModal<TRegistry extends ModalRegistry>(): {
-  open: <K extends keyof TRegistry & string>(
-    key: K,
-    customProps: CustomProps<TRegistry[K]>,
-  ) => void;
-  close: () => void;
-  closeTop: () => void;
-  closeAll: () => void;
-} {
-  const service = useModalService<TRegistry>();
-
-  const open = useCallback(
-    <K extends keyof TRegistry & string>(
-      key: K,
-      customProps: CustomProps<TRegistry[K]>,
-    ) => {
-      service.open(key, customProps);
-    },
-    [service],
-  );
-
-  const close = useCallback(() => service.close(), [service]);
-  const closeTop = useCallback(() => service.closeTop(), [service]);
-  const closeAll = useCallback(() => service.closeAll(), [service]);
-
-  return { open, close, closeTop, closeAll };
+  return { ModalProvider, useModal, service };
 }
 ```
 
+> **Why this works**: The `Context` is created *inside* the generic function,
+> so its type is `Context<ModalService<TRegistry>>` — not `ModalService<any>`.
+> The `useModal` closure captures this exact context. No type parameter is
+> ever needed at the call site — TypeScript infers everything from the registry.
+
 ---
 
-## 6. Per-App Configuration
+## 5. Per-App Configuration
 
-### 6.1 `apps/dashboard/src/config/configureModals.ts`
+### 5.1 `apps/dashboard/src/config/configureModals.ts`
 
 App-level wiring — define which modal keys map to which components.
 
 ```tsx
-import { type ModalRegistry, ModalService } from '@rewriter/modal';
-import { type ModalBaseProps } from '@rewriter/modal';
+import { configureModalService, type ModalBaseProps } from '@rewriter/modal';
 import { LanguageModal } from '../components/LanguageModal';
 import { EditSettingModal } from '../components/EditSettingModal';
 // ... future modals
 
-const registry = {
+export const { ModalProvider, useModal, service: modalService } = configureModalService({
   'language': (p: ModalBaseProps) => <LanguageModal {...p} />,
   'edit-setting': (p: ModalBaseProps & { settingId: string }) => <EditSettingModal {...p} />,
-} satisfies ModalRegistry;
-
-export const modalService = new ModalService(registry);
+});
 ```
 
-### 6.2 Mount in `apps/dashboard/src/main.tsx`
+### 5.2 Mount in `apps/dashboard/src/main.tsx`
 
 ```tsx
-import { ModalProvider } from '@rewriter/modal';
-import { modalService } from './config/configureModals';
+import { ModalProvider } from './config/configureModals';
 
-// Wrap the app
-<ModalProvider service={modalService}>
+<ModalProvider>
   <RouterProvider router={router} />
 </ModalProvider>
 ```
 
-### 6.3 Caller usage anywhere in the tree
+### 5.3 Caller usage anywhere in the tree
 
 ```tsx
-import { useModal } from '@rewriter/modal';
+import { useModal } from '../config/configureModals';
 
 function SettingsPage() {
   const { open } = useModal();
@@ -354,12 +346,13 @@ function SettingsPage() {
 }
 ```
 
-> TypeScript enforces: `open('edit-setting', { settingId: '...' })` — IntelliSense
-> auto-completes the key and requires the exact custom props.
+> **TypeScript enforces**: `open('edit-setting', { settingId: '...' })` — IntelliSense
+> auto-completes the key and requires the exact custom props. No explicit generic,
+> no `any` slip.
 
 ---
 
-## 7. Stack Behavior
+## 6. Stack Behavior
 
 | Action | Effect |
 |--------|--------|
@@ -374,9 +367,9 @@ backdrop stacking and correct focus trap per `@rewriter/ui`'s `Modal` component.
 
 ---
 
-## 8. Unit Tests
+## 7. Unit Tests
 
-### 8.1 `src/ModalService.test.ts`
+### 7.1 `src/ModalService.test.ts`
 
 Uses `bun:test`. Tests the class in isolation (no React).
 
@@ -392,22 +385,23 @@ Uses `bun:test`. Tests the class in isolation (no React).
 | `resolveProps()` merges custom props | Custom props passed through to result |
 | `subscribe()` returns unsubscribe | Unsubscribe stops notifications |
 
-### 8.2 `src/ModalProvider.test.tsx`
+### 7.2 `src/configureModalService.test.tsx`
 
 Uses `bun:test` + `@testing-library/react`.
 
 | Test | What it verifies |
 |------|------------------|
+| Factory returns `ModalProvider`, `useModal`, `service` | All three keys present |
 | Renders top modal's factory output | After `open('key', props)`, the registered component renders |
-| Top modal gets `open: true` | Factory called with `open: true` |
+| Top modal gets `open: true` | Factory called with `open: true` on top entry |
 | Non-top modal gets `open: false` | When stack depth > 1, non-top factory called with `open: false` |
 | `close()` removes modal from DOM | After `close()`, modal content is unmounted |
 | `closeAll()` removes all | All modal content unmounted |
-| `useModal` throws outside provider | Error thrown if used without `<ModalProvider>` |
+| `useModal` throws outside provider | Error thrown if `useModal` called without `<ModalProvider>` |
 
 ---
 
-## 9. Verification
+## 8. Verification
 
 | Step | Command |
 |------|---------|
@@ -418,26 +412,28 @@ Uses `bun:test` + `@testing-library/react`.
 
 ---
 
-## 10. Dependencies
+## 9. Dependencies
 
 | Depends on | Why |
 |------------|-----|
-| `@rewriter/ui` | Modal needs the `Modal` component from ui for focus trap, backdrop, portal (but the service itself is agnostic — the user renders whatever they want inside the factory) |
-| `react` (peer) | `useSyncExternalStore`, context, hooks |
+| `@rewriter/ui` | Modal component for focus trap, backdrop, portal (the service itself is agnostic — factories render whatever they want) |
+| `react` (peer) | `useSyncExternalStore`, `createContext`, `useCallback` |
+| `@testing-library/react` (dev) | Unit tests for the React integration |
 | No new third-party deps | — |
 
 ---
 
-## 11. Notes
+## 10. Notes
 
-- Each app (dashboard, future admin panels) creates its own `ModalService` singleton
-  with its own `ModalRegistry`.
-- The service is framework-agnostic at the class level — only `useModal` and
-  `ModalProvider` depend on React. This means the same class could be reused
-  in a different runtime with a different binding layer.
-- Modal factories can render the `@rewriter/ui` `Modal` component, or a
-- custom drawer, or anything — the service doesn't care what the factory returns.
+- Each app (dashboard, future admin panels) creates its own `configureModalService()`
+  call with its own registry. The returned `ModalProvider`, `useModal`, and `service`
+  are app-scoped — they never leak between apps.
+- The service class is framework-agnostic — only the factory function depends on
+  React. The same `ModalService` could be reused in a different runtime with a
+  different binding layer.
+- Modal factories can render the `@rewriter/ui` `Modal` component, a custom drawer,
+  or anything — the service doesn't care what the factory returns.
 - `useSyncExternalStore` ensures the stack renderer never tears (concurrent safe).
-- When `open()` is called during render, React's batching will defer the re-render,
+- When `open()` is called during render, React's batching defers the re-render,
   avoiding `setState during render` warnings because the service notifies via
   the external store subscription, not via `useState`.
