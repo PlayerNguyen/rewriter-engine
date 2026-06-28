@@ -17,8 +17,8 @@ export function DataTablePagination({
   const to = Math.min(page * pageSize, total);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t">
-      <span className="text-sm text-muted-foreground">
+    <div className="flex items-center justify-between px-4 py-3 border-t border-hairline">
+      <span className="text-sm text-ink-muted">
         {total === 0 ? 'No results' : `${from}–${to} of ${total}`}
       </span>
       <div className="flex items-center gap-1">
@@ -26,7 +26,7 @@ export function DataTablePagination({
           type="button"
           disabled={page <= 1}
           onClick={() => onPageChange(page - 1)}
-          className="px-3 py-1 text-sm rounded border disabled:opacity-40 disabled:cursor-not-allowed hover:bg-accent transition-colors"
+          className="px-3 py-1 text-sm rounded border border-hairline disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors"
         >
           Prev
         </button>
@@ -42,15 +42,15 @@ export function DataTablePagination({
 
             return (
               <span key={p} className="flex items-center gap-1">
-                {showEllipsis && <span className="px-1 text-muted-foreground">…</span>}
+                {showEllipsis && <span className="px-1 text-ink-muted">…</span>}
                 <button
                   type="button"
                   disabled={p === page}
                   onClick={() => onPageChange(p)}
-                  className={`px-3 py-1 text-sm rounded border transition-colors ${
+                  className={`px-3 py-1 text-sm rounded border border-hairline transition-colors ${
                     p === page
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'hover:bg-accent'
+                      ? 'bg-primary text-inverse-canvas border-primary'
+                      : 'hover:bg-surface-2'
                   }`}
                 >
                   {p}
@@ -62,7 +62,7 @@ export function DataTablePagination({
           type="button"
           disabled={page >= totalPages}
           onClick={() => onPageChange(page + 1)}
-          className="px-3 py-1 text-sm rounded border disabled:opacity-40 disabled:cursor-not-allowed hover:bg-accent transition-colors"
+          className="px-3 py-1 text-sm rounded border border-hairline disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface-2 transition-colors"
         >
           Next
         </button>

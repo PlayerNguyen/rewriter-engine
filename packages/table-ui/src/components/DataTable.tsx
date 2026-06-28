@@ -1,5 +1,14 @@
 import type { SortDto } from '@rewriter/table-core';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  useDebounce,
+} from '@rewriter/ui';
+import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
@@ -9,7 +18,6 @@ import {
 } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
 import { useTableData } from '../hooks/useTableData';
-import { DataTableColumnHeader } from './DataTableColumnHeader';
 import { DataTablePagination } from './DataTablePagination';
 
 export interface DataTableProps {
@@ -53,12 +61,11 @@ export function DataTable({
 
   const [searchInput, setSearchInput] = useState('');
 
+  const debouncedSearch = useDebounce(searchInput, 300);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearch(searchInput);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchInput, setSearch]);
+    setSearch(debouncedSearch);
+  }, [debouncedSearch, setSearch]);
 
   const columns = useMemo(() => {
     return columnsProp ?? deriveColumns(data);
@@ -115,92 +122,70 @@ export function DataTable({
   });
 
   return (
-    <div className="rounded-lg border">
+    <div className="rounded-lg border border-hairline">
       {searchable && (
-        <div className="px-4 py-3 border-b">
+        <div className="px-4 py-3 border-b border-hairline">
           <input
             type="search"
             placeholder="Search..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full max-w-xs px-3 py-1.5 text-sm rounded border bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full max-w-xs px-3 py-1.5 text-sm rounded border border-hairline bg-canvas focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       )}
 
       {error && (
-        <div className="px-4 py-3 text-sm text-destructive bg-destructive/10 border-b">{error}</div>
+        <div className="px-4 py-3 text-sm text-semantic-error bg-semantic-error/10 border-b border-hairline">
+          {error}
+        </div>
       )}
 
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="px-4 py-3 text-left text-sm font-medium text-muted-foreground border-b"
-                  >
-                    {header.column.getCanSort() ? (
-                      <DataTableColumnHeader
-                        column={header.column}
-                        title={
-                          typeof header.column.columnDef.header === 'string'
-                            ? header.column.columnDef.header
-                            : header.id
-                        }
-                        sort={sort}
-                        onSort={setSort}
-                      />
-                    ) : (
-                      <span>
-                        {typeof header.column.columnDef.header === 'string'
-                          ? header.column.columnDef.header
-                          : header.id}
-                      </span>
-                    )}
-                  </th>
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                const title =
+                  typeof header.column.columnDef.header === 'string'
+                    ? header.column.columnDef.header
+                    : header.id;
+
+                return (
+                  <TableHead key={header.id} column={header.column} onSort={setSort}>
+                    {title}
+                  </TableHead>
+                );
+              })}
+            </tr>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {isLoading ? (
+            <tr>
+              <TableCell colSpan={columns.length || 1} className="text-center py-8 text-ink-muted">
+                Loading...
+              </TableCell>
+            </tr>
+          ) : table.getRowModel().rows.length === 0 ? (
+            <tr>
+              <TableCell colSpan={columns.length || 1} className="text-center py-8 text-ink-muted">
+                No data
+              </TableCell>
+            </tr>
+          ) : (
+            table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
                 ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td
-                  colSpan={columns.length || 1}
-                  className="px-4 py-8 text-center text-sm text-muted-foreground"
-                >
-                  Loading...
-                </td>
-              </tr>
-            ) : table.getRowModel().rows.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={columns.length || 1}
-                  className="px-4 py-8 text-center text-sm text-muted-foreground"
-                >
-                  No data
-                </td>
-              </tr>
-            ) : (
-              table.getRowModel().rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="border-b last:border-b-0 hover:bg-accent/50 transition-colors"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-3 text-sm">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
 
       <DataTablePagination
         page={page}

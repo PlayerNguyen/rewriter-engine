@@ -15,6 +15,7 @@
   "dependencies": {
     "@rewriter/rest-client": "workspace:*",
     "@rewriter/table-core": "workspace:*",
+    "@rewriter/ui": "workspace:*",
     "@tanstack/react-table": "^8"
   },
   "devDependencies": {
