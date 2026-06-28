@@ -25,7 +25,10 @@
     "db:studio": "prisma studio",
     "test": "bun test",
     "test:coverage": "bun test --coverage",
-    "test:e2e": "bun run --filter '@rewriter/server' test:e2e"
+    "test:e2e": "bun run --filter '@rewriter/server' test:e2e",
+    "generate:spec": "bun run --filter @rewriter/server generate:spec",
+    "generate:client": "bun run generate:spec && bun run --filter @rewriter/rest-client generate",
+    "generate": "bun run generate:client"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",

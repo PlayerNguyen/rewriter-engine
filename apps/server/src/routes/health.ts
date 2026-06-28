@@ -10,6 +10,7 @@ const health = new Hono<AppEnv>();
 health.get(
   '/health',
   describeRoute({
+    tags: ['Health'],
     description: 'Health check endpoint',
     responses: {
       200: {

@@ -22,6 +22,15 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
+      - name: Verify OpenAPI spec is up-to-date
+        run: |
+          cp apps/server/openapi.json apps/server/openapi.json.bak
+          bun run generate:spec
+          if ! diff -q apps/server/openapi.json apps/server/openapi.json.bak; then
+            echo "openapi.json is out of date. Run 'bun run generate:spec' locally and commit the result."
+            exit 1
+          fi
+      - run: bun run --filter @rewriter/rest-client generate
       - run: bun run typecheck
 
   unit-tests:
