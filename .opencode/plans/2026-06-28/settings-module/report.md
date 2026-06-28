@@ -104,6 +104,7 @@ Add `"packages/settings/*"` so bun discovers the nested packages:
   },
   "devDependencies": {
     "@rewriter/modal": "workspace:*",
+    "@testing-library/react": "^16.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "react": "^19.0.0",
