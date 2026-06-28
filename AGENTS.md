@@ -77,3 +77,4 @@ The MCP server returns "not initialized." Ask the user: *"I notice this project 
 - `.opencode/TARGET.md` — Full system design (Vietnamese). Read this before making architectural decisions.
 - `DESIGN.md` — Frontend UI theming/styling exploration notes.
 - `README.md` — Project overview, architecture, monorepo structure, and dev commands.
+- `docs/programming-guidelines.md` — Unit testing, React component structure, and TSDoc conventions.

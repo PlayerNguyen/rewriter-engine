@@ -39,3 +39,7 @@ bun build                # Build all packages
 bun run --filter @rewriter/ui typecheck
 bun run --filter @rewriter/dashboard typecheck
 ```
+
+## References
+
+- `docs/programming-guidelines.md` — Unit testing, React component structure, TSDoc, and component reuse conventions.
