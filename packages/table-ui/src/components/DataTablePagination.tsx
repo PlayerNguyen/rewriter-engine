@@ -1,11 +1,20 @@
 export interface DataTablePaginationProps {
+  /** Current page number (1-based). */
   page: number;
+  /** Total number of pages. */
   totalPages: number;
+  /** Total number of records. */
   total: number;
+  /** Results per page. */
   pageSize: number;
+  /** Called when the user navigates to a different page. */
   onPageChange: (page: number) => void;
 }
 
+/**
+ * Pagination controls with prev/next buttons, numbered pages with ellipsis
+ * for large page counts, and a "X–Y of Z" result count display.
+ */
 export function DataTablePagination({
   page,
   totalPages,

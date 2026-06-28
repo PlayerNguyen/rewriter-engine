@@ -3,6 +3,11 @@ import clsx from 'clsx';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import { forwardRef } from 'react';
 
+/**
+ * Minimal subset of TanStack Table's `Column` that `TableHead` needs
+ * for sort integration. Any TanStack `Column` satisfies this contract
+ * via its `id`, `getCanSort()`, `getIsSorted()`, and `toggleSorting()`.
+ */
 export interface SortableColumn {
   id: string;
   getCanSort: () => boolean;
@@ -11,6 +16,7 @@ export interface SortableColumn {
 }
 
 export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+  /** Wrap the table in a rounded border container. @default false */
   bordered?: boolean;
 }
 
@@ -45,6 +51,7 @@ export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>
 TableHeader.displayName = 'TableHeader';
 
 export interface TableBodyProps extends React.HTMLAttributes<HTMLTableSectionElement> {
+  /** Apply zebra striping — even rows get bg-surface-1. @default false */
   striped?: boolean;
 }
 
@@ -97,8 +104,10 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
 
 TableRow.displayName = 'TableRow';
 
+/** Sort direction. */
 export type TableSortDirection = 'asc' | 'desc';
 
+/** Describes a single sort field and its direction. */
 export interface TableSortState {
   fieldName: string;
   direction: TableSortDirection;
@@ -131,14 +140,16 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
       );
     }
 
-    const fieldName = column!.id;
+    // At this point canSort is true, so column is defined.
+    const c = column!;
+    const fieldName = c.id;
     const direction = isSorted === 'asc' ? 'asc' : isSorted === 'desc' ? 'desc' : null;
 
     const SortIcon = direction === 'asc' ? ArrowUp : direction === 'desc' ? ArrowDown : ArrowUpDown;
 
     const handleClick = () => {
       if (!onSort) {
-        column!.toggleSorting();
+        c.toggleSorting();
         return;
       }
 

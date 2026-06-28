@@ -44,9 +44,11 @@ packages/table-ui/
     │   └── useTableData.ts                # React hook — API fetch + state management
     └── components/
         ├── DataTable.tsx                  # Main component — TanStack Table wrapper
-        ├── DataTableColumnHeader.tsx      # Sortable column header (asc/desc toggle)
         └── DataTablePagination.tsx         # Page nav, "X–Y of Z" display
 ```
+
+Rendering is delegated to the generic `Table` components from `@rewriter/ui`:
+`Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead` (with sort support), `TableCell`, `TableFooter`.
 
 ### Data Flow
 
@@ -60,7 +62,7 @@ packages/table-ui/
   ├── @tanstack/react-table (useReactTable)
   │     └── Manual pagination + sorting (server-side)
   │
-  ├── <DataTableColumnHeader /> per column
+  ├── <TableHead column={col} onSort={setSort} />  ← from @rewriter/ui
   │     └── Click → setSort → re-fetch
   │
   └── <DataTablePagination />
@@ -73,8 +75,6 @@ packages/table-ui/
 |--------|------|-------------|
 | `DataTable` | component | Full-featured table with pagination, sorting, optional search |
 | `DataTableProps` | type | `tableId`, `columns?`, `pageSize?`, `searchable?`, `onSortChange?` |
-| `DataTableColumnHeader` | component | Sortable `<th>` with asc/desc arrow indicator |
-| `DataTableColumnHeaderProps` | type | `column`, `title`, `sort`, `onSort` |
 | `DataTablePagination` | component | Prev/next, numbered pages, "X–Y of Z" count |
 | `DataTablePaginationProps` | type | `page`, `totalPages`, `total`, `pageSize`, `onPageChange` |
 | `useTableData` | hook | React hook — fetches table data, manages pagination/sort/search/filter state |
@@ -151,6 +151,7 @@ API errors (non-2xx) thrown by `customFetchInstance` as `{ status, body }` are c
 |---------|---------|
 | `@rewriter/rest-client` (workspace) | `getApiV1Table` — typed API fetch with base URL, auth, error handling |
 | `@rewriter/table-core` (workspace) | `SortDto` type for UI-side sort state |
+| `@rewriter/ui` (workspace) | Generic `Table`, `TableHead`, `TableCell`, `TableFooter`, etc. — rendering primitives + `useDebounce` |
 | `@tanstack/react-table` ^8 | Headless table logic (pagination, sorting, column defs) |
 | `react` ^18 \|\| ^19 (peer) | Component framework |
 | `react-dom` ^18 \|\| ^19 (peer) | DOM rendering |

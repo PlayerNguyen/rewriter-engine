@@ -4,26 +4,64 @@ import type { SortDto } from '@rewriter/table-core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface UseTableDataOptions {
+  /** Results per page. @default 10 */
   pageSize?: number;
+  /** Initial sort applied on first render. */
   initialSort?: SortDto;
 }
 
 export interface UseTableDataResult {
+  /** Array of entity rows for the current page. */
   data: unknown[];
+  /** Total number of records matching the query (across all pages). */
   total: number;
+  /** Current page number (1-based). */
   page: number;
+  /** Results per page. */
   limit: number;
+  /** Total number of pages. */
   totalPages: number;
+  /** Whether a fetch is in progress. */
   isLoading: boolean;
+  /** Error message if the last fetch failed, otherwise null. */
   error: string | null;
+  /** Current sort state (null = unsorted). */
   sort: SortDto | null;
+  /** Current search term. */
   search: string;
+  /** Navigate to a specific page. */
   setPage: (page: number) => void;
+  /** Set sort state and reset to page 1. */
   setSort: (sort: SortDto | null) => void;
+  /** Set search term and reset to page 1. */
   setSearch: (search: string) => void;
+  /** Set filter values and reset to page 1. */
   setFilters: (filters: Record<string, string>) => void;
 }
 
+/**
+ * React hook that fetches table data from the API and manages pagination,
+ * sorting, search, and filter state.
+ *
+ * Internally calls {@link getApiV1Table} from `@rewriter/rest-client`,
+ * JSON-stringifying `sort` and `filters` before passing to the API.
+ *
+ * Catches non-2xx errors thrown by `customFetchInstance` and surfaces
+ * the error message via the `error` state.
+ *
+ * @param tableId - Table identifier (e.g. "sources", "articles").
+ * @param options - {@link UseTableDataOptions} for page size and initial sort.
+ * @returns {@link UseTableDataResult} with data, pagination, sort, search state, and setters.
+ *
+ * @example
+ * const {
+ *   data,
+ *   isLoading,
+ *   error,
+ *   setPage,
+ *   setSort,
+ * } = useTableData('sources', { pageSize: 20 });
+ */
 export function useTableData(
   tableId: string,
   options: UseTableDataOptions = {},

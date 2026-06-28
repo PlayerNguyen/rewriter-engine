@@ -18,26 +18,50 @@ import {
 } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
 import { useTableData } from '../hooks/useTableData';
+import { deriveColumns } from '../utils/deriveColumns';
 import { DataTablePagination } from './DataTablePagination';
 
 export interface DataTableProps {
+  /** Table identifier passed to the API (e.g. "sources", "articles"). */
   tableId: string;
+  /**
+   * Column definitions. If omitted, columns are auto-generated from the
+   * first data row's keys.
+   */
   columns?: ColumnDef<unknown>[];
+  /** Results per page. @default 10 */
   pageSize?: number;
+  /** Show a debounced search input above the table. */
   searchable?: boolean;
-  onSortChange?: (sort: SortDto) => void;
+  /** Called when sorting changes (including clearing sort). */
+  onSortChange?: (sort: SortDto | null) => void;
 }
 
-function deriveColumns(data: unknown[]): ColumnDef<unknown>[] {
-  if (data.length === 0) return [];
-  const first = data[0];
-  if (first == null || typeof first !== 'object') return [];
-  return Object.keys(first).map((key) => ({
-    accessorKey: key as string,
-    header: key.charAt(0).toUpperCase() + key.slice(1),
-  }));
-}
-
+/**
+ * Full-featured data table with built-in server-side pagination, sorting,
+ * and optional search.
+ *
+ * Uses {@link useTableData} for API fetching and TanStack Table v8 for
+ * headless rendering. Delegates markup to the generic `Table` components
+ * from `@rewriter/ui` (`Table`, `TableHead`, `TableCell`, etc.).
+ *
+ * @example
+ * // Minimal — auto-generated columns from API response
+ * <DataTable tableId="sources" />
+ *
+ * @example
+ * // Explicit columns with search and sort callback
+ * <DataTable
+ *   tableId="articles"
+ *   pageSize={20}
+ *   searchable
+ *   columns={[
+ *     { accessorKey: 'title', header: 'Title' },
+ *     { accessorKey: 'status', header: 'Status' },
+ *   ]}
+ *   onSortChange={(sort) => console.log(sort)}
+ * />
+ */
 export function DataTable({
   tableId,
   columns: columnsProp,
@@ -85,7 +109,7 @@ export function DataTable({
     const next = typeof updater === 'function' ? updater(sorting) : updater;
     if (next.length === 0) {
       setSort(null);
-      onSortChange?.(null as unknown as SortDto);
+      onSortChange?.(null);
     } else {
       const s = next[0];
       if (s) {
