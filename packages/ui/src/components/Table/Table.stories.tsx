@@ -7,16 +7,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { TableFactory } from '../utils/TableFactory';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './Table';
+import { TableFactory } from '../../utils/TableFactory';
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from './';
 
 const meta: Meta<typeof Table> = {
   title: 'Layout/Table',
