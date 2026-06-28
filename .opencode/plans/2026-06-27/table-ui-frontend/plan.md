@@ -108,17 +108,22 @@ interface UseTableDataResult {
   limit: number;
   totalPages: number;
   isLoading: boolean;
-  error: Error | null;
+  error: string | null;
   setPage: (page: number) => void;
   setSort: (sort: SortDto) => void;
   setSearch: (search: string) => void;
+  setFilters: (filters: Record<string, string>) => void;
 }
 
 /**
- * React hook that fetches table data and manages pagination/sort/search state.
+ * React hook that fetches table data and manages pagination/sort/search/filter state.
  *
  * Internally calls getApiV1Table from @rewriter/rest-client,
  * JSON-stringifying sort/filters before passing to the API.
+ *
+ * Catches the { status, body } thrown by customFetchInstance on non-2xx
+ * and surfaces `body.error` (or `status`) as a string in `error`.
+ * Uses AbortController to cancel in-flight requests on unmount or re-fetch.
  *
  * @param tableId  - Table identifier (e.g. "sources", "articles").
  * @param options  - Page size (default 10), initial sort.
@@ -129,17 +134,31 @@ export function useTableData(
 ): UseTableDataResult;
 ```
 
-The hook maps its internal `SortDto` → JSON string for the `sort` param:
+The hook maps its internal state to `GetApiV1TableParams`:
 
 ```typescript
-const params = {
+const controller = new AbortController();
+
+const params: GetApiV1TableParams = {
   id: tableId,
   page,
   limit: pageSize,
   ...(sort && { sort: JSON.stringify(sort) }),
   ...(search && { search }),
+  ...(filters && { filters: JSON.stringify(filters) }),
 };
-const result: GetApiV1Table200 = await getApiV1Table(params);
+
+try {
+  const result: GetApiV1Table200 = await getApiV1Table(params);
+  // ... update state with result
+} catch (err) {
+  // customFetchInstance throws { status: number, body: unknown }
+  const e = err as { status: number; body?: { error?: string } };
+  setError(e.body?.error ?? `Request failed (${e.status})`);
+}
+
+// Cleanup on unmount / re-fetch
+return () => controller.abort();
 ```
 
 ### `DataTable` component (`src/components/data-table.tsx`)
