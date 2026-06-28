@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Build `@rewriter/table-ui` — a React component library that renders paginated, sortable, searchable data tables driven by the `GET /api/v1/table` endpoint. Uses TanStack Table (`@tanstack/react-table`) for headless table logic and an axios-based API caller that consumes types from `@rewriter/table-core`.
+Build `@rewriter/table-ui` — a React component library that renders paginated, sortable, searchable data tables driven by the `GET /api/v1/table` endpoint. Uses TanStack Table (`@tanstack/react-table`) for headless table logic and the Orval-generated API client from `@rewriter/rest-client`.
 
 ## Architecture
 
@@ -17,14 +17,17 @@ Dashboard (apps/dashboard)
 │                                         │
 │  components/DataTable                   │
 │    ├── useTableData(tableId, opts)       │  ← React hook
-│    │     └── tableApi.fetch(req)         │  ← axios caller
+│    │     └── getApiV1Table(params)       │  ← Orval-generated fetch (from @rewriter/rest-client)
 │    ├── @tanstack/react-table            │  ← headless table logic
 │    ├── DataTablePagination (pageSize=10) │
 │    └── DataTableColumnHeader (sortable)  │
 │                                         │
-│  imports types from:                    │
-│    @rewriter/table-core (TableResponse,  │
-│      TableRequest, SortDto, etc.)        │
+│  imports functions & types from:        │
+│    @rewriter/rest-client                │
+│      (getApiV1Table, GetApiV1Table200,  │
+│       GetApiV1TableParams)              │
+│    @rewriter/table-core                 │
+│      (SortDto — internal UI type)       │
 └─────────────────────────────────────────┘
   │
   ▼
@@ -44,8 +47,6 @@ packages/table-ui/
 ├── tsconfig.json                       # React/JSX-aware (extends dashboard pattern)
 └── src/
     ├── index.ts                        # Barrel exports
-    ├── api/
-    │   └── table-api.ts               # Axios-based TableApiClient
     ├── hooks/
     │   └── use-table-data.ts          # useTableData React hook
     └── components/
@@ -63,53 +64,37 @@ packages/table-ui/
 
 ## Key Interfaces & Types
 
-### `TableApiClient` (`src/api/table-api.ts`)
+### API Client (`@rewriter/rest-client`)
+
+The table API is called via the Orval-generated `getApiV1Table` function from `@rewriter/rest-client`. No custom axios wrapper is needed.
 
 ```typescript
-import axios, { type AxiosInstance } from "axios";
-import type { TableRequest, TableResponse } from "@rewriter/table-core";
+import { getApiV1Table } from "@rewriter/rest-client";
+import type { GetApiV1TableParams, GetApiV1Table200 } from "@rewriter/rest-client";
 
-/**
- * Axios-based client for the table API endpoint.
- * Created once per app with the API base URL.
- */
-export class TableApiClient {
-  private client: AxiosInstance;
-
-  constructor(baseURL: string) {
-    this.client = axios.create({ baseURL });
-  }
-
-  /**
-   * Fetch a paginated, sorted, searchable table result.
-   * @param request - Table identifier + query parameters.
-   * @returns A structured TableResponse with rows, total count, and pagination info.
-   */
-  async fetch(request: TableRequest): Promise<TableResponse> {
-    const response = await this.client.get<TableResponse>("/api/v1/table", {
-      params: {
-        id: request.id,
-        page: request.page,
-        limit: request.limit,
-        sort: request.sort ? JSON.stringify(request.sort) : undefined,
-        search: request.search,
-        filters: request.filters ? JSON.stringify(request.filters) : undefined,
-      },
-    });
-    return response.data;
-  }
-}
-
-/** Singleton convenience — set base URL once in app bootstrap. */
-export const tableApi = new TableApiClient("http://localhost:3001");
+// The generated function accepts typed params and returns the typed response:
+const result: GetApiV1Table200 = await getApiV1Table({
+  id: "sources",
+  page: 1,
+  limit: 10,
+  sort: JSON.stringify({ fieldName: "createdAt", direction: "desc" }),
+  search: "keyword",
+});
 ```
+
+Key behaviors (handled by `customFetchInstance` mutator):
+- **Base URL**: resolved from `VITE_API_URL` > `API_URL` env vars > `http://localhost:3001` fallback
+- **Auth**: auto-injects `Authorization: Bearer <token>` from `localStorage` (browser only)
+- **Error normalization**: non-2xx responses throw `{ status, body }` object
+- **Cancellation**: accepts `signal?: AbortSignal` for request aborting
 
 ### `useTableData` hook (`src/hooks/use-table-data.ts`)
 
 ```typescript
 import { useState, useEffect, useCallback } from "react";
-import type { SortDto, TableResponse } from "@rewriter/table-core";
-import { tableApi } from "../api/table-api";
+import type { SortDto } from "@rewriter/table-core";
+import { getApiV1Table } from "@rewriter/rest-client";
+import type { GetApiV1Table200 } from "@rewriter/rest-client";
 
 interface UseTableDataOptions {
   pageSize?: number;           // default: 10
@@ -132,6 +117,9 @@ interface UseTableDataResult {
 /**
  * React hook that fetches table data and manages pagination/sort/search state.
  *
+ * Internally calls getApiV1Table from @rewriter/rest-client,
+ * JSON-stringifying sort/filters before passing to the API.
+ *
  * @param tableId  - Table identifier (e.g. "sources", "articles").
  * @param options  - Page size (default 10), initial sort.
  */
@@ -139,6 +127,19 @@ export function useTableData(
   tableId: string,
   options: UseTableDataOptions = {},
 ): UseTableDataResult;
+```
+
+The hook maps its internal `SortDto` → JSON string for the `sort` param:
+
+```typescript
+const params = {
+  id: tableId,
+  page,
+  limit: pageSize,
+  ...(sort && { sort: JSON.stringify(sort) }),
+  ...(search && { search }),
+};
+const result: GetApiV1Table200 = await getApiV1Table(params);
 ```
 
 ### `DataTable` component (`src/components/data-table.tsx`)
@@ -268,9 +269,9 @@ export function SourcesPage() {
 
 | Package | Version | Purpose |
 |---|---|---|
-| `@rewriter/table-core` | `workspace:*` | Types: `TableResponse`, `TableRequest`, `SortDto` |
+| `@rewriter/rest-client` | `workspace:*` | Orval-generated API client (`getApiV1Table`, `GetApiV1TableParams`, `GetApiV1Table200`) |
+| `@rewriter/table-core` | `workspace:*` | Types: `SortDto` (internal UI sort type) |
 | `@tanstack/react-table` | `^8` | Headless table logic (sorting, pagination, column defs) |
-| `axios` | `^1` | HTTP client for the table API |
 | `react` | `^19` (peer) | Component framework |
 | `react-dom` | `^19` (peer) | DOM rendering |
 
@@ -281,38 +282,40 @@ TanStack Table v8 is the currently stable version. If the project already uses `
 | Decision | Rationale |
 |---|---|
 | `@tanstack/react-table` (headless) | Separates table logic (sorting, pagination state) from rendering — full control over markup |
-| Axios for API calls | Widespread, interceptor support, familiar API. Singleton `TableApiClient` per app. |
+| `@rewriter/rest-client` for API calls | Orval-generated from OpenAPI spec — auto-typed params/responses, no hand-written HTTP client. Handles base URL, auth, errors, cancellation. |
 | Default page size 10 | Smaller pages = faster initial load for dashboards; user can adjust |
 | `useTableData` hook encapsulates fetch + state | Keeps components pure; hook manages loading/error/pagination/sort/search in one place |
 | Auto-generated columns from first data row | Zero-config for quick dashboards; explicit `columns` prop for custom formatting |
 | `DataTable` wraps everything | One import for a full table with pagination + sorting + optional search |
-| Types imported from `@rewriter/table-core` | Single source of truth for `TableRequest`/`TableResponse`/`SortDto` — no duplication |
+| `SortDto` from `@rewriter/table-core` for UI-side sort state | Server-side canonical sort shape; JSON-stringified when passed to `@rewriter/rest-client` which expects `string` params |
 
-## API Caller Collaboration Notes
+## Rest-Client Usage Notes
 
-The axios caller is bundled into `table-ui` for immediate use. If the need arises for a standalone API client package (shared across multiple frontends, with interceptor config, auth tokens, etc.), it can be extracted to `packages/table-api/` later. For now, keeping it in `table-ui` avoids over-engineering.
+The API caller is `getApiV1Table` from `@rewriter/rest-client` — an Orval-generated function backed by `customFetchInstance`. No hand-written HTTP client is needed in `table-ui`.
 
-Key considerations for the axios caller:
-- **Base URL** — configured once, typically `http://localhost:3001` in dev
-- **Error handling** — `TableService` returns 400/404 as JSON; `useTableData` surfaces errors to the UI
-- **Query param serialization** — `sort` and `filters` are JSON-stringified before sending via `params`
-- **Request cancellation** — `useTableData` should abort in-flight requests on unmount/re-fetch (AbortController)
+Key behaviors already handled by `@rewriter/rest-client`:
+- **Base URL** — resolved from `VITE_API_URL` > `API_URL` > `http://localhost:3001` (dev fallback)
+- **Auth** — auto-injects `Authorization: Bearer <token>` from `localStorage` in browser environments
+- **Error handling** — non-2xx responses throw `{ status, body }`; `useTableData` surfaces to UI
+- **Query param serialization** — `sort` and `filters` are passed as JSON strings (matching `GetApiV1TableParams`)
+- **Request cancellation** — `useTableData` passes `AbortController.signal` to `getApiV1Table` via the `signal` param (supported by `customFetchInstance`)
+
+Re-generation: run `bun run --filter @rewriter/rest-client generate` whenever the server OpenAPI spec changes.
 
 ## Execution Order
 
-1. Create `packages/table-ui/package.json` (peer deps: react, react-dom; deps: @tanstack/react-table, axios, @rewriter/table-core)
+1. Create `packages/table-ui/package.json` (peer deps: react, react-dom; deps: @tanstack/react-table, @rewriter/rest-client, @rewriter/table-core)
 2. Create `packages/table-ui/tsconfig.json` (React/JSX-aware, extends root)
 3. Add `@rewriter/table-ui` path alias to root `tsconfig.json`
-4. Implement `src/api/table-api.ts` — `TableApiClient` + singleton `tableApi`
-5. Implement `src/hooks/use-table-data.ts` — fetch hook with pagination/sort/search state
-6. Implement `src/components/data-table-column-header.tsx` — sortable column header
-7. Implement `src/components/data-table-pagination.tsx` — page navigation
-8. Implement `src/components/data-table.tsx` — main DataTable component
-9. Implement `src/index.ts` — barrel exports
-10. Run `bun install` to link workspace + install dependencies
-11. Run `bun run --filter @rewriter/table-ui typecheck`
-12. Add `@rewriter/table-ui` to `apps/dashboard/package.json` dependencies
-13. Smoke test: render `<DataTable tableId="sources" />` in a dashboard route
+4. Implement `src/hooks/use-table-data.ts` — fetch hook with pagination/sort/search state (calls `getApiV1Table` from `@rewriter/rest-client`)
+5. Implement `src/components/data-table-column-header.tsx` — sortable column header
+6. Implement `src/components/data-table-pagination.tsx` — page navigation
+7. Implement `src/components/data-table.tsx` — main DataTable component
+8. Implement `src/index.ts` — barrel exports
+9. Run `bun install` to link workspace + install dependencies
+10. Run `bun run --filter @rewriter/table-ui typecheck`
+11. Add `@rewriter/table-ui` to `apps/dashboard/package.json` dependencies
+12. Smoke test: render `<DataTable tableId="sources" />` in a dashboard route
 
 ## Verification
 
