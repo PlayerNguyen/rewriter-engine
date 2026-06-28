@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "paths": {
+      "@rewriter/settings": ["./src/index.ts"],
+      "@rewriter/settings/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

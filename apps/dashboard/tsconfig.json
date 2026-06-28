@@ -5,7 +5,11 @@
       "@rewriter/ui": ["../../packages/ui/src/index.ts"],
       "@rewriter/ui/*": ["../../packages/ui/src/*"],
       "@rewriter/table-ui": ["../../packages/table-ui/src/index.ts"],
-      "@rewriter/table-ui/*": ["../../packages/table-ui/src/*"]
+      "@rewriter/table-ui/*": ["../../packages/table-ui/src/*"],
+      "@rewriter/modal": ["../../packages/modal/src/index.tsx"],
+      "@rewriter/modal/*": ["../../packages/modal/src/*"],
+      "@rewriter/settings-ui": ["../../packages/settings/ui/src/index.tsx"],
+      "@rewriter/settings-ui/*": ["../../packages/settings/ui/src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]

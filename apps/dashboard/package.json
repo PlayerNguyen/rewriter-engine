@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@rewriter/modal": "workspace:*",
+    "@rewriter/settings-ui": "workspace:*",
     "@rewriter/table-ui": "workspace:*",
     "@rewriter/ui": "workspace:*",
     "@tanstack/react-router": "^1.170.16",
