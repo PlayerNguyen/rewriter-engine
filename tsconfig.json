@@ -37,7 +37,9 @@
       "@rewriter/table-core": ["./packages/table-core/src/index.ts"],
       "@rewriter/table-core/*": ["./packages/table-core/src/*"],
       "@rewriter/rest-client": ["./packages/rest-client/src/index.ts"],
-      "@rewriter/rest-client/*": ["./packages/rest-client/src/*"]
+      "@rewriter/rest-client/*": ["./packages/rest-client/src/*"],
+      "@rewriter/table-ui": ["./packages/table-ui/src/index.ts"],
+      "@rewriter/table-ui/*": ["./packages/table-ui/src/*"]
     }
   }
 }
