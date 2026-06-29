@@ -12,8 +12,9 @@
     "build": "bun run --filter '*' build",
     "storybook": "bun run --filter @rewriter/ui storybook",
     "build-storybook": "bun run --filter @rewriter/ui build-storybook",
-    "dev:dashboard": "bun run --filter @rewriter/dashboard dev",
-    "dev:server": "bun run --filter @rewriter/server dev",
+    "dev": "concurrently --names server,dashboard -c blue,green \"bun run dev:server\" \"bun run dev:dashboard\"",
+    "dev:dashboard": "bun run --filter @rewriter/dashboard --elide-lines=0 dev",
+    "dev:server": "bun run --filter @rewriter/server --elide-lines=0 dev",
     "lint": "bunx --bun @biomejs/biome check .",
     "lint:fix": "bunx --bun @biomejs/biome check --write .",
     "format": "bunx --bun @biomejs/biome format --write .",
@@ -34,6 +35,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.1",
     "@types/bun": "latest",
+    "concurrently": "^10.0.3",
     "prisma": "^7.8.0",
     "typescript": "^5"
   },

@@ -1,7 +1,6 @@
 import type { Context } from 'hono';
 import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
-import { HandlerNotFoundError } from './errors';
 import type { TableHandler } from './handler';
 import { DefaultTableRequest } from './models';
 import { tableRouteOpenApiDocs } from './openapi';
@@ -16,7 +15,9 @@ import { tableQuerySchema } from './schemas';
  * - Validate via Zod (positive integers, JSON parse for sort/filters, etc.).
  * - Resolve the correct {@link TableHandler} from the registry.
  * - Delegate to the handler and wrap the {@link TableResponse} with ctx.json().
- * - Surface {@link HandlerNotFoundError} as a 404 JSON response.
+ *
+ * {@link HandlerNotFoundError} and other unhandled errors are propagated
+ * to the global `app.onError()` handler for logging and JSON response formatting.
  *
  * @example
  * // Bootstrap
@@ -32,7 +33,7 @@ export class TableService {
   /**
    * Resolve the handler via each handler's {@link TableHandler.isAssociate | isAssociate}
    * check, delegate, and serialize the returned {@link TableResponse} via `ctx.json()`.
-   * @throws {HandlerNotFoundError} if no associated handler is found.
+   * @throws {HandlerNotFoundError} if no associated handler is found (propagated to global error handler).
    */
   async handle(request: DefaultTableRequest, ctx: Context): Promise<Response> {
     const handler = this.registry.resolve(request);
@@ -78,15 +79,7 @@ export class TableService {
         filters: parsed.data.filters,
       });
 
-      let handler: TableHandler;
-      try {
-        handler = this.registry.resolve(request);
-      } catch (e) {
-        if (e instanceof HandlerNotFoundError) {
-          return c.json({ error: e.message }, 404);
-        }
-        throw e;
-      }
+      const handler = this.registry.resolve(request);
 
       const handlerSchema = handler.getValidationSchema();
       if (handlerSchema !== tableQuerySchema) {

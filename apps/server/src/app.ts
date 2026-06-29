@@ -6,6 +6,7 @@ import { requestId } from 'hono/request-id';
 import { openAPISpecs } from 'hono-openapi';
 import { tableService } from './configs/configTable';
 import { scalarMiddleware } from './lib/openapi';
+import { errorHandler } from './middleware/error-handler';
 import routes from './routes';
 import type { AppEnv } from './types/env';
 
@@ -32,6 +33,9 @@ export function createApp() {
       credentials: true,
     }),
   );
+
+  // Global error handler — logs via Pino, returns JSON error responses
+  app.onError(errorHandler);
 
   // Mount table API — generic endpoint for all registered table handlers
   app.route('/api/v1/table', tableService.registerToHono());
