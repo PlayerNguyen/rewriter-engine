@@ -33,39 +33,39 @@
 
 ### Directory Structure
 
-Deployment configurations are organized by environment under `tools/deployment/`:
-
 ```
+docker-compose.yml                 # Local infrastructure only (DB, Adminer)
 tools/deployment/
-├── dev/
-│   ├── docker-compose.yml
-│   └── .env.example
 ├── staging/
-│   ├── docker-compose.yml
+│   ├── docker-compose.yml         # All services in containers
 │   └── .env.example
 └── production/
-    ├── docker-compose.yml
+    ├── docker-compose.yml         # All services in containers
     └── .env.example
 ```
 
 ### Environment Rules
 
-1. **Local development** — Use `docker compose up` from `tools/deployment/dev/` for database and services only. Run apps locally with `bun dev`.
-2. **Staging/Production** — Use `docker compose up -d --build` from the respective environment folder. All services run in containers.
-3. **Never commit `.env` files** — Only `.env.example` files are committed. Each environment has its own secrets.
+| Environment | Config Location | What Runs |
+|-------------|-----------------|-----------|
+| **Local dev** | Root `docker-compose.yml` | DB + Adminer only. Apps run via `bun dev` |
+| **Staging** | `tools/deployment/staging/` | All services in containers |
+| **Production** | `tools/deployment/production/` | All services in containers |
+
+1. **Never commit `.env` files** — Only `.env.example` files are committed.
+2. **Build context** — Staging/production compose files use `context: ../..` to access monorepo root.
 
 ### Deployment Commands
 
 ```bash
-# Dev: Start database and adminer only
-cd tools/deployment/dev
+# Local: Start database only
 cp .env.example .env
 docker compose up -d
-
-# Dev: Run apps locally
 bun dev
 
-# Production: Build and deploy all services
+# Staging/Production: Build and deploy all services
+cd tools/deployment/<env>
+cp .env.example .env  # Edit with real secrets
 docker compose up -d --build
 docker compose exec server bunx prisma migrate deploy
 ```

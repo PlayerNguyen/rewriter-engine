@@ -1,4 +1,5 @@
-# Production deployment - see tools/deployment/ for environment-specific configs
+# Local infrastructure setup - database and services only
+# Run apps locally with: bun dev
 services:
   postgres:
     image: postgres:18-alpine
@@ -18,27 +19,11 @@ services:
       timeout: 5s
       retries: 5
 
-  server:
-    build:
-      context: .
-      dockerfile: apps/server/Dockerfile
-    container_name: rewriter-server
+  adminer:
+    image: adminer:latest
+    container_name: rewriter-adminer
     restart: unless-stopped
     ports:
-      - "3001:3001"
-    environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-rewriter}:${POSTGRES_PASSWORD:-rewriter_secret}@postgres:5432/${POSTGRES_DB:-rewriter}
+      - "${ADMINER_PORT:-8080}:8080"
     depends_on:
-      postgres:
-        condition: service_healthy
-
-  dashboard:
-    build:
-      context: .
-      dockerfile: apps/dashboard/Dockerfile
-    container_name: rewriter-dashboard
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    depends_on:
-      - server
+      - postgres
