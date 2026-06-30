@@ -1,7 +1,3 @@
-# AI PR Review Pipeline
-# Model: set OPENCODE_REVIEW_MODEL secret to override (default: opencode-go/mimo-v2.5)
-# API Key: set OPENCODE_GO_API_KEY secret
-
 name: AI PR Review
 
 on:
@@ -14,36 +10,36 @@ on:
         required: false
 
 permissions:
-  pull-requests: write
+  id-token: write
   contents: read
+  pull-requests: write
+  issues: read
 
 jobs:
   review:
     runs-on: ubuntu-latest
-    env:
-      OPENCODE_REVIEW_MODEL: ${{ secrets.OPENCODE_REVIEW_MODEL || 'opencode-go/deepseek-v4-pro' }}
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
+      - name: Setup OpenCode Go credentials
+        run: |
+          mkdir -p ~/.local/share/opencode
+          echo '{"opencode-go":{"apiKey":"${{ secrets.OPENCODE_GO_API_KEY }}"}}' > ~/.local/share/opencode/auth.json
+
       - name: Determine PR number
         id: pr
-        run: |
-          if [ -n "${{ github.event.inputs.pr_number }}" ]; then
-            echo "number=${{ github.event.inputs.pr_number }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
-          fi
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "number=${{ github.event.inputs.pr_number }}" >> "$GITHUB_OUTPUT"
 
       - uses: anomalyco/opencode/github@latest
         env:
-          OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: ${{ env.OPENCODE_REVIEW_MODEL }}
+          model: opencode-go/deepseek-v4-pro
           use_github_token: true
           prompt: |
-            Load the pr-review skill and review PR #${{ steps.pr.outputs.number }}.
+            Load the pr-review skill and review PR #${{ steps.pr.outputs.number || github.event.pull_request.number }}.
             The gh CLI is authenticated via GITHUB_TOKEN.
             Post the review using gh pr review --comment.
