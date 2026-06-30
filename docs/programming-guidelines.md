@@ -27,6 +27,49 @@
 - Use `gh pr create` and fill out **every** section: description, type of change, workspaces affected, testing (screenshots, verification commands, automated test coverage), and checklist.
 - Do not skip the template or leave sections blank.
 
+## Deployment
+
+> **PRIORITY: HIGH** — Follow these conventions for consistent deployments.
+
+### Directory Structure
+
+Deployment configurations are organized by environment under `tools/deployment/`:
+
+```
+tools/deployment/
+├── dev/
+│   ├── docker-compose.yml
+│   └── .env.example
+├── staging/
+│   ├── docker-compose.yml
+│   └── .env.example
+└── production/
+    ├── docker-compose.yml
+    └── .env.example
+```
+
+### Environment Rules
+
+1. **Local development** — Use `docker compose up` from `tools/deployment/dev/` for database and services only. Run apps locally with `bun dev`.
+2. **Staging/Production** — Use `docker compose up -d --build` from the respective environment folder. All services run in containers.
+3. **Never commit `.env` files** — Only `.env.example` files are committed. Each environment has its own secrets.
+
+### Deployment Commands
+
+```bash
+# Dev: Start database and adminer only
+cd tools/deployment/dev
+cp .env.example .env
+docker compose up -d
+
+# Dev: Run apps locally
+bun dev
+
+# Production: Build and deploy all services
+docker compose up -d --build
+docker compose exec server bunx prisma migrate deploy
+```
+
 ## Unit Testing
 
 When setting up a new package or module, include a test runner from the start.

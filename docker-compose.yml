@@ -1,3 +1,4 @@
+# Production deployment - see tools/deployment/ for environment-specific configs
 services:
   postgres:
     image: postgres:18-alpine
