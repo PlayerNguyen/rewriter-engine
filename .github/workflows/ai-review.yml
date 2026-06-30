@@ -1,3 +1,7 @@
+# AI PR Review Pipeline
+# Model: set OPENCODE_REVIEW_MODEL secret to override (default: opencode-go/mimo-v2.5)
+# API Key: set OPENCODE_GO_API_KEY secret
+
 name: AI PR Review
 
 on:
@@ -16,6 +20,8 @@ permissions:
 jobs:
   review:
     runs-on: ubuntu-latest
+    env:
+      OPENCODE_REVIEW_MODEL: ${{ secrets.OPENCODE_REVIEW_MODEL || 'opencode-go/mimo-v2.5' }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -30,18 +36,12 @@ jobs:
             echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Determine model
-        id: model
-        run: |
-          MODEL="${OPENCODE_REVIEW_MODEL:-opencode-go/mimo-v2.5}"
-          echo "value=$MODEL" >> "$GITHUB_OUTPUT"
-
       - uses: anomalyco/opencode/github@latest
         env:
           OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: ${{ steps.model.outputs.value }}
+          model: ${{ env.OPENCODE_REVIEW_MODEL }}
           use_github_token: true
           prompt: |
             Load the pr-review skill and review PR #${{ steps.pr.outputs.number }}.
