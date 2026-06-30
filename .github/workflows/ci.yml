@@ -49,6 +49,7 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
+      - run: bun run --filter @rewriter/rest-client generate
       - run: |
           bun test --exclude '**/__e2e__/*' 2>&1 | tee /tmp/test.log || true
           EXIT_CODE=${PIPESTATUS[0]}
@@ -114,5 +115,6 @@ jobs:
           restore-keys: |
             bun-cache-${{ runner.os }}-
       - run: bun install --frozen-lockfile
+      - run: bun run --filter @rewriter/rest-client generate
       - run: bun run --filter @rewriter/dashboard build
       - run: bun run --filter @rewriter/ui build-storybook
