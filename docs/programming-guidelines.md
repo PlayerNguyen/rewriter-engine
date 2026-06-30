@@ -34,26 +34,24 @@
 ### Directory Structure
 
 ```
-docker-compose.yml                 # Local infrastructure only (DB, Adminer)
+docker-compose.yml                          # Local infrastructure only (DB, Adminer)
 tools/deployment/
-├── staging/
-│   ├── docker-compose.yml         # All services in containers
-│   └── .env.example
-└── production/
-    ├── docker-compose.yml         # All services in containers
-    └── .env.example
+├── compose.yaml                            # Base config for staging/production
+├── staging.compose.yaml                    # Staging overrides
+├── production.compose.yaml                 # Production overrides
+└── .env.example                            # Environment template
 ```
 
 ### Environment Rules
 
-| Environment | Config Location | What Runs |
-|-------------|-----------------|-----------|
+| Environment | Config | What Runs |
+|-------------|--------|-----------|
 | **Local dev** | Root `docker-compose.yml` | DB + Adminer only. Apps run via `bun dev` |
-| **Staging** | `tools/deployment/staging/` | All services in containers |
-| **Production** | `tools/deployment/production/` | All services in containers |
+| **Staging** | `compose.yaml` + `staging.compose.yaml` | All services in containers |
+| **Production** | `compose.yaml` + `production.compose.yaml` | All services in containers |
 
 1. **Never commit `.env` files** — Only `.env.example` files are committed.
-2. **Build context** — Staging/production compose files use `context: ../..` to access monorepo root.
+2. **Merge approach** — Base `compose.yaml` defines common config; environment files override/add settings.
 
 ### Deployment Commands
 
@@ -63,10 +61,16 @@ cp .env.example .env
 docker compose up -d
 bun dev
 
-# Staging/Production: Build and deploy all services
-cd tools/deployment/<env>
+# Staging
+cd tools/deployment
 cp .env.example .env  # Edit with real secrets
-docker compose up -d --build
+docker compose -f compose.yaml -f staging.compose.yaml up -d --build
+docker compose exec server bunx prisma migrate deploy
+
+# Production
+cd tools/deployment
+cp .env.example .env  # Edit with real secrets
+docker compose -f compose.yaml -f production.compose.yaml up -d --build
 docker compose exec server bunx prisma migrate deploy
 ```
 
