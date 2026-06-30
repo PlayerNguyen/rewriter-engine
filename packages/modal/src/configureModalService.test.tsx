@@ -5,9 +5,7 @@ import type { ModalBaseProps, ModalFactory } from './types';
 
 function testFactory(id: string): ModalFactory<{ label: string }> {
   return (p: ModalBaseProps & { label: string }) =>
-    p.open
-      ? <div data-testid={`modal-${id}`}>{p.label}</div>
-      : null;
+    p.open ? <div data-testid={`modal-${id}`}>{p.label}</div> : null;
 }
 
 const registry = {
@@ -19,7 +17,11 @@ const { ModalProvider, useModal, service } = configureModalService(registry);
 
 function TestButton({ onAction }: { onAction: (modal: ReturnType<typeof useModal>) => void }) {
   const modal = useModal();
-  return <button data-testid="btn" onClick={() => onAction(modal)}>Open</button>;
+  return (
+    <button data-testid="btn" onClick={() => onAction(modal)}>
+      Open
+    </button>
+  );
 }
 
 describe('configureModalService', () => {
@@ -32,9 +34,7 @@ describe('configureModalService', () => {
   it('renders top modal factory output', async () => {
     render(
       <ModalProvider>
-        <TestButton
-          onAction={({ open }) => open('a', { label: 'hello' })}
-        />
+        <TestButton onAction={({ open }) => open('a', { label: 'hello' })} />
       </ModalProvider>,
     );
 

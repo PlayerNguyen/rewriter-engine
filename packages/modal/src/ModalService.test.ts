@@ -2,8 +2,7 @@ import { describe, expect, it } from 'bun:test';
 import { ModalService } from './ModalService';
 import type { ModalFactory, ModalRegistry } from './types';
 
-const testFactory: ModalFactory<{ label: string }> = (p) =>
-  ({ type: 'test', ...p } as unknown as any);
+const testFactory: ModalFactory<{ label: string }> = (p) => p.label;
 
 const registry = {
   test: testFactory,
@@ -21,7 +20,9 @@ describe('ModalService', () => {
     it('notifies subscribers', () => {
       const service = new ModalService(registry);
       let called = false;
-      service.subscribe(() => { called = true; });
+      service.subscribe(() => {
+        called = true;
+      });
       service.open('test', { label: 'hello' });
       expect(called).toBe(true);
     });
@@ -45,7 +46,9 @@ describe('ModalService', () => {
       const service = new ModalService(registry);
       let called = false;
       service.open('test', { label: 'a' });
-      service.subscribe(() => { called = true; });
+      service.subscribe(() => {
+        called = true;
+      });
       service.close();
       expect(called).toBe(true);
     });
@@ -109,7 +112,9 @@ describe('ModalService', () => {
     it('returns unsubscribe function', () => {
       const service = new ModalService(registry);
       let count = 0;
-      const unsub = service.subscribe(() => { count++; });
+      const unsub = service.subscribe(() => {
+        count++;
+      });
       service.open('test', { label: 'a' });
       expect(count).toBe(1);
       unsub();

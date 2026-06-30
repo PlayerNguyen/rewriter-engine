@@ -1,15 +1,8 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useSyncExternalStore,
-} from 'react';
+import { createContext, useCallback, useContext, useSyncExternalStore } from 'react';
 import { ModalService } from './ModalService';
-import type { ModalRegistry, CustomProps } from './types';
+import type { CustomProps, ModalRegistry } from './types';
 
-export function configureModalService<TRegistry extends ModalRegistry>(
-  registry: TRegistry,
-) {
+export function configureModalService<TRegistry extends ModalRegistry>(registry: TRegistry) {
   const Context = createContext<ModalService<TRegistry> | null>(null);
   const service = new ModalService(registry);
 
@@ -27,9 +20,7 @@ export function configureModalService<TRegistry extends ModalRegistry>(
           const factory = registry[entry.key];
           if (!factory) return null;
           return (
-            <span key={`${entry.key}-${index}`}>
-              {factory(service.resolveProps(entry, isTop))}
-            </span>
+            <span key={`${entry.key}-${index}`}>{factory(service.resolveProps(entry, isTop))}</span>
           );
         })}
       </Context.Provider>
@@ -45,10 +36,7 @@ export function configureModalService<TRegistry extends ModalRegistry>(
     }
 
     const open = useCallback(
-      <K extends keyof TRegistry & string>(
-        key: K,
-        customProps: CustomProps<TRegistry[K]>,
-      ) => {
+      <K extends keyof TRegistry & string>(key: K, customProps: CustomProps<TRegistry[K]>) => {
         svc.open(key, customProps);
       },
       [svc],

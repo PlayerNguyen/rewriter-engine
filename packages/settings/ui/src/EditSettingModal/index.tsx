@@ -1,2 +1,2 @@
-export { EditSettingModal } from './EditSettingModal';
 export type { EditSettingModalCustomProps } from './EditSettingModal';
+export { EditSettingModal } from './EditSettingModal';

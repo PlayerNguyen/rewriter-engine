@@ -1,8 +1,8 @@
-import type { ContentfulStatusCode } from 'hono/utils/http-status';
-import type { ErrorHandler } from 'hono';
-import { HTTPException } from 'hono/http-exception';
 import { PrismaClientKnownRequestError } from '@rewriter/db';
 import { HandlerNotFoundError } from '@rewriter/table-core';
+import type { ErrorHandler } from 'hono';
+import { HTTPException } from 'hono/http-exception';
+import type { ContentfulStatusCode } from 'hono/utils/http-status';
 import type { AppEnv } from '../types/env';
 
 export const errorHandler: ErrorHandler<AppEnv> = (err, c) => {
@@ -15,7 +15,10 @@ export const errorHandler: ErrorHandler<AppEnv> = (err, c) => {
 
   if (err instanceof PrismaClientKnownRequestError) {
     const mapped = mapPrismaError(err);
-    logger.warn({ prismaCode: err.code, status: mapped.status, message: mapped.message }, 'Prisma error');
+    logger.warn(
+      { prismaCode: err.code, status: mapped.status, message: mapped.message },
+      'Prisma error',
+    );
     return c.json({ error: mapped.message }, mapped.status as ContentfulStatusCode);
   }
 

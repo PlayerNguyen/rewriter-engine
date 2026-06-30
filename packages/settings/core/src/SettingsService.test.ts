@@ -1,4 +1,4 @@
-import { describe, expect, it, mock, beforeEach } from 'bun:test';
+import { beforeEach, describe, expect, it, mock } from 'bun:test';
 import { SettingsService } from './SettingsService';
 
 const mockUpdate = mock();
@@ -20,7 +20,13 @@ describe('SettingsService', () => {
   });
 
   it('calls db.setting.update with correct args', async () => {
-    const record = { id: '1', key: 'llm.provider', value: 'openai', createdAt: new Date(), updatedAt: new Date() };
+    const record = {
+      id: '1',
+      key: 'llm.provider',
+      value: 'openai',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockUpdate.mockResolvedValue(record);
 
     await service.update('llm.provider', 'openai');
@@ -32,7 +38,13 @@ describe('SettingsService', () => {
   });
 
   it('returns the updated record', async () => {
-    const record = { id: '1', key: 'theme', value: { dark: true }, createdAt: new Date(), updatedAt: new Date() };
+    const record = {
+      id: '1',
+      key: 'theme',
+      value: { dark: true },
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     mockUpdate.mockResolvedValue(record);
 
     const result = await service.update('theme', { dark: true });

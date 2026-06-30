@@ -34,10 +34,7 @@ export interface SettingsPageProps {
  * }
  * ```
  */
-export function SettingsPage({
-  onEdit,
-  refreshKey = 0,
-}: SettingsPageProps) {
+export function SettingsPage({ onEdit, refreshKey = 0 }: SettingsPageProps) {
   return (
     <Stack gap="lg">
       <Text size="headline" weight={600}>
@@ -71,9 +68,7 @@ export function SettingsPage({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() =>
-                      onEdit?.(setting.key, setting.value, () => {})
-                    }
+                    onClick={() => onEdit?.(setting.key, setting.value, () => {})}
                   >
                     Edit
                   </Button>

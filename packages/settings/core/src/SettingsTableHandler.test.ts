@@ -1,6 +1,7 @@
-import { describe, expect, it, mock, beforeEach } from 'bun:test';
-import { SettingsTableHandler } from './SettingsTableHandler';
+import { beforeEach, describe, expect, it, mock } from 'bun:test';
 import { DefaultTableRequest } from '@rewriter/table-core';
+import type { Context } from 'hono';
+import { SettingsTableHandler } from './SettingsTableHandler';
 
 const mockFindMany = mock();
 const mockCount = mock();
@@ -14,6 +15,13 @@ mock.module('@rewriter/db', () => ({
   },
 }));
 
+interface FindManyArgs {
+  where?: Record<string, unknown>;
+  orderBy?: Record<string, string>;
+  skip?: number;
+  take?: number;
+}
+
 describe('SettingsTableHandler', () => {
   const handler = new SettingsTableHandler();
 
@@ -23,12 +31,20 @@ describe('SettingsTableHandler', () => {
   });
 
   it('returns correct paginated shape', async () => {
-    const rows = [{ id: '1', key: 'test', value: 'hello', createdAt: new Date(), updatedAt: new Date() }];
+    const rows = [
+      {
+        id: '1',
+        key: 'test',
+        value: 'hello',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
     mockFindMany.mockResolvedValue(rows);
     mockCount.mockResolvedValue(1);
 
     const request = new DefaultTableRequest({ id: 'settings' });
-    const result = await handler.handle(request, {} as any);
+    const result = await handler.handle(request, {} as unknown as Context);
 
     expect(result.data).toEqual(rows);
     expect(result.total).toBe(1);
@@ -41,12 +57,17 @@ describe('SettingsTableHandler', () => {
     mockFindMany.mockResolvedValue([]);
     mockCount.mockResolvedValue(0);
 
-    const request = new DefaultTableRequest({ id: 'settings', search: 'llm' });
-    await handler.handle(request, {} as any);
+    const request = new DefaultTableRequest({
+      id: 'settings',
+      search: 'llm',
+    });
+    await handler.handle(request, {} as unknown as Context);
 
     expect(mockFindMany).toHaveBeenCalled();
-    const call = mockFindMany.mock.calls[0]![0] as any;
-    expect(call.where.key).toEqual({ contains: 'llm', mode: 'insensitive' });
+    const call = mockFindMany.mock.calls[0]![0] as FindManyArgs;
+    expect(call.where).toEqual({
+      key: { contains: 'llm', mode: 'insensitive' },
+    });
   });
 
   it('default sort is createdAt:desc', async () => {
@@ -54,9 +75,9 @@ describe('SettingsTableHandler', () => {
     mockCount.mockResolvedValue(0);
 
     const request = new DefaultTableRequest({ id: 'settings' });
-    await handler.handle(request, {} as any);
+    await handler.handle(request, {} as unknown as Context);
 
-    const call = mockFindMany.mock.calls[0]![0] as any;
+    const call = mockFindMany.mock.calls[0]![0] as FindManyArgs;
     expect(call.orderBy).toEqual({ createdAt: 'desc' });
   });
 
@@ -64,10 +85,13 @@ describe('SettingsTableHandler', () => {
     mockFindMany.mockResolvedValue([]);
     mockCount.mockResolvedValue(0);
 
-    const request = new DefaultTableRequest({ id: 'settings', sort: { fieldName: 'key', direction: 'asc' } });
-    await handler.handle(request, {} as any);
+    const request = new DefaultTableRequest({
+      id: 'settings',
+      sort: { fieldName: 'key', direction: 'asc' },
+    });
+    await handler.handle(request, {} as unknown as Context);
 
-    const call = mockFindMany.mock.calls[0]![0] as any;
+    const call = mockFindMany.mock.calls[0]![0] as FindManyArgs;
     expect(call.orderBy).toEqual({ key: 'asc' });
   });
 
@@ -75,10 +99,13 @@ describe('SettingsTableHandler', () => {
     mockFindMany.mockResolvedValue([]);
     mockCount.mockResolvedValue(0);
 
-    const request = new DefaultTableRequest({ id: 'settings', sort: { fieldName: 'dangerous', direction: 'asc' } });
-    await handler.handle(request, {} as any);
+    const request = new DefaultTableRequest({
+      id: 'settings',
+      sort: { fieldName: 'dangerous', direction: 'asc' },
+    });
+    await handler.handle(request, {} as unknown as Context);
 
-    const call = mockFindMany.mock.calls[0]![0] as any;
+    const call = mockFindMany.mock.calls[0]![0] as FindManyArgs;
     expect(call.orderBy).toEqual({ createdAt: 'desc' });
   });
 
@@ -86,10 +113,14 @@ describe('SettingsTableHandler', () => {
     mockFindMany.mockResolvedValue([]);
     mockCount.mockResolvedValue(50);
 
-    const request = new DefaultTableRequest({ id: 'settings', page: 2, limit: 10 });
-    await handler.handle(request, {} as any);
+    const request = new DefaultTableRequest({
+      id: 'settings',
+      page: 2,
+      limit: 10,
+    });
+    await handler.handle(request, {} as unknown as Context);
 
-    const call = mockFindMany.mock.calls[0]![0] as any;
+    const call = mockFindMany.mock.calls[0]![0] as FindManyArgs;
     expect(call.skip).toBe(10);
     expect(call.take).toBe(10);
   });

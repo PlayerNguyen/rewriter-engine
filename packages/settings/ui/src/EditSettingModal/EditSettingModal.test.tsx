@@ -1,4 +1,4 @@
-import { describe, expect, it, mock, beforeEach, afterEach } from 'bun:test';
+import { afterEach, beforeEach, describe, expect, it, mock } from 'bun:test';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { EditSettingModal } from './EditSettingModal';
 
@@ -17,26 +17,14 @@ describe('EditSettingModal', () => {
 
   it('renders key as read-only text', () => {
     render(
-      <EditSettingModal
-        open
-        onClose={() => {}}
-        settingKey="llm.provider"
-        currentValue="openai"
-      />,
+      <EditSettingModal open onClose={() => {}} settingKey="llm.provider" currentValue="openai" />,
     );
 
     expect(screen.getByText('llm.provider')).toBeDefined();
   });
 
   it('pre-fills textarea with stringified value', () => {
-    render(
-      <EditSettingModal
-        open
-        onClose={() => {}}
-        settingKey="test"
-        currentValue={42}
-      />,
-    );
+    render(<EditSettingModal open onClose={() => {}} settingKey="test" currentValue={42} />);
 
     const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     expect(textarea.value).toBe('42');
@@ -45,14 +33,7 @@ describe('EditSettingModal', () => {
   it('shows JSON parse error for invalid input', async () => {
     mockFetch.mockResolvedValue({ ok: true } as Response);
 
-    render(
-      <EditSettingModal
-        open
-        onClose={() => {}}
-        settingKey="test"
-        currentValue="hello"
-      />,
-    );
+    render(<EditSettingModal open onClose={() => {}} settingKey="test" currentValue="hello" />);
 
     const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '{invalid json}' } });
@@ -70,12 +51,7 @@ describe('EditSettingModal', () => {
     mockFetch.mockResolvedValue({ ok: true } as Response);
 
     render(
-      <EditSettingModal
-        open
-        onClose={() => {}}
-        settingKey="llm.provider"
-        currentValue="openai"
-      />,
+      <EditSettingModal open onClose={() => {}} settingKey="llm.provider" currentValue="openai" />,
     );
 
     const buttons = screen.getAllByText('Save');
@@ -83,14 +59,11 @@ describe('EditSettingModal', () => {
     fireEvent.click(saveBtn);
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith(
-        '/api/v1/settings/llm.provider',
-        {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ value: 'openai' }),
-        },
-      );
+      expect(mockFetch).toHaveBeenCalledWith('/api/v1/settings/llm.provider', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: 'openai' }),
+      });
     });
   });
 
@@ -104,7 +77,9 @@ describe('EditSettingModal', () => {
         onClose={() => {}}
         settingKey="test"
         currentValue="hello"
-        onSaved={() => { saved = true; }}
+        onSaved={() => {
+          saved = true;
+        }}
       />,
     );
 
@@ -124,7 +99,9 @@ describe('EditSettingModal', () => {
     render(
       <EditSettingModal
         open
-        onClose={() => { closed = true; }}
+        onClose={() => {
+          closed = true;
+        }}
         settingKey="test"
         currentValue="hello"
       />,
@@ -142,14 +119,7 @@ describe('EditSettingModal', () => {
   it('disables buttons while saving', async () => {
     mockFetch.mockResolvedValue({ ok: true } as Response);
 
-    render(
-      <EditSettingModal
-        open
-        onClose={() => {}}
-        settingKey="test"
-        currentValue="hello"
-      />,
-    );
+    render(<EditSettingModal open onClose={() => {}} settingKey="test" currentValue="hello" />);
 
     const buttons = screen.getAllByText('Save');
     const saveBtn = buttons[buttons.length - 1] as HTMLButtonElement;
@@ -169,12 +139,7 @@ describe('EditSettingModal', () => {
 
   it('renders nothing when open is false', () => {
     const { container } = render(
-      <EditSettingModal
-        open={false}
-        onClose={() => {}}
-        settingKey="test"
-        currentValue="hello"
-      />,
+      <EditSettingModal open={false} onClose={() => {}} settingKey="test" currentValue="hello" />,
     );
 
     expect(container.textContent).toBe('');

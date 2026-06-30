@@ -1,9 +1,14 @@
-import type { ModalBaseProps, ModalRegistry, CustomProps } from './types';
+import type { CustomProps, ModalBaseProps, ModalRegistry } from './types';
+
+type Entry<TRegistry extends ModalRegistry> = {
+  key: keyof TRegistry & string;
+  customProps: Record<string, unknown>;
+};
 
 export class ModalService<TRegistry extends ModalRegistry> {
-  private stack: Array<{ key: keyof TRegistry & string; customProps: any }> = [];
+  private stack: Array<Entry<TRegistry>> = [];
   private listeners = new Set<() => void>();
-  private snapshot: ReadonlyArray<{ key: keyof TRegistry & string; customProps: any }> = [];
+  private snapshot: ReadonlyArray<Entry<TRegistry>> = [];
 
   /** Read-only access to the registry. */
   constructor(readonly registry: TRegistry) {}
@@ -21,17 +26,16 @@ export class ModalService<TRegistry extends ModalRegistry> {
 
   private notify() {
     this.snapshot = [...this.stack];
-    this.listeners.forEach((fn) => { fn(); });
+    this.listeners.forEach((fn) => {
+      fn();
+    });
   }
 
   /**
    * Push a modal onto the stack. Full IntelliSense — `key` is auto-completed
    * from the registry, and `customProps` is typed per that modal's factory.
    */
-  open<K extends keyof TRegistry & string>(
-    key: K,
-    customProps: CustomProps<TRegistry[K]>,
-  ) {
+  open<K extends keyof TRegistry & string>(key: K, customProps: CustomProps<TRegistry[K]>) {
     this.stack.push({ key, customProps });
     this.notify();
   }
@@ -59,10 +63,7 @@ export class ModalService<TRegistry extends ModalRegistry> {
    * Resolve a stack entry into the merged props needed to render the modal.
    * Only the top-most entry gets `open: true`.
    */
-  resolveProps(
-    entry: { key: keyof TRegistry & string; customProps: any },
-    isTop: boolean,
-  ): ModalBaseProps & Record<string, any> {
+  resolveProps(entry: Entry<TRegistry>, isTop: boolean): ModalBaseProps & Record<string, unknown> {
     return {
       ...entry.customProps,
       open: isTop,
