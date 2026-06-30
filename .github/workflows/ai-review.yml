@@ -23,11 +23,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup OpenCode Go credentials
-        run: |
-          mkdir -p ~/.local/share/opencode
-          echo '{"opencode-go":{"apiKey":"${{ secrets.OPENCODE_GO_API_KEY }}"}}' > ~/.local/share/opencode/auth.json
-
       - name: Determine PR number
         id: pr
         if: github.event_name == 'workflow_dispatch'
@@ -35,6 +30,7 @@ jobs:
 
       - uses: anomalyco/opencode/github@latest
         env:
+          OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: opencode-go/deepseek-v4-pro

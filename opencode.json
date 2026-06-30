@@ -2,6 +2,13 @@
   "$schema": "https://opencode.ai/config.json",
   "instructions": ["AGENTS.md", "docs/programming-guidelines.md"],
   "lsp": true,
+  "provider": {
+    "opencode-go": {
+      "options": {
+        "apiKey": "{env:OPENCODE_GO_API_KEY}"
+      }
+    }
+  },
   "permission": {
     "skill": {
       "pr-review": "allow",
