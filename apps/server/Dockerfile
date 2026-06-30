@@ -1,4 +1,4 @@
-FROM oven/bun:latest AS base
+FROM oven/bun:1.3.14-alpine AS base
 WORKDIR /app
 
 # Copy root package files and workspace config
