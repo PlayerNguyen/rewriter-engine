@@ -21,7 +21,7 @@ jobs:
   review:
     runs-on: ubuntu-latest
     env:
-      OPENCODE_REVIEW_MODEL: ${{ secrets.OPENCODE_REVIEW_MODEL || 'opencode-go/mimo-v2.5' }}
+      OPENCODE_REVIEW_MODEL: ${{ secrets.OPENCODE_REVIEW_MODEL || 'opencode-go/deepseek-v4-pro' }}
     steps:
       - uses: actions/checkout@v6
         with:
