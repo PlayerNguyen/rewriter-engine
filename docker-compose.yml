@@ -16,3 +16,28 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    container_name: rewriter-server
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-rewriter}:${POSTGRES_PASSWORD:-rewriter_secret}@postgres:5432/${POSTGRES_DB:-rewriter}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
+    container_name: rewriter-dashboard
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - server
