@@ -1,3 +1,5 @@
+# Local infrastructure setup - database and services only
+# Run apps locally with: bun dev
 services:
   postgres:
     image: postgres:18-alpine
@@ -16,3 +18,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  adminer:
+    image: adminer:5.4.2
+    container_name: rewriter-adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    depends_on:
+      - postgres

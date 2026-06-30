@@ -1,0 +1,21 @@
+# Staging overrides
+services:
+  postgres:
+    container_name: rewriter-postgres-staging
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+
+  server:
+    container_name: rewriter-server-staging
+    ports:
+      - "3001:3001"
+
+  dashboard:
+    container_name: rewriter-dashboard-staging
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_staging_data:

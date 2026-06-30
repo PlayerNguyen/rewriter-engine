@@ -1,0 +1,11 @@
+node_modules
+.git
+.appdata
+.codegraph
+.opencode
+.vscode
+.github
+*.md
+.env
+.env.*
+!.env.example

@@ -27,6 +27,55 @@
 - Use `gh pr create` and fill out **every** section: description, type of change, workspaces affected, testing (screenshots, verification commands, automated test coverage), and checklist.
 - Do not skip the template or leave sections blank.
 
+## Deployment
+
+> **PRIORITY: HIGH** — Follow these conventions for consistent deployments.
+
+### Directory Structure
+
+```
+docker-compose.yml                          # Local infrastructure only (DB, Adminer)
+tools/deployment/
+├── compose.yaml                            # Base config for staging/production
+├── staging.compose.yaml                    # Staging overrides
+├── production.compose.yaml                 # Production overrides
+└── .env.example                            # Environment template
+```
+
+### Environment Rules
+
+| Environment | Config | What Runs |
+|-------------|--------|-----------|
+| **Local dev** | Root `docker-compose.yml` | DB + Adminer only. Apps run via `bun dev` |
+| **Staging** | `compose.yaml` + `staging.compose.yaml` | All services in containers |
+| **Production** | `compose.yaml` + `production.compose.yaml` | All services in containers |
+
+1. **Never commit `.env` files** — Only `.env.example` files are committed.
+2. **Merge approach** — Base `compose.yaml` defines common config; environment files override/add settings.
+
+### Deployment Commands
+
+```bash
+# Local: Start database only
+cp .env.example .env
+docker compose up -d
+bun dev
+
+# Staging
+cd tools/deployment
+cp .env.example .env  # Edit with real secrets
+docker compose -f compose.yaml -f staging.compose.yaml up -d --build
+docker compose exec server bunx prisma migrate deploy
+
+# Production
+cd tools/deployment
+cp .env.example .env  # Edit with real secrets
+docker compose -f compose.yaml -f production.compose.yaml up -d --build
+docker compose exec server bunx prisma migrate deploy
+```
+
+> **Note:** `prisma migrate deploy` requires the `server` container to be running first. The Prisma CLI is available because it's installed as a root workspace dependency.
+
 ## Unit Testing
 
 When setting up a new package or module, include a test runner from the start.
