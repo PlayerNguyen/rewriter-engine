@@ -33,7 +33,7 @@ jobs:
           OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: opencode-go/deepseek-v4-pro
+          model: opencode-go/deepseek-v4-flash
           use_github_token: true
           prompt: |
             Load the pr-review skill and review PR #${{ steps.pr.outputs.number || github.event.pull_request.number }}.
