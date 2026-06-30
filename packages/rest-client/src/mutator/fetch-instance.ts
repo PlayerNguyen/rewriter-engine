@@ -24,7 +24,7 @@ export type RequestParams = {
   /** Custom headers merged on top of defaults. */
   headers?: Record<string, string>;
   /** Request body (serialized to JSON before sending). */
-  body?: unknown;
+  data?: unknown;
   /** Query parameters appended to the URL. */
   params?: Record<string, unknown>;
   /** AbortSignal for request cancellation. */
@@ -84,7 +84,7 @@ export const customFetchInstance = async <T>(requestParams: RequestParams): Prom
   const res = await fetch(url.toString(), {
     method: requestParams.method,
     headers,
-    body: requestParams.body ? JSON.stringify(requestParams.body) : undefined,
+    body: requestParams.data ? JSON.stringify(requestParams.data) : undefined,
     signal: requestParams.signal,
   });
 
