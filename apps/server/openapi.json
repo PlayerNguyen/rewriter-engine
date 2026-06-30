@@ -170,6 +170,84 @@
         "parameters": [],
         "description": "Health check endpoint"
       }
+    },
+    "/api/v1/settings/{key}": {
+      "patch": {
+        "responses": {
+          "200": {
+            "description": "Setting updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    },
+                    "value": {},
+                    "updatedAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "key", "updatedAt"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Setting not found"
+          }
+        },
+        "operationId": "patchApiV1SettingsByKey",
+        "tags": ["Settings"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "key",
+            "required": true
+          }
+        ],
+        "description": "Update a setting value by key",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      {
+                        "type": "array",
+                        "items": {}
+                      }
+                    ]
+                  }
+                },
+                "required": ["value"]
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

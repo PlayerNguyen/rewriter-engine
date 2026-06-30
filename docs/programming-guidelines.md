@@ -2,6 +2,13 @@
 
 ## TypeScript
 
+> **PRIORITY: CRITICAL** — Violating these rules will block every PR.
+
+- **NEVER use `any`** — in type annotations, assertions, generics, or casts. No exceptions.
+  - Use `unknown` when the type is truly unknown, then narrow with guards.
+  - Use `Record<string, unknown>` instead of `Record<string, any>`.
+  - Use specific types or generics instead of `any` in function signatures and generics (e.g. `ModalFactory<TCustom extends Record<string, unknown>>` not `ModalFactory<any>`).
+  - If you are unsure which type to use, **stop and ask the user**. Provide options and let them choose or define a custom type.
 - All TypeScript code must have unit tests.
 - Run `tsc --noEmit` before committing — no type errors allowed in the tree.
 

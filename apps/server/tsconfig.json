@@ -3,7 +3,11 @@
   "compilerOptions": {
     "paths": {
       "@rewriter/db": ["../../packages/db/src/index.ts"],
-      "@rewriter/db/*": ["../../packages/db/src/*"]
+      "@rewriter/db/*": ["../../packages/db/src/*"],
+      "@rewriter/settings": ["../../packages/settings/core/src/index.ts"],
+      "@rewriter/settings/*": ["../../packages/settings/core/src/*"],
+      "@rewriter/table-core": ["../../packages/table-core/src/index.ts"],
+      "@rewriter/table-core/*": ["../../packages/table-core/src/*"]
     }
   },
   "include": ["src/**/*.ts"]

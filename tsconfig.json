@@ -39,7 +39,13 @@
       "@rewriter/rest-client": ["./packages/rest-client/src/index.ts"],
       "@rewriter/rest-client/*": ["./packages/rest-client/src/*"],
       "@rewriter/table-ui": ["./packages/table-ui/src/index.ts"],
-      "@rewriter/table-ui/*": ["./packages/table-ui/src/*"]
+      "@rewriter/table-ui/*": ["./packages/table-ui/src/*"],
+      "@rewriter/modal": ["./packages/modal/src/index.tsx"],
+      "@rewriter/modal/*": ["./packages/modal/src/*"],
+      "@rewriter/settings": ["./packages/settings/core/src/index.ts"],
+      "@rewriter/settings/*": ["./packages/settings/core/src/*"],
+      "@rewriter/settings-ui": ["./packages/settings/ui/src/index.tsx"],
+      "@rewriter/settings-ui/*": ["./packages/settings/ui/src/*"]
     }
   }
 }

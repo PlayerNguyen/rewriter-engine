@@ -242,17 +242,17 @@ describe('error normalization', () => {
 // Request body serialization
 // ---------------------------------------------------------------------------
 describe('request body serialization', () => {
-  test('JSON-stringifies body when present', async () => {
+  test('JSON-stringifies data when present', async () => {
     const fetchMock = mockFetch(200, { ok: true });
     setFetch(fetchMock);
 
-    await customFetchInstance(buildParams({ method: 'POST', body: { name: 'test' } }));
+    await customFetchInstance(buildParams({ method: 'POST', data: { name: 'test' } }));
 
     const init = fetchMock.mock.calls[0]?.[1] as RequestInit;
     expect(init.body).toBe('{"name":"test"}');
   });
 
-  test('omits body when absent', async () => {
+  test('omits body when data is absent', async () => {
     const fetchMock = mockFetch(200, { ok: true });
     setFetch(fetchMock);
 
@@ -332,7 +332,7 @@ describe('HTTP method', () => {
     const fetchMock = mockFetch(200, { ok: true });
     setFetch(fetchMock);
 
-    await customFetchInstance(buildParams({ method, body: {} }));
+    await customFetchInstance(buildParams({ method, data: {} }));
 
     const init = fetchMock.mock.calls[0]?.[1] as RequestInit;
     expect(init.method).toBe(method);

@@ -2,11 +2,14 @@
 
 ## TypeScript Policy
 
+**NEVER use `any`** — in type annotations, assertions, generics, or casts. Use `unknown` and narrow, or use specific types/generics. If unsure which type to use, ask the user.
+
 Always run `tsc --noEmit` and fix all compile errors before committing. Never leave type errors in the tree.
 
 ```bash
 bun run --filter @rewriter/ui typecheck
 bun run --filter @rewriter/dashboard typecheck
+bun run lint
 ```
 
 ## Commit & Branch Conventions

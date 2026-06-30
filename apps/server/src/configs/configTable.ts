@@ -1,3 +1,4 @@
+import { SettingsTableHandler } from '@rewriter/settings';
 import { TableService, tableRegistryFactory } from '@rewriter/table-core';
 import { ArticlesTableHandler } from '../tables/articles';
 import { RewrittenArticlesTableHandler } from '../tables/rewritten-articles';
@@ -9,6 +10,7 @@ const registry = tableRegistryFactory.create([
   new ArticlesTableHandler(),
   new SystemPromptsTableHandler(),
   new RewrittenArticlesTableHandler(),
+  new SettingsTableHandler(),
 ]);
 
 /**
