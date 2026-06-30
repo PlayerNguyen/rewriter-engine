@@ -30,12 +30,18 @@ jobs:
             echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Determine model
+        id: model
+        run: |
+          MODEL="${OPENCODE_REVIEW_MODEL:-opencode-go/mimo-v2.5}"
+          echo "value=$MODEL" >> "$GITHUB_OUTPUT"
+
       - uses: anomalyco/opencode/github@latest
         env:
           OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: opencode-go/kimi-k2.7-code
+          model: ${{ steps.model.outputs.value }}
           use_github_token: true
           prompt: |
             Load the pr-review skill and review PR #${{ steps.pr.outputs.number }}.
