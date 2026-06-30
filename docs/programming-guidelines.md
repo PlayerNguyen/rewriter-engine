@@ -74,6 +74,8 @@ docker compose -f compose.yaml -f production.compose.yaml up -d --build
 docker compose exec server bunx prisma migrate deploy
 ```
 
+> **Note:** `prisma migrate deploy` requires the `server` container to be running first. The Prisma CLI is available because it's installed as a root workspace dependency.
+
 ## Unit Testing
 
 When setting up a new package or module, include a test runner from the start.
