@@ -1,10 +1,12 @@
 import { db } from '@rewriter/db';
+import type { ExplorerConfigLike } from '@rewriter/explorer-core';
 
 /**
  * Explorer configuration loaded from the database settings.
  * Reads `explorer.*` keys and provides typed access.
+ * Implements {@link ExplorerConfigLike} for use with explorer-core services.
  */
-export class ExplorerConfig {
+export class ExplorerConfig implements ExplorerConfigLike {
   constructor(
     readonly period: string,
     readonly cronPattern: string,
@@ -26,11 +28,15 @@ export class ExplorerConfig {
 
     const map = new Map(settings.map((s) => [s.key, s.value]));
 
+    const enabledRaw = map.get('explorer.enabled');
+    const enabled =
+      typeof enabledRaw === 'string' ? enabledRaw === 'true' : Boolean(enabledRaw ?? true);
+
     return new ExplorerConfig(
       String(map.get('explorer.period') ?? 'PT30M'),
       String(map.get('explorer.cron_pattern') ?? '*/1 * * * *'),
       Number(map.get('explorer.max_depth') ?? 2),
-      Boolean(map.get('explorer.enabled') ?? true),
+      enabled,
     );
   }
 

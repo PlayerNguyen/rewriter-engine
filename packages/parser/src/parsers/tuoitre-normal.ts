@@ -2,10 +2,11 @@ import { load as cheerioLoad } from 'cheerio';
 import type { ParsedArticle, Parser } from '../types';
 
 /**
- * Parser for tuoitre.vn articles.
+ * Parser for tuoitre.vn RSS feeds.
  *
- * Handles RSS feeds from tuoitre.vn and extracts article content
- * from the full HTML page using cheerio.
+ * Parses RSS 2.0 XML from tuoitre.vn to extract article metadata
+ * (title, link, description, pubDate). Also provides `extractLinks()`
+ * for deep exploration of article HTML pages using cheerio.
  *
  * URL pattern: `https://tuoitre.vn/`
  *

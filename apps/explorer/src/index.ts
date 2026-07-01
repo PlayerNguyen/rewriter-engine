@@ -1,9 +1,9 @@
+import { ExplorerService } from '@rewriter/explorer-core';
 import { logger } from '@rewriter/logger';
 import { GenericRSSParser, ParserRegistry, TuoiTreNormalParser } from '@rewriter/parser';
 import { createApp } from './app';
 import { ExplorerConfig } from './config';
 import { Scheduler } from './scheduler';
-import { ExplorerService } from './services/explorer.service';
 
 // Build parser registry
 const parserRegistry = new ParserRegistry();

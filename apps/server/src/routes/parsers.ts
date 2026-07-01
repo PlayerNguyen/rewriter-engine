@@ -1,12 +1,8 @@
-import { GenericRSSParser, ParserRegistry, TuoiTreNormalParser } from '@rewriter/parser';
 import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver } from 'hono-openapi/zod';
 import { z } from 'zod';
-
-const parserRegistry = new ParserRegistry();
-parserRegistry.register(new TuoiTreNormalParser());
-parserRegistry.register(new GenericRSSParser());
+import { parserRegistry } from '../configs/configureParsers';
 
 const parserSchema = z.object({
   key: z.string(),

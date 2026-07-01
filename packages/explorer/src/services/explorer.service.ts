@@ -1,7 +1,7 @@
 import { db, PrismaClientKnownRequestError, type Source } from '@rewriter/db';
 import { logger } from '@rewriter/logger';
 import type { ParserRegistry } from '@rewriter/parser';
-import type { ExplorerConfig } from '../config';
+import type { ExplorerConfigLike } from '../types';
 import { DeepExplorerService } from './deep-explorer.service';
 import { RssFetcher } from './rss-fetcher.service';
 
@@ -21,7 +21,7 @@ export class ExplorerService {
 
   constructor(
     private parserRegistry: ParserRegistry,
-    private config: ExplorerConfig,
+    private config: ExplorerConfigLike,
   ) {
     this.fetcher = new RssFetcher();
     this.deepExplorer = new DeepExplorerService(parserRegistry, config.maxDepth);

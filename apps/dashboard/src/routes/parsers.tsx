@@ -1,5 +1,14 @@
 import { type GetApiV1Parsers200Item, getApiV1Parsers } from '@rewriter/rest-client';
-import { Text } from '@rewriter/ui';
+import {
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Text,
+} from '@rewriter/ui';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +30,7 @@ function ParsersPage() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4">
+    <Stack gap="lg">
       <Text size="headline" weight={600}>
         {t('parsers.title')}
       </Text>
@@ -31,28 +40,22 @@ function ParsersPage() {
       {loading ? (
         <Text size="body">Loading...</Text>
       ) : (
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-hairline">
-              <th className="text-left p-2 text-sm font-medium text-ink-subtle">
-                {t('parsers.key')}
-              </th>
-              <th className="text-left p-2 text-sm font-medium text-ink-subtle">
-                {t('parsers.name')}
-              </th>
-              <th className="text-left p-2 text-sm font-medium text-ink-subtle">
-                {t('parsers.urlPatterns')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>{t('parsers.key')}</TableHead>
+              <TableHead>{t('parsers.name')}</TableHead>
+              <TableHead>{t('parsers.urlPatterns')}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {parsers.map((parser) => (
-              <tr key={parser.key} className="border-b border-hairline">
-                <td className="p-2">
+              <TableRow key={parser.key}>
+                <TableCell>
                   <code className="text-sm bg-surface-2 px-1.5 py-0.5 rounded">{parser.key}</code>
-                </td>
-                <td className="p-2 text-sm">{parser.name}</td>
-                <td className="p-2 text-sm">
+                </TableCell>
+                <TableCell>{parser.name}</TableCell>
+                <TableCell>
                   {parser.urlPatterns.length > 0 ? (
                     <div className="flex flex-wrap gap-1">
                       {parser.urlPatterns.map((pattern) => (
@@ -64,12 +67,12 @@ function ParsersPage() {
                   ) : (
                     <span className="text-ink-subtle text-xs">—</span>
                   )}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       )}
-    </div>
+    </Stack>
   );
 }

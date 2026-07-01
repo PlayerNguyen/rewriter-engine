@@ -78,7 +78,7 @@ export class Scheduler {
       const message = err instanceof Error ? err.message : String(err);
       this.lastError = message;
       logger.error({ err: message }, 'Manual exploration trigger failed');
-      return { triggered: true };
+      return { triggered: false, reason: message };
     } finally {
       this.running = false;
     }

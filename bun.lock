@@ -55,6 +55,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@rewriter/db": "workspace:*",
+        "@rewriter/explorer-core": "workspace:*",
         "@rewriter/logger": "workspace:*",
         "@rewriter/parser": "workspace:*",
         "@scalar/hono-api-reference": "^0.7.0",
@@ -107,6 +108,19 @@
         "@types/pg": "^8.11.0",
         "prisma": "^7.8.0",
         "typescript": "^5.0.0",
+      },
+    },
+    "packages/explorer": {
+      "name": "@rewriter/explorer-core",
+      "version": "0.0.1",
+      "dependencies": {
+        "@rewriter/db": "workspace:*",
+        "@rewriter/logger": "workspace:*",
+        "@rewriter/parser": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "typescript": "^5",
       },
     },
     "packages/logger": {
@@ -537,6 +551,8 @@
     "@rewriter/db": ["@rewriter/db@workspace:packages/db"],
 
     "@rewriter/explorer": ["@rewriter/explorer@workspace:apps/explorer"],
+
+    "@rewriter/explorer-core": ["@rewriter/explorer-core@workspace:packages/explorer"],
 
     "@rewriter/logger": ["@rewriter/logger@workspace:packages/logger"],
 
