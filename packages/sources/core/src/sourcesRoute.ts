@@ -29,7 +29,7 @@ const updateSourceSchema = z
   });
 
 const sourceResponseSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
   name: z.string(),
   url: z.string(),
   type: sourceTypeSchema,

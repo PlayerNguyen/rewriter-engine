@@ -10,9 +10,8 @@ export interface SourcesPageProps {
     currentUrl: string,
     currentType: string,
     currentIsActive: boolean,
-    onSaved: () => void,
   ) => void;
-  onDelete?: (sourceId: string, sourceName: string, onDeleted: () => void) => void;
+  onDelete?: (sourceId: string, sourceName: string) => void;
   refreshKey?: number;
 }
 
@@ -23,10 +22,12 @@ export interface SourcesPageProps {
  * @example
  * ```tsx
  * import { useModal } from '../configs/configureModals';
+ * import { toast } from '@rewriter/ui';
  * import { SourcesPage } from '@rewriter/sources-ui';
  *
  * function SourcesRoute() {
  *   const { open } = useModal();
+ *   const { t } = useTranslation();
  *   const [refreshKey, setRefreshKey] = useState(0);
  *   return (
  *     <SourcesPage
@@ -41,11 +42,16 @@ export interface SourcesPageProps {
  *           onSaved: () => setRefreshKey((k) => k + 1),
  *         })
  *       }
- *       onDelete={(id, name, onDeleted) => {
- *         if (confirm(`Delete source "${name}"?`)) {
- *           fetch(`/api/v1/sources/${id}`, { method: 'DELETE' }).then(() => onDeleted());
- *         }
- *       }}
+ *       onDelete={(id, name) =>
+ *         open('confirm', {
+ *           title: t('sources.deleteSource'),
+ *           message: t('sources.deleteConfirm', { name }),
+ *           confirmLabel: t('sources.delete'),
+ *           onConfirm: () => deleteApiV1SourcesById(id)
+ *             .then(() => { toast.success(t('sources.deleteSuccess')); })
+ *             .catch(() => { toast.error(t('sources.deleteError')); }),
+ *         })
+ *       }
  *     />
  *   );
  * }
@@ -85,10 +91,10 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
               accessorKey: 'type',
               header: t('sources.type'),
               cell: ({ getValue }) => {
-                const t = getValue() as string;
+                const val = getValue() as string;
                 return (
                   <span className="inline-block px-2 py-0.5 text-xs rounded bg-surface-2 border border-hairline">
-                    {t}
+                    {val}
                   </span>
                 );
               },
@@ -100,7 +106,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                 const active = getValue() as boolean;
                 return (
                   <span className={active ? 'text-semantic-success' : 'text-ink-subtle'}>
-                    {active ? 'Yes' : 'No'}
+                    {active ? t('sources.yes') : t('sources.no')}
                   </span>
                 );
               },
@@ -113,7 +119,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                 return v ? new Date(v).toLocaleString() : '—';
               },
             },
-            { accessorKey: 'createdAt', header: 'Created' },
+            { accessorKey: 'createdAt', header: t('sources.createdAt') },
             {
               id: 'actions',
               header: '',
@@ -132,14 +138,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                       size="sm"
                       icon={<Pencil size={14} />}
                       onClick={() =>
-                        onEdit?.(
-                          source.id,
-                          source.name,
-                          source.url,
-                          source.type,
-                          source.isActive,
-                          () => {},
-                        )
+                        onEdit?.(source.id, source.name, source.url, source.type, source.isActive)
                       }
                     >
                       {t('sources.editSource')}
@@ -148,7 +147,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                       variant="danger"
                       size="sm"
                       icon={<Trash2 size={14} />}
-                      onClick={() => onDelete?.(source.id, source.name, () => {})}
+                      onClick={() => onDelete?.(source.id, source.name)}
                     >
                       {t('sources.delete')}
                     </Button>
