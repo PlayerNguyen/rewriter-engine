@@ -9,7 +9,9 @@
       "@rewriter/modal": ["../../packages/modal/src/index.tsx"],
       "@rewriter/modal/*": ["../../packages/modal/src/*"],
       "@rewriter/settings-ui": ["../../packages/settings/ui/src/index.tsx"],
-      "@rewriter/settings-ui/*": ["../../packages/settings/ui/src/*"]
+      "@rewriter/settings-ui/*": ["../../packages/settings/ui/src/*"],
+      "@rewriter/sources-ui": ["../../packages/sources/ui/src/index.tsx"],
+      "@rewriter/sources-ui/*": ["../../packages/sources/ui/src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]

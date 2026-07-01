@@ -29,6 +29,21 @@
     "language": "Language",
     "logout": "Log out"
   },
+  "sources": {
+    "addSource": "Add Source",
+    "editSource": "Edit Source",
+    "deleteConfirm": "Are you sure you want to delete \"{name}\"?",
+    "name": "Name",
+    "url": "URL",
+    "type": "Type",
+    "active": "Active",
+    "lastFetched": "Last Fetched",
+    "create": "Create",
+    "cancel": "Cancel",
+    "save": "Save",
+    "creating": "Creating...",
+    "saving": "Saving..."
+  },
   "languageSwitcher": {
     "label": "Language",
     "en": "English",

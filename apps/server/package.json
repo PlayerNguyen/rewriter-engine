@@ -19,6 +19,7 @@
     "@rewriter/db": "workspace:*",
     "@rewriter/logger": "workspace:*",
     "@rewriter/settings": "workspace:*",
+    "@rewriter/sources": "workspace:*",
     "@rewriter/table-core": "workspace:*",
     "@scalar/hono-api-reference": "^0.7.0",
     "hono": "^4",

@@ -40,6 +40,8 @@ export type { CheckboxGroupProps, CheckboxProps } from './components/Checkbox';
 export { Checkbox, CheckboxGroup } from './components/Checkbox';
 export type { CommandInputProps } from './components/CommandInput';
 export { CommandInput } from './components/CommandInput';
+export type { ConfirmModalProps } from './components/ConfirmModal';
+export { ConfirmModal } from './components/ConfirmModal';
 export type { DashboardLayoutProps } from './components/DashboardLayout';
 export { DashboardLayout } from './components/DashboardLayout';
 export type { GridItemProps, GridProps } from './components/Grid';

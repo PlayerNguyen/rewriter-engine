@@ -45,7 +45,11 @@
       "@rewriter/settings": ["./packages/settings/core/src/index.ts"],
       "@rewriter/settings/*": ["./packages/settings/core/src/*"],
       "@rewriter/settings-ui": ["./packages/settings/ui/src/index.tsx"],
-      "@rewriter/settings-ui/*": ["./packages/settings/ui/src/*"]
+      "@rewriter/settings-ui/*": ["./packages/settings/ui/src/*"],
+      "@rewriter/sources": ["./packages/sources/core/src/index.ts"],
+      "@rewriter/sources/*": ["./packages/sources/core/src/*"],
+      "@rewriter/sources-ui": ["./packages/sources/ui/src/index.tsx"],
+      "@rewriter/sources-ui/*": ["./packages/sources/ui/src/*"]
     }
   }
 }

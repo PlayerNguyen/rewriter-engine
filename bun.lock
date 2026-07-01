@@ -25,6 +25,7 @@
       "dependencies": {
         "@rewriter/modal": "workspace:*",
         "@rewriter/settings-ui": "workspace:*",
+        "@rewriter/sources-ui": "workspace:*",
         "@rewriter/table-ui": "workspace:*",
         "@rewriter/ui": "workspace:*",
         "@tanstack/react-router": "^1.170.16",
@@ -58,6 +59,7 @@
         "@rewriter/db": "workspace:*",
         "@rewriter/logger": "workspace:*",
         "@rewriter/settings": "workspace:*",
+        "@rewriter/sources": "workspace:*",
         "@rewriter/table-core": "workspace:*",
         "@scalar/hono-api-reference": "^0.7.0",
         "hono": "^4",
@@ -142,6 +144,44 @@
     },
     "packages/settings/ui": {
       "name": "@rewriter/settings-ui",
+      "version": "0.0.1",
+      "dependencies": {
+        "@rewriter/rest-client": "workspace:*",
+        "@rewriter/table-ui": "workspace:*",
+        "@rewriter/ui": "workspace:*",
+      },
+      "devDependencies": {
+        "@rewriter/modal": "workspace:*",
+        "@testing-library/react": "^16.0.0",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "happy-dom": "^20.0.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "typescript": "^5",
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19",
+        "react-dom": "^18 || ^19",
+      },
+    },
+    "packages/sources/core": {
+      "name": "@rewriter/sources",
+      "version": "0.0.1",
+      "dependencies": {
+        "@rewriter/db": "workspace:*",
+        "@rewriter/table-core": "workspace:*",
+        "hono": "^4",
+        "hono-openapi": "^0.4.0",
+        "zod": "^3.23.0",
+        "zod-openapi": "^4.0.0",
+      },
+      "devDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/sources/ui": {
+      "name": "@rewriter/sources-ui",
       "version": "0.0.1",
       "dependencies": {
         "@rewriter/rest-client": "workspace:*",
@@ -471,6 +511,10 @@
     "@rewriter/settings": ["@rewriter/settings@workspace:packages/settings/core"],
 
     "@rewriter/settings-ui": ["@rewriter/settings-ui@workspace:packages/settings/ui"],
+
+    "@rewriter/sources": ["@rewriter/sources@workspace:packages/sources/core"],
+
+    "@rewriter/sources-ui": ["@rewriter/sources-ui@workspace:packages/sources/ui"],
 
     "@rewriter/table-core": ["@rewriter/table-core@workspace:packages/table-core"],
 
