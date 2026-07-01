@@ -9,7 +9,9 @@
       "@rewriter/sources": ["../../packages/sources/core/src/index.ts"],
       "@rewriter/sources/*": ["../../packages/sources/core/src/*"],
       "@rewriter/table-core": ["../../packages/table-core/src/index.ts"],
-      "@rewriter/table-core/*": ["../../packages/table-core/src/*"]
+      "@rewriter/table-core/*": ["../../packages/table-core/src/*"],
+      "@rewriter/parser": ["../../packages/parser/src/index.ts"],
+      "@rewriter/parser/*": ["../../packages/parser/src/*"]
     }
   },
   "include": ["src/**/*.ts"]

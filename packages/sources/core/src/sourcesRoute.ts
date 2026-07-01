@@ -14,6 +14,8 @@ const createSourceSchema = z.object({
   url: z.string().url(),
   type: sourceTypeSchema.default('RSS'),
   isActive: z.boolean().default(true),
+  parserKey: z.string().nullable().optional(),
+  requestDelayMs: z.number().int().min(0).default(1000),
 });
 
 const updateSourceSchema = z
@@ -22,6 +24,8 @@ const updateSourceSchema = z
     url: z.string().url(),
     type: sourceTypeSchema,
     isActive: z.boolean(),
+    parserKey: z.string().nullable(),
+    requestDelayMs: z.number().int().min(0),
   })
   .partial()
   .refine((data) => Object.keys(data).length > 0, {
@@ -34,6 +38,8 @@ const sourceResponseSchema = z.object({
   url: z.string(),
   type: sourceTypeSchema,
   isActive: z.boolean(),
+  parserKey: z.string().nullable(),
+  requestDelayMs: z.number(),
   lastFetched: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),

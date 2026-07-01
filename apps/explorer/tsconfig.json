@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@rewriter/db": ["../../packages/db/src/index.ts"],
+      "@rewriter/db/*": ["../../packages/db/src/*"],
+      "@rewriter/logger": ["../../packages/logger/src/index.ts"],
+      "@rewriter/logger/*": ["../../packages/logger/src/*"],
+      "@rewriter/parser": ["../../packages/parser/src/index.ts"],
+      "@rewriter/parser/*": ["../../packages/parser/src/*"],
+      "@rewriter/explorer-core": ["../../packages/explorer/src/index.ts"],
+      "@rewriter/explorer-core/*": ["../../packages/explorer/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

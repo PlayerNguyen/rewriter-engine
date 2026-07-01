@@ -10,6 +10,8 @@ export interface SourcesPageProps {
     currentUrl: string,
     currentType: string,
     currentIsActive: boolean,
+    currentParserKey: string | null,
+    currentRequestDelayMs: number,
   ) => void;
   onDelete?: (sourceId: string, sourceName: string) => void;
   refreshKey?: number;
@@ -35,10 +37,11 @@ export interface SourcesPageProps {
  *       onCreate={() => open('create-source', {
  *         onCreated: () => setRefreshKey((k) => k + 1),
  *       })}
- *       onEdit={(id, name, url, type, isActive) =>
+ *       onEdit={(id, name, url, type, isActive, parserKey, requestDelayMs) =>
  *         open('edit-source', {
  *           sourceId: id, currentName: name, currentUrl: url,
  *           currentType: type, currentIsActive: isActive,
+ *           currentParserKey: parserKey, currentRequestDelayMs: requestDelayMs,
  *           onSaved: () => setRefreshKey((k) => k + 1),
  *         })
  *       }
@@ -100,6 +103,18 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
               },
             },
             {
+              accessorKey: 'parserKey',
+              header: t('sources.parser'),
+              cell: ({ getValue }) => {
+                const val = getValue() as string | null;
+                return val ? (
+                  <code className="text-xs bg-surface-2 px-1.5 py-0.5 rounded">{val}</code>
+                ) : (
+                  <span className="text-ink-subtle text-xs">{t('sources.autoDetect')}</span>
+                );
+              },
+            },
+            {
               accessorKey: 'isActive',
               header: t('sources.active'),
               cell: ({ getValue }) => {
@@ -130,6 +145,8 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                   url: string;
                   type: string;
                   isActive: boolean;
+                  parserKey: string | null;
+                  requestDelayMs: number;
                 };
                 return (
                   <div className="flex gap-1">
@@ -138,7 +155,15 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                       size="sm"
                       icon={<Pencil size={14} />}
                       onClick={() =>
-                        onEdit?.(source.id, source.name, source.url, source.type, source.isActive)
+                        onEdit?.(
+                          source.id,
+                          source.name,
+                          source.url,
+                          source.type,
+                          source.isActive,
+                          source.parserKey,
+                          source.requestDelayMs,
+                        )
                       }
                     >
                       {t('sources.editSource')}

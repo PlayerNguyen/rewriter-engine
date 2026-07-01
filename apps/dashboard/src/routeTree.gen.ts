@@ -13,6 +13,7 @@ import { Route as SourcesRouteImport } from './routes/sources'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as RewritesRouteImport } from './routes/rewrites'
 import { Route as PromptsRouteImport } from './routes/prompts'
+import { Route as ParsersRouteImport } from './routes/parsers'
 import { Route as LogsRouteImport } from './routes/logs'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
@@ -37,6 +38,11 @@ const PromptsRoute = PromptsRouteImport.update({
   path: '/prompts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParsersRoute = ParsersRouteImport.update({
+  id: '/parsers',
+  path: '/parsers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LogsRoute = LogsRouteImport.update({
   id: '/logs',
   path: '/logs',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/logs': typeof LogsRoute
+  '/parsers': typeof ParsersRoute
   '/prompts': typeof PromptsRoute
   '/rewrites': typeof RewritesRoute
   '/settings': typeof SettingsRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/logs': typeof LogsRoute
+  '/parsers': typeof ParsersRoute
   '/prompts': typeof PromptsRoute
   '/rewrites': typeof RewritesRoute
   '/settings': typeof SettingsRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRoute
   '/logs': typeof LogsRoute
+  '/parsers': typeof ParsersRoute
   '/prompts': typeof PromptsRoute
   '/rewrites': typeof RewritesRoute
   '/settings': typeof SettingsRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/articles'
     | '/logs'
+    | '/parsers'
     | '/prompts'
     | '/rewrites'
     | '/settings'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/articles'
     | '/logs'
+    | '/parsers'
     | '/prompts'
     | '/rewrites'
     | '/settings'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/articles'
     | '/logs'
+    | '/parsers'
     | '/prompts'
     | '/rewrites'
     | '/settings'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArticlesRoute: typeof ArticlesRoute
   LogsRoute: typeof LogsRoute
+  ParsersRoute: typeof ParsersRoute
   PromptsRoute: typeof PromptsRoute
   RewritesRoute: typeof RewritesRoute
   SettingsRoute: typeof SettingsRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PromptsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parsers': {
+      id: '/parsers'
+      path: '/parsers'
+      fullPath: '/parsers'
+      preLoaderRoute: typeof ParsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/logs': {
       id: '/logs'
       path: '/logs'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArticlesRoute: ArticlesRoute,
   LogsRoute: LogsRoute,
+  ParsersRoute: ParsersRoute,
   PromptsRoute: PromptsRoute,
   RewritesRoute: RewritesRoute,
   SettingsRoute: SettingsRoute,

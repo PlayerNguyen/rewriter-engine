@@ -54,6 +54,11 @@ export type SystemPrompt = $Result.DefaultSelection<Prisma.$SystemPromptPayload>
  */
 export type Article = $Result.DefaultSelection<Prisma.$ArticlePayload>
 /**
+ * Model ExploredUrl
+ * 
+ */
+export type ExploredUrl = $Result.DefaultSelection<Prisma.$ExploredUrlPayload>
+/**
  * Model RewrittenArticle
  * 
  */
@@ -86,6 +91,17 @@ export const ArticleStatus: {
 
 export type ArticleStatus = (typeof ArticleStatus)[keyof typeof ArticleStatus]
 
+
+export const ExploredUrlStatus: {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  EXPLORED: 'EXPLORED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
+export type ExploredUrlStatus = (typeof ExploredUrlStatus)[keyof typeof ExploredUrlStatus]
+
 }
 
 export type SourceType = $Enums.SourceType
@@ -95,6 +111,10 @@ export const SourceType: typeof $Enums.SourceType
 export type ArticleStatus = $Enums.ArticleStatus
 
 export const ArticleStatus: typeof $Enums.ArticleStatus
+
+export type ExploredUrlStatus = $Enums.ExploredUrlStatus
+
+export const ExploredUrlStatus: typeof $Enums.ExploredUrlStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -296,6 +316,16 @@ export class PrismaClient<
     * ```
     */
   get article(): Prisma.ArticleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.exploredUrl`: Exposes CRUD operations for the **ExploredUrl** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ExploredUrls
+    * const exploredUrls = await prisma.exploredUrl.findMany()
+    * ```
+    */
+  get exploredUrl(): Prisma.ExploredUrlDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.rewrittenArticle`: Exposes CRUD operations for the **RewrittenArticle** model.
@@ -758,6 +788,7 @@ export namespace Prisma {
     Source: 'Source',
     SystemPrompt: 'SystemPrompt',
     Article: 'Article',
+    ExploredUrl: 'ExploredUrl',
     RewrittenArticle: 'RewrittenArticle',
     Setting: 'Setting'
   };
@@ -775,7 +806,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "role" | "permission" | "userHasRole" | "roleHasPermission" | "source" | "systemPrompt" | "article" | "rewrittenArticle" | "setting"
+      modelProps: "user" | "role" | "permission" | "userHasRole" | "roleHasPermission" | "source" | "systemPrompt" | "article" | "exploredUrl" | "rewrittenArticle" | "setting"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1371,6 +1402,80 @@ export namespace Prisma {
           }
         }
       }
+      ExploredUrl: {
+        payload: Prisma.$ExploredUrlPayload<ExtArgs>
+        fields: Prisma.ExploredUrlFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ExploredUrlFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ExploredUrlFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>
+          }
+          findFirst: {
+            args: Prisma.ExploredUrlFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ExploredUrlFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>
+          }
+          findMany: {
+            args: Prisma.ExploredUrlFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>[]
+          }
+          create: {
+            args: Prisma.ExploredUrlCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>
+          }
+          createMany: {
+            args: Prisma.ExploredUrlCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ExploredUrlCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>[]
+          }
+          delete: {
+            args: Prisma.ExploredUrlDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>
+          }
+          update: {
+            args: Prisma.ExploredUrlUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>
+          }
+          deleteMany: {
+            args: Prisma.ExploredUrlDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ExploredUrlUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ExploredUrlUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>[]
+          }
+          upsert: {
+            args: Prisma.ExploredUrlUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExploredUrlPayload>
+          }
+          aggregate: {
+            args: Prisma.ExploredUrlAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExploredUrl>
+          }
+          groupBy: {
+            args: Prisma.ExploredUrlGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ExploredUrlGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ExploredUrlCountArgs<ExtArgs>
+            result: $Utils.Optional<ExploredUrlCountAggregateOutputType> | number
+          }
+        }
+      }
       RewrittenArticle: {
         payload: Prisma.$RewrittenArticlePayload<ExtArgs>
         fields: Prisma.RewrittenArticleFieldRefs
@@ -1635,6 +1740,7 @@ export namespace Prisma {
     source?: SourceOmit
     systemPrompt?: SystemPromptOmit
     article?: ArticleOmit
+    exploredUrl?: ExploredUrlOmit
     rewrittenArticle?: RewrittenArticleOmit
     setting?: SettingOmit
   }
@@ -1820,10 +1926,12 @@ export namespace Prisma {
 
   export type SourceCountOutputType = {
     articles: number
+    exploredUrls: number
   }
 
   export type SourceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     articles?: boolean | SourceCountOutputTypeCountArticlesArgs
+    exploredUrls?: boolean | SourceCountOutputTypeCountExploredUrlsArgs
   }
 
   // Custom InputTypes
@@ -1842,6 +1950,13 @@ export namespace Prisma {
    */
   export type SourceCountOutputTypeCountArticlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ArticleWhereInput
+  }
+
+  /**
+   * SourceCountOutputType without action
+   */
+  export type SourceCountOutputTypeCountExploredUrlsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExploredUrlWhereInput
   }
 
 
@@ -7212,8 +7327,18 @@ export namespace Prisma {
 
   export type AggregateSource = {
     _count: SourceCountAggregateOutputType | null
+    _avg: SourceAvgAggregateOutputType | null
+    _sum: SourceSumAggregateOutputType | null
     _min: SourceMinAggregateOutputType | null
     _max: SourceMaxAggregateOutputType | null
+  }
+
+  export type SourceAvgAggregateOutputType = {
+    requestDelayMs: number | null
+  }
+
+  export type SourceSumAggregateOutputType = {
+    requestDelayMs: number | null
   }
 
   export type SourceMinAggregateOutputType = {
@@ -7222,6 +7347,8 @@ export namespace Prisma {
     url: string | null
     type: $Enums.SourceType | null
     isActive: boolean | null
+    parserKey: string | null
+    requestDelayMs: number | null
     lastFetched: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7233,6 +7360,8 @@ export namespace Prisma {
     url: string | null
     type: $Enums.SourceType | null
     isActive: boolean | null
+    parserKey: string | null
+    requestDelayMs: number | null
     lastFetched: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7244,6 +7373,8 @@ export namespace Prisma {
     url: number
     type: number
     isActive: number
+    parserKey: number
+    requestDelayMs: number
     lastFetched: number
     createdAt: number
     updatedAt: number
@@ -7251,12 +7382,22 @@ export namespace Prisma {
   }
 
 
+  export type SourceAvgAggregateInputType = {
+    requestDelayMs?: true
+  }
+
+  export type SourceSumAggregateInputType = {
+    requestDelayMs?: true
+  }
+
   export type SourceMinAggregateInputType = {
     id?: true
     name?: true
     url?: true
     type?: true
     isActive?: true
+    parserKey?: true
+    requestDelayMs?: true
     lastFetched?: true
     createdAt?: true
     updatedAt?: true
@@ -7268,6 +7409,8 @@ export namespace Prisma {
     url?: true
     type?: true
     isActive?: true
+    parserKey?: true
+    requestDelayMs?: true
     lastFetched?: true
     createdAt?: true
     updatedAt?: true
@@ -7279,6 +7422,8 @@ export namespace Prisma {
     url?: true
     type?: true
     isActive?: true
+    parserKey?: true
+    requestDelayMs?: true
     lastFetched?: true
     createdAt?: true
     updatedAt?: true
@@ -7323,6 +7468,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: SourceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SourceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SourceMinAggregateInputType
@@ -7353,6 +7510,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: SourceCountAggregateInputType | true
+    _avg?: SourceAvgAggregateInputType
+    _sum?: SourceSumAggregateInputType
     _min?: SourceMinAggregateInputType
     _max?: SourceMaxAggregateInputType
   }
@@ -7363,10 +7522,14 @@ export namespace Prisma {
     url: string
     type: $Enums.SourceType
     isActive: boolean
+    parserKey: string | null
+    requestDelayMs: number
     lastFetched: Date | null
     createdAt: Date
     updatedAt: Date
     _count: SourceCountAggregateOutputType | null
+    _avg: SourceAvgAggregateOutputType | null
+    _sum: SourceSumAggregateOutputType | null
     _min: SourceMinAggregateOutputType | null
     _max: SourceMaxAggregateOutputType | null
   }
@@ -7391,10 +7554,13 @@ export namespace Prisma {
     url?: boolean
     type?: boolean
     isActive?: boolean
+    parserKey?: boolean
+    requestDelayMs?: boolean
     lastFetched?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     articles?: boolean | Source$articlesArgs<ExtArgs>
+    exploredUrls?: boolean | Source$exploredUrlsArgs<ExtArgs>
     _count?: boolean | SourceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["source"]>
 
@@ -7404,6 +7570,8 @@ export namespace Prisma {
     url?: boolean
     type?: boolean
     isActive?: boolean
+    parserKey?: boolean
+    requestDelayMs?: boolean
     lastFetched?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7415,6 +7583,8 @@ export namespace Prisma {
     url?: boolean
     type?: boolean
     isActive?: boolean
+    parserKey?: boolean
+    requestDelayMs?: boolean
     lastFetched?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7426,14 +7596,17 @@ export namespace Prisma {
     url?: boolean
     type?: boolean
     isActive?: boolean
+    parserKey?: boolean
+    requestDelayMs?: boolean
     lastFetched?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "url" | "type" | "isActive" | "lastFetched" | "createdAt" | "updatedAt", ExtArgs["result"]["source"]>
+  export type SourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "url" | "type" | "isActive" | "parserKey" | "requestDelayMs" | "lastFetched" | "createdAt" | "updatedAt", ExtArgs["result"]["source"]>
   export type SourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     articles?: boolean | Source$articlesArgs<ExtArgs>
+    exploredUrls?: boolean | Source$exploredUrlsArgs<ExtArgs>
     _count?: boolean | SourceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SourceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7443,6 +7616,7 @@ export namespace Prisma {
     name: "Source"
     objects: {
       articles: Prisma.$ArticlePayload<ExtArgs>[]
+      exploredUrls: Prisma.$ExploredUrlPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7450,6 +7624,8 @@ export namespace Prisma {
       url: string
       type: $Enums.SourceType
       isActive: boolean
+      parserKey: string | null
+      requestDelayMs: number
       lastFetched: Date | null
       createdAt: Date
       updatedAt: Date
@@ -7848,6 +8024,7 @@ export namespace Prisma {
   export interface Prisma__SourceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     articles<T extends Source$articlesArgs<ExtArgs> = {}>(args?: Subset<T, Source$articlesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exploredUrls<T extends Source$exploredUrlsArgs<ExtArgs> = {}>(args?: Subset<T, Source$exploredUrlsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7882,6 +8059,8 @@ export namespace Prisma {
     readonly url: FieldRef<"Source", 'String'>
     readonly type: FieldRef<"Source", 'SourceType'>
     readonly isActive: FieldRef<"Source", 'Boolean'>
+    readonly parserKey: FieldRef<"Source", 'String'>
+    readonly requestDelayMs: FieldRef<"Source", 'Int'>
     readonly lastFetched: FieldRef<"Source", 'DateTime'>
     readonly createdAt: FieldRef<"Source", 'DateTime'>
     readonly updatedAt: FieldRef<"Source", 'DateTime'>
@@ -8299,6 +8478,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ArticleScalarFieldEnum | ArticleScalarFieldEnum[]
+  }
+
+  /**
+   * Source.exploredUrls
+   */
+  export type Source$exploredUrlsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    where?: ExploredUrlWhereInput
+    orderBy?: ExploredUrlOrderByWithRelationInput | ExploredUrlOrderByWithRelationInput[]
+    cursor?: ExploredUrlWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExploredUrlScalarFieldEnum | ExploredUrlScalarFieldEnum[]
   }
 
   /**
@@ -10586,6 +10789,1168 @@ export namespace Prisma {
 
 
   /**
+   * Model ExploredUrl
+   */
+
+  export type AggregateExploredUrl = {
+    _count: ExploredUrlCountAggregateOutputType | null
+    _avg: ExploredUrlAvgAggregateOutputType | null
+    _sum: ExploredUrlSumAggregateOutputType | null
+    _min: ExploredUrlMinAggregateOutputType | null
+    _max: ExploredUrlMaxAggregateOutputType | null
+  }
+
+  export type ExploredUrlAvgAggregateOutputType = {
+    depth: number | null
+  }
+
+  export type ExploredUrlSumAggregateOutputType = {
+    depth: number | null
+  }
+
+  export type ExploredUrlMinAggregateOutputType = {
+    id: string | null
+    url: string | null
+    title: string | null
+    depth: number | null
+    status: $Enums.ExploredUrlStatus | null
+    errorMessage: string | null
+    parentUrl: string | null
+    sourceId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ExploredUrlMaxAggregateOutputType = {
+    id: string | null
+    url: string | null
+    title: string | null
+    depth: number | null
+    status: $Enums.ExploredUrlStatus | null
+    errorMessage: string | null
+    parentUrl: string | null
+    sourceId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ExploredUrlCountAggregateOutputType = {
+    id: number
+    url: number
+    title: number
+    depth: number
+    status: number
+    errorMessage: number
+    parentUrl: number
+    sourceId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ExploredUrlAvgAggregateInputType = {
+    depth?: true
+  }
+
+  export type ExploredUrlSumAggregateInputType = {
+    depth?: true
+  }
+
+  export type ExploredUrlMinAggregateInputType = {
+    id?: true
+    url?: true
+    title?: true
+    depth?: true
+    status?: true
+    errorMessage?: true
+    parentUrl?: true
+    sourceId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ExploredUrlMaxAggregateInputType = {
+    id?: true
+    url?: true
+    title?: true
+    depth?: true
+    status?: true
+    errorMessage?: true
+    parentUrl?: true
+    sourceId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ExploredUrlCountAggregateInputType = {
+    id?: true
+    url?: true
+    title?: true
+    depth?: true
+    status?: true
+    errorMessage?: true
+    parentUrl?: true
+    sourceId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ExploredUrlAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExploredUrl to aggregate.
+     */
+    where?: ExploredUrlWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExploredUrls to fetch.
+     */
+    orderBy?: ExploredUrlOrderByWithRelationInput | ExploredUrlOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ExploredUrlWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExploredUrls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExploredUrls.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ExploredUrls
+    **/
+    _count?: true | ExploredUrlCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ExploredUrlAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExploredUrlSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ExploredUrlMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ExploredUrlMaxAggregateInputType
+  }
+
+  export type GetExploredUrlAggregateType<T extends ExploredUrlAggregateArgs> = {
+        [P in keyof T & keyof AggregateExploredUrl]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExploredUrl[P]>
+      : GetScalarType<T[P], AggregateExploredUrl[P]>
+  }
+
+
+
+
+  export type ExploredUrlGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExploredUrlWhereInput
+    orderBy?: ExploredUrlOrderByWithAggregationInput | ExploredUrlOrderByWithAggregationInput[]
+    by: ExploredUrlScalarFieldEnum[] | ExploredUrlScalarFieldEnum
+    having?: ExploredUrlScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ExploredUrlCountAggregateInputType | true
+    _avg?: ExploredUrlAvgAggregateInputType
+    _sum?: ExploredUrlSumAggregateInputType
+    _min?: ExploredUrlMinAggregateInputType
+    _max?: ExploredUrlMaxAggregateInputType
+  }
+
+  export type ExploredUrlGroupByOutputType = {
+    id: string
+    url: string
+    title: string | null
+    depth: number
+    status: $Enums.ExploredUrlStatus
+    errorMessage: string | null
+    parentUrl: string | null
+    sourceId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ExploredUrlCountAggregateOutputType | null
+    _avg: ExploredUrlAvgAggregateOutputType | null
+    _sum: ExploredUrlSumAggregateOutputType | null
+    _min: ExploredUrlMinAggregateOutputType | null
+    _max: ExploredUrlMaxAggregateOutputType | null
+  }
+
+  type GetExploredUrlGroupByPayload<T extends ExploredUrlGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ExploredUrlGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ExploredUrlGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ExploredUrlGroupByOutputType[P]>
+            : GetScalarType<T[P], ExploredUrlGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ExploredUrlSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    depth?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    parentUrl?: boolean
+    sourceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    source?: boolean | SourceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["exploredUrl"]>
+
+  export type ExploredUrlSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    depth?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    parentUrl?: boolean
+    sourceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    source?: boolean | SourceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["exploredUrl"]>
+
+  export type ExploredUrlSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    depth?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    parentUrl?: boolean
+    sourceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    source?: boolean | SourceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["exploredUrl"]>
+
+  export type ExploredUrlSelectScalar = {
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    depth?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    parentUrl?: boolean
+    sourceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ExploredUrlOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "title" | "depth" | "status" | "errorMessage" | "parentUrl" | "sourceId" | "createdAt" | "updatedAt", ExtArgs["result"]["exploredUrl"]>
+  export type ExploredUrlInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    source?: boolean | SourceDefaultArgs<ExtArgs>
+  }
+  export type ExploredUrlIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    source?: boolean | SourceDefaultArgs<ExtArgs>
+  }
+  export type ExploredUrlIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    source?: boolean | SourceDefaultArgs<ExtArgs>
+  }
+
+  export type $ExploredUrlPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ExploredUrl"
+    objects: {
+      source: Prisma.$SourcePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      url: string
+      title: string | null
+      depth: number
+      status: $Enums.ExploredUrlStatus
+      errorMessage: string | null
+      parentUrl: string | null
+      sourceId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["exploredUrl"]>
+    composites: {}
+  }
+
+  type ExploredUrlGetPayload<S extends boolean | null | undefined | ExploredUrlDefaultArgs> = $Result.GetResult<Prisma.$ExploredUrlPayload, S>
+
+  type ExploredUrlCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ExploredUrlFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ExploredUrlCountAggregateInputType | true
+    }
+
+  export interface ExploredUrlDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ExploredUrl'], meta: { name: 'ExploredUrl' } }
+    /**
+     * Find zero or one ExploredUrl that matches the filter.
+     * @param {ExploredUrlFindUniqueArgs} args - Arguments to find a ExploredUrl
+     * @example
+     * // Get one ExploredUrl
+     * const exploredUrl = await prisma.exploredUrl.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ExploredUrlFindUniqueArgs>(args: SelectSubset<T, ExploredUrlFindUniqueArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ExploredUrl that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ExploredUrlFindUniqueOrThrowArgs} args - Arguments to find a ExploredUrl
+     * @example
+     * // Get one ExploredUrl
+     * const exploredUrl = await prisma.exploredUrl.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ExploredUrlFindUniqueOrThrowArgs>(args: SelectSubset<T, ExploredUrlFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExploredUrl that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExploredUrlFindFirstArgs} args - Arguments to find a ExploredUrl
+     * @example
+     * // Get one ExploredUrl
+     * const exploredUrl = await prisma.exploredUrl.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ExploredUrlFindFirstArgs>(args?: SelectSubset<T, ExploredUrlFindFirstArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExploredUrl that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExploredUrlFindFirstOrThrowArgs} args - Arguments to find a ExploredUrl
+     * @example
+     * // Get one ExploredUrl
+     * const exploredUrl = await prisma.exploredUrl.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ExploredUrlFindFirstOrThrowArgs>(args?: SelectSubset<T, ExploredUrlFindFirstOrThrowArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ExploredUrls that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExploredUrlFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ExploredUrls
+     * const exploredUrls = await prisma.exploredUrl.findMany()
+     * 
+     * // Get first 10 ExploredUrls
+     * const exploredUrls = await prisma.exploredUrl.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const exploredUrlWithIdOnly = await prisma.exploredUrl.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ExploredUrlFindManyArgs>(args?: SelectSubset<T, ExploredUrlFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ExploredUrl.
+     * @param {ExploredUrlCreateArgs} args - Arguments to create a ExploredUrl.
+     * @example
+     * // Create one ExploredUrl
+     * const ExploredUrl = await prisma.exploredUrl.create({
+     *   data: {
+     *     // ... data to create a ExploredUrl
+     *   }
+     * })
+     * 
+     */
+    create<T extends ExploredUrlCreateArgs>(args: SelectSubset<T, ExploredUrlCreateArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ExploredUrls.
+     * @param {ExploredUrlCreateManyArgs} args - Arguments to create many ExploredUrls.
+     * @example
+     * // Create many ExploredUrls
+     * const exploredUrl = await prisma.exploredUrl.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ExploredUrlCreateManyArgs>(args?: SelectSubset<T, ExploredUrlCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ExploredUrls and returns the data saved in the database.
+     * @param {ExploredUrlCreateManyAndReturnArgs} args - Arguments to create many ExploredUrls.
+     * @example
+     * // Create many ExploredUrls
+     * const exploredUrl = await prisma.exploredUrl.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ExploredUrls and only return the `id`
+     * const exploredUrlWithIdOnly = await prisma.exploredUrl.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ExploredUrlCreateManyAndReturnArgs>(args?: SelectSubset<T, ExploredUrlCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ExploredUrl.
+     * @param {ExploredUrlDeleteArgs} args - Arguments to delete one ExploredUrl.
+     * @example
+     * // Delete one ExploredUrl
+     * const ExploredUrl = await prisma.exploredUrl.delete({
+     *   where: {
+     *     // ... filter to delete one ExploredUrl
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ExploredUrlDeleteArgs>(args: SelectSubset<T, ExploredUrlDeleteArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ExploredUrl.
+     * @param {ExploredUrlUpdateArgs} args - Arguments to update one ExploredUrl.
+     * @example
+     * // Update one ExploredUrl
+     * const exploredUrl = await prisma.exploredUrl.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ExploredUrlUpdateArgs>(args: SelectSubset<T, ExploredUrlUpdateArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ExploredUrls.
+     * @param {ExploredUrlDeleteManyArgs} args - Arguments to filter ExploredUrls to delete.
+     * @example
+     * // Delete a few ExploredUrls
+     * const { count } = await prisma.exploredUrl.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ExploredUrlDeleteManyArgs>(args?: SelectSubset<T, ExploredUrlDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExploredUrls.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExploredUrlUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ExploredUrls
+     * const exploredUrl = await prisma.exploredUrl.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ExploredUrlUpdateManyArgs>(args: SelectSubset<T, ExploredUrlUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExploredUrls and returns the data updated in the database.
+     * @param {ExploredUrlUpdateManyAndReturnArgs} args - Arguments to update many ExploredUrls.
+     * @example
+     * // Update many ExploredUrls
+     * const exploredUrl = await prisma.exploredUrl.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ExploredUrls and only return the `id`
+     * const exploredUrlWithIdOnly = await prisma.exploredUrl.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ExploredUrlUpdateManyAndReturnArgs>(args: SelectSubset<T, ExploredUrlUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ExploredUrl.
+     * @param {ExploredUrlUpsertArgs} args - Arguments to update or create a ExploredUrl.
+     * @example
+     * // Update or create a ExploredUrl
+     * const exploredUrl = await prisma.exploredUrl.upsert({
+     *   create: {
+     *     // ... data to create a ExploredUrl
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ExploredUrl we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ExploredUrlUpsertArgs>(args: SelectSubset<T, ExploredUrlUpsertArgs<ExtArgs>>): Prisma__ExploredUrlClient<$Result.GetResult<Prisma.$ExploredUrlPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ExploredUrls.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExploredUrlCountArgs} args - Arguments to filter ExploredUrls to count.
+     * @example
+     * // Count the number of ExploredUrls
+     * const count = await prisma.exploredUrl.count({
+     *   where: {
+     *     // ... the filter for the ExploredUrls we want to count
+     *   }
+     * })
+    **/
+    count<T extends ExploredUrlCountArgs>(
+      args?: Subset<T, ExploredUrlCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ExploredUrlCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ExploredUrl.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExploredUrlAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ExploredUrlAggregateArgs>(args: Subset<T, ExploredUrlAggregateArgs>): Prisma.PrismaPromise<GetExploredUrlAggregateType<T>>
+
+    /**
+     * Group by ExploredUrl.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExploredUrlGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ExploredUrlGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ExploredUrlGroupByArgs['orderBy'] }
+        : { orderBy?: ExploredUrlGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ExploredUrlGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExploredUrlGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ExploredUrl model
+   */
+  readonly fields: ExploredUrlFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ExploredUrl.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ExploredUrlClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    source<T extends SourceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SourceDefaultArgs<ExtArgs>>): Prisma__SourceClient<$Result.GetResult<Prisma.$SourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ExploredUrl model
+   */
+  interface ExploredUrlFieldRefs {
+    readonly id: FieldRef<"ExploredUrl", 'String'>
+    readonly url: FieldRef<"ExploredUrl", 'String'>
+    readonly title: FieldRef<"ExploredUrl", 'String'>
+    readonly depth: FieldRef<"ExploredUrl", 'Int'>
+    readonly status: FieldRef<"ExploredUrl", 'ExploredUrlStatus'>
+    readonly errorMessage: FieldRef<"ExploredUrl", 'String'>
+    readonly parentUrl: FieldRef<"ExploredUrl", 'String'>
+    readonly sourceId: FieldRef<"ExploredUrl", 'String'>
+    readonly createdAt: FieldRef<"ExploredUrl", 'DateTime'>
+    readonly updatedAt: FieldRef<"ExploredUrl", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ExploredUrl findUnique
+   */
+  export type ExploredUrlFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * Filter, which ExploredUrl to fetch.
+     */
+    where: ExploredUrlWhereUniqueInput
+  }
+
+  /**
+   * ExploredUrl findUniqueOrThrow
+   */
+  export type ExploredUrlFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * Filter, which ExploredUrl to fetch.
+     */
+    where: ExploredUrlWhereUniqueInput
+  }
+
+  /**
+   * ExploredUrl findFirst
+   */
+  export type ExploredUrlFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * Filter, which ExploredUrl to fetch.
+     */
+    where?: ExploredUrlWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExploredUrls to fetch.
+     */
+    orderBy?: ExploredUrlOrderByWithRelationInput | ExploredUrlOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExploredUrls.
+     */
+    cursor?: ExploredUrlWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExploredUrls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExploredUrls.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExploredUrls.
+     */
+    distinct?: ExploredUrlScalarFieldEnum | ExploredUrlScalarFieldEnum[]
+  }
+
+  /**
+   * ExploredUrl findFirstOrThrow
+   */
+  export type ExploredUrlFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * Filter, which ExploredUrl to fetch.
+     */
+    where?: ExploredUrlWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExploredUrls to fetch.
+     */
+    orderBy?: ExploredUrlOrderByWithRelationInput | ExploredUrlOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExploredUrls.
+     */
+    cursor?: ExploredUrlWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExploredUrls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExploredUrls.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExploredUrls.
+     */
+    distinct?: ExploredUrlScalarFieldEnum | ExploredUrlScalarFieldEnum[]
+  }
+
+  /**
+   * ExploredUrl findMany
+   */
+  export type ExploredUrlFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * Filter, which ExploredUrls to fetch.
+     */
+    where?: ExploredUrlWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExploredUrls to fetch.
+     */
+    orderBy?: ExploredUrlOrderByWithRelationInput | ExploredUrlOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ExploredUrls.
+     */
+    cursor?: ExploredUrlWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExploredUrls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExploredUrls.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExploredUrls.
+     */
+    distinct?: ExploredUrlScalarFieldEnum | ExploredUrlScalarFieldEnum[]
+  }
+
+  /**
+   * ExploredUrl create
+   */
+  export type ExploredUrlCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ExploredUrl.
+     */
+    data: XOR<ExploredUrlCreateInput, ExploredUrlUncheckedCreateInput>
+  }
+
+  /**
+   * ExploredUrl createMany
+   */
+  export type ExploredUrlCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ExploredUrls.
+     */
+    data: ExploredUrlCreateManyInput | ExploredUrlCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ExploredUrl createManyAndReturn
+   */
+  export type ExploredUrlCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * The data used to create many ExploredUrls.
+     */
+    data: ExploredUrlCreateManyInput | ExploredUrlCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ExploredUrl update
+   */
+  export type ExploredUrlUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ExploredUrl.
+     */
+    data: XOR<ExploredUrlUpdateInput, ExploredUrlUncheckedUpdateInput>
+    /**
+     * Choose, which ExploredUrl to update.
+     */
+    where: ExploredUrlWhereUniqueInput
+  }
+
+  /**
+   * ExploredUrl updateMany
+   */
+  export type ExploredUrlUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ExploredUrls.
+     */
+    data: XOR<ExploredUrlUpdateManyMutationInput, ExploredUrlUncheckedUpdateManyInput>
+    /**
+     * Filter which ExploredUrls to update
+     */
+    where?: ExploredUrlWhereInput
+    /**
+     * Limit how many ExploredUrls to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExploredUrl updateManyAndReturn
+   */
+  export type ExploredUrlUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * The data used to update ExploredUrls.
+     */
+    data: XOR<ExploredUrlUpdateManyMutationInput, ExploredUrlUncheckedUpdateManyInput>
+    /**
+     * Filter which ExploredUrls to update
+     */
+    where?: ExploredUrlWhereInput
+    /**
+     * Limit how many ExploredUrls to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ExploredUrl upsert
+   */
+  export type ExploredUrlUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ExploredUrl to update in case it exists.
+     */
+    where: ExploredUrlWhereUniqueInput
+    /**
+     * In case the ExploredUrl found by the `where` argument doesn't exist, create a new ExploredUrl with this data.
+     */
+    create: XOR<ExploredUrlCreateInput, ExploredUrlUncheckedCreateInput>
+    /**
+     * In case the ExploredUrl was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ExploredUrlUpdateInput, ExploredUrlUncheckedUpdateInput>
+  }
+
+  /**
+   * ExploredUrl delete
+   */
+  export type ExploredUrlDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+    /**
+     * Filter which ExploredUrl to delete.
+     */
+    where: ExploredUrlWhereUniqueInput
+  }
+
+  /**
+   * ExploredUrl deleteMany
+   */
+  export type ExploredUrlDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExploredUrls to delete
+     */
+    where?: ExploredUrlWhereInput
+    /**
+     * Limit how many ExploredUrls to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExploredUrl without action
+   */
+  export type ExploredUrlDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExploredUrl
+     */
+    select?: ExploredUrlSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExploredUrl
+     */
+    omit?: ExploredUrlOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExploredUrlInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model RewrittenArticle
    */
 
@@ -12812,6 +14177,8 @@ export namespace Prisma {
     url: 'url',
     type: 'type',
     isActive: 'isActive',
+    parserKey: 'parserKey',
+    requestDelayMs: 'requestDelayMs',
     lastFetched: 'lastFetched',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -12848,6 +14215,22 @@ export namespace Prisma {
   };
 
   export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+  export const ExploredUrlScalarFieldEnum: {
+    id: 'id',
+    url: 'url',
+    title: 'title',
+    depth: 'depth',
+    status: 'status',
+    errorMessage: 'errorMessage',
+    parentUrl: 'parentUrl',
+    sourceId: 'sourceId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ExploredUrlScalarFieldEnum = (typeof ExploredUrlScalarFieldEnum)[keyof typeof ExploredUrlScalarFieldEnum]
 
 
   export const RewrittenArticleScalarFieldEnum: {
@@ -12985,6 +14368,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'ArticleStatus'
    */
   export type EnumArticleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ArticleStatus'>
@@ -12999,16 +14396,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'ExploredUrlStatus'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type EnumExploredUrlStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExploredUrlStatus'>
     
 
 
   /**
-   * Reference to a field of type 'Int[]'
+   * Reference to a field of type 'ExploredUrlStatus[]'
    */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+  export type ListEnumExploredUrlStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExploredUrlStatus[]'>
     
 
 
@@ -13299,10 +14696,13 @@ export namespace Prisma {
     url?: StringFilter<"Source"> | string
     type?: EnumSourceTypeFilter<"Source"> | $Enums.SourceType
     isActive?: BoolFilter<"Source"> | boolean
+    parserKey?: StringNullableFilter<"Source"> | string | null
+    requestDelayMs?: IntFilter<"Source"> | number
     lastFetched?: DateTimeNullableFilter<"Source"> | Date | string | null
     createdAt?: DateTimeFilter<"Source"> | Date | string
     updatedAt?: DateTimeFilter<"Source"> | Date | string
     articles?: ArticleListRelationFilter
+    exploredUrls?: ExploredUrlListRelationFilter
   }
 
   export type SourceOrderByWithRelationInput = {
@@ -13311,10 +14711,13 @@ export namespace Prisma {
     url?: SortOrder
     type?: SortOrder
     isActive?: SortOrder
+    parserKey?: SortOrderInput | SortOrder
+    requestDelayMs?: SortOrder
     lastFetched?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     articles?: ArticleOrderByRelationAggregateInput
+    exploredUrls?: ExploredUrlOrderByRelationAggregateInput
   }
 
   export type SourceWhereUniqueInput = Prisma.AtLeast<{
@@ -13326,10 +14729,13 @@ export namespace Prisma {
     url?: StringFilter<"Source"> | string
     type?: EnumSourceTypeFilter<"Source"> | $Enums.SourceType
     isActive?: BoolFilter<"Source"> | boolean
+    parserKey?: StringNullableFilter<"Source"> | string | null
+    requestDelayMs?: IntFilter<"Source"> | number
     lastFetched?: DateTimeNullableFilter<"Source"> | Date | string | null
     createdAt?: DateTimeFilter<"Source"> | Date | string
     updatedAt?: DateTimeFilter<"Source"> | Date | string
     articles?: ArticleListRelationFilter
+    exploredUrls?: ExploredUrlListRelationFilter
   }, "id">
 
   export type SourceOrderByWithAggregationInput = {
@@ -13338,12 +14744,16 @@ export namespace Prisma {
     url?: SortOrder
     type?: SortOrder
     isActive?: SortOrder
+    parserKey?: SortOrderInput | SortOrder
+    requestDelayMs?: SortOrder
     lastFetched?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SourceCountOrderByAggregateInput
+    _avg?: SourceAvgOrderByAggregateInput
     _max?: SourceMaxOrderByAggregateInput
     _min?: SourceMinOrderByAggregateInput
+    _sum?: SourceSumOrderByAggregateInput
   }
 
   export type SourceScalarWhereWithAggregatesInput = {
@@ -13355,6 +14765,8 @@ export namespace Prisma {
     url?: StringWithAggregatesFilter<"Source"> | string
     type?: EnumSourceTypeWithAggregatesFilter<"Source"> | $Enums.SourceType
     isActive?: BoolWithAggregatesFilter<"Source"> | boolean
+    parserKey?: StringNullableWithAggregatesFilter<"Source"> | string | null
+    requestDelayMs?: IntWithAggregatesFilter<"Source"> | number
     lastFetched?: DateTimeNullableWithAggregatesFilter<"Source"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Source"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Source"> | Date | string
@@ -13511,6 +14923,88 @@ export namespace Prisma {
     errorMessage?: StringNullableWithAggregatesFilter<"Article"> | string | null
     sourceId?: StringWithAggregatesFilter<"Article"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
+  }
+
+  export type ExploredUrlWhereInput = {
+    AND?: ExploredUrlWhereInput | ExploredUrlWhereInput[]
+    OR?: ExploredUrlWhereInput[]
+    NOT?: ExploredUrlWhereInput | ExploredUrlWhereInput[]
+    id?: StringFilter<"ExploredUrl"> | string
+    url?: StringFilter<"ExploredUrl"> | string
+    title?: StringNullableFilter<"ExploredUrl"> | string | null
+    depth?: IntFilter<"ExploredUrl"> | number
+    status?: EnumExploredUrlStatusFilter<"ExploredUrl"> | $Enums.ExploredUrlStatus
+    errorMessage?: StringNullableFilter<"ExploredUrl"> | string | null
+    parentUrl?: StringNullableFilter<"ExploredUrl"> | string | null
+    sourceId?: StringFilter<"ExploredUrl"> | string
+    createdAt?: DateTimeFilter<"ExploredUrl"> | Date | string
+    updatedAt?: DateTimeFilter<"ExploredUrl"> | Date | string
+    source?: XOR<SourceScalarRelationFilter, SourceWhereInput>
+  }
+
+  export type ExploredUrlOrderByWithRelationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrderInput | SortOrder
+    depth?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    parentUrl?: SortOrderInput | SortOrder
+    sourceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    source?: SourceOrderByWithRelationInput
+  }
+
+  export type ExploredUrlWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    url?: string
+    AND?: ExploredUrlWhereInput | ExploredUrlWhereInput[]
+    OR?: ExploredUrlWhereInput[]
+    NOT?: ExploredUrlWhereInput | ExploredUrlWhereInput[]
+    title?: StringNullableFilter<"ExploredUrl"> | string | null
+    depth?: IntFilter<"ExploredUrl"> | number
+    status?: EnumExploredUrlStatusFilter<"ExploredUrl"> | $Enums.ExploredUrlStatus
+    errorMessage?: StringNullableFilter<"ExploredUrl"> | string | null
+    parentUrl?: StringNullableFilter<"ExploredUrl"> | string | null
+    sourceId?: StringFilter<"ExploredUrl"> | string
+    createdAt?: DateTimeFilter<"ExploredUrl"> | Date | string
+    updatedAt?: DateTimeFilter<"ExploredUrl"> | Date | string
+    source?: XOR<SourceScalarRelationFilter, SourceWhereInput>
+  }, "id" | "url">
+
+  export type ExploredUrlOrderByWithAggregationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrderInput | SortOrder
+    depth?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    parentUrl?: SortOrderInput | SortOrder
+    sourceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ExploredUrlCountOrderByAggregateInput
+    _avg?: ExploredUrlAvgOrderByAggregateInput
+    _max?: ExploredUrlMaxOrderByAggregateInput
+    _min?: ExploredUrlMinOrderByAggregateInput
+    _sum?: ExploredUrlSumOrderByAggregateInput
+  }
+
+  export type ExploredUrlScalarWhereWithAggregatesInput = {
+    AND?: ExploredUrlScalarWhereWithAggregatesInput | ExploredUrlScalarWhereWithAggregatesInput[]
+    OR?: ExploredUrlScalarWhereWithAggregatesInput[]
+    NOT?: ExploredUrlScalarWhereWithAggregatesInput | ExploredUrlScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ExploredUrl"> | string
+    url?: StringWithAggregatesFilter<"ExploredUrl"> | string
+    title?: StringNullableWithAggregatesFilter<"ExploredUrl"> | string | null
+    depth?: IntWithAggregatesFilter<"ExploredUrl"> | number
+    status?: EnumExploredUrlStatusWithAggregatesFilter<"ExploredUrl"> | $Enums.ExploredUrlStatus
+    errorMessage?: StringNullableWithAggregatesFilter<"ExploredUrl"> | string | null
+    parentUrl?: StringNullableWithAggregatesFilter<"ExploredUrl"> | string | null
+    sourceId?: StringWithAggregatesFilter<"ExploredUrl"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ExploredUrl"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ExploredUrl"> | Date | string
   }
 
   export type RewrittenArticleWhereInput = {
@@ -13910,10 +15404,13 @@ export namespace Prisma {
     url: string
     type?: $Enums.SourceType
     isActive?: boolean
+    parserKey?: string | null
+    requestDelayMs?: number
     lastFetched?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     articles?: ArticleCreateNestedManyWithoutSourceInput
+    exploredUrls?: ExploredUrlCreateNestedManyWithoutSourceInput
   }
 
   export type SourceUncheckedCreateInput = {
@@ -13922,10 +15419,13 @@ export namespace Prisma {
     url: string
     type?: $Enums.SourceType
     isActive?: boolean
+    parserKey?: string | null
+    requestDelayMs?: number
     lastFetched?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     articles?: ArticleUncheckedCreateNestedManyWithoutSourceInput
+    exploredUrls?: ExploredUrlUncheckedCreateNestedManyWithoutSourceInput
   }
 
   export type SourceUpdateInput = {
@@ -13934,10 +15434,13 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
     lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     articles?: ArticleUpdateManyWithoutSourceNestedInput
+    exploredUrls?: ExploredUrlUpdateManyWithoutSourceNestedInput
   }
 
   export type SourceUncheckedUpdateInput = {
@@ -13946,10 +15449,13 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
     lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     articles?: ArticleUncheckedUpdateManyWithoutSourceNestedInput
+    exploredUrls?: ExploredUrlUncheckedUpdateManyWithoutSourceNestedInput
   }
 
   export type SourceCreateManyInput = {
@@ -13958,6 +15464,8 @@ export namespace Prisma {
     url: string
     type?: $Enums.SourceType
     isActive?: boolean
+    parserKey?: string | null
+    requestDelayMs?: number
     lastFetched?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13969,6 +15477,8 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
     lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13980,6 +15490,8 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
     lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14158,6 +15670,96 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     sourceId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExploredUrlCreateInput = {
+    id?: string
+    url: string
+    title?: string | null
+    depth?: number
+    status?: $Enums.ExploredUrlStatus
+    errorMessage?: string | null
+    parentUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    source: SourceCreateNestedOneWithoutExploredUrlsInput
+  }
+
+  export type ExploredUrlUncheckedCreateInput = {
+    id?: string
+    url: string
+    title?: string | null
+    depth?: number
+    status?: $Enums.ExploredUrlStatus
+    errorMessage?: string | null
+    parentUrl?: string | null
+    sourceId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExploredUrlUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    depth?: IntFieldUpdateOperationsInput | number
+    status?: EnumExploredUrlStatusFieldUpdateOperationsInput | $Enums.ExploredUrlStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    parentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    source?: SourceUpdateOneRequiredWithoutExploredUrlsNestedInput
+  }
+
+  export type ExploredUrlUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    depth?: IntFieldUpdateOperationsInput | number
+    status?: EnumExploredUrlStatusFieldUpdateOperationsInput | $Enums.ExploredUrlStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    parentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExploredUrlCreateManyInput = {
+    id?: string
+    url: string
+    title?: string | null
+    depth?: number
+    status?: $Enums.ExploredUrlStatus
+    errorMessage?: string | null
+    parentUrl?: string | null
+    sourceId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExploredUrlUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    depth?: IntFieldUpdateOperationsInput | number
+    status?: EnumExploredUrlStatusFieldUpdateOperationsInput | $Enums.ExploredUrlStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    parentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExploredUrlUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    depth?: IntFieldUpdateOperationsInput | number
+    status?: EnumExploredUrlStatusFieldUpdateOperationsInput | $Enums.ExploredUrlStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    parentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RewrittenArticleCreateInput = {
@@ -14603,6 +16205,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -14620,7 +16233,17 @@ export namespace Prisma {
     none?: ArticleWhereInput
   }
 
+  export type ExploredUrlListRelationFilter = {
+    every?: ExploredUrlWhereInput
+    some?: ExploredUrlWhereInput
+    none?: ExploredUrlWhereInput
+  }
+
   export type ArticleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ExploredUrlOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14630,9 +16253,15 @@ export namespace Prisma {
     url?: SortOrder
     type?: SortOrder
     isActive?: SortOrder
+    parserKey?: SortOrder
+    requestDelayMs?: SortOrder
     lastFetched?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type SourceAvgOrderByAggregateInput = {
+    requestDelayMs?: SortOrder
   }
 
   export type SourceMaxOrderByAggregateInput = {
@@ -14641,6 +16270,8 @@ export namespace Prisma {
     url?: SortOrder
     type?: SortOrder
     isActive?: SortOrder
+    parserKey?: SortOrder
+    requestDelayMs?: SortOrder
     lastFetched?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14652,9 +16283,15 @@ export namespace Prisma {
     url?: SortOrder
     type?: SortOrder
     isActive?: SortOrder
+    parserKey?: SortOrder
+    requestDelayMs?: SortOrder
     lastFetched?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type SourceSumOrderByAggregateInput = {
+    requestDelayMs?: SortOrder
   }
 
   export type EnumSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -14673,6 +16310,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -14796,6 +16449,70 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumArticleStatusFilter<$PrismaModel>
     _max?: NestedEnumArticleStatusFilter<$PrismaModel>
+  }
+
+  export type EnumExploredUrlStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExploredUrlStatus | EnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumExploredUrlStatusFilter<$PrismaModel> | $Enums.ExploredUrlStatus
+  }
+
+  export type ExploredUrlCountOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    depth?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    parentUrl?: SortOrder
+    sourceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExploredUrlAvgOrderByAggregateInput = {
+    depth?: SortOrder
+  }
+
+  export type ExploredUrlMaxOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    depth?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    parentUrl?: SortOrder
+    sourceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExploredUrlMinOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    depth?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    parentUrl?: SortOrder
+    sourceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExploredUrlSumOrderByAggregateInput = {
+    depth?: SortOrder
+  }
+
+  export type EnumExploredUrlStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExploredUrlStatus | EnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumExploredUrlStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExploredUrlStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumExploredUrlStatusFilter<$PrismaModel>
+    _max?: NestedEnumExploredUrlStatusFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -15146,11 +16863,25 @@ export namespace Prisma {
     connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
   }
 
+  export type ExploredUrlCreateNestedManyWithoutSourceInput = {
+    create?: XOR<ExploredUrlCreateWithoutSourceInput, ExploredUrlUncheckedCreateWithoutSourceInput> | ExploredUrlCreateWithoutSourceInput[] | ExploredUrlUncheckedCreateWithoutSourceInput[]
+    connectOrCreate?: ExploredUrlCreateOrConnectWithoutSourceInput | ExploredUrlCreateOrConnectWithoutSourceInput[]
+    createMany?: ExploredUrlCreateManySourceInputEnvelope
+    connect?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+  }
+
   export type ArticleUncheckedCreateNestedManyWithoutSourceInput = {
     create?: XOR<ArticleCreateWithoutSourceInput, ArticleUncheckedCreateWithoutSourceInput> | ArticleCreateWithoutSourceInput[] | ArticleUncheckedCreateWithoutSourceInput[]
     connectOrCreate?: ArticleCreateOrConnectWithoutSourceInput | ArticleCreateOrConnectWithoutSourceInput[]
     createMany?: ArticleCreateManySourceInputEnvelope
     connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+  }
+
+  export type ExploredUrlUncheckedCreateNestedManyWithoutSourceInput = {
+    create?: XOR<ExploredUrlCreateWithoutSourceInput, ExploredUrlUncheckedCreateWithoutSourceInput> | ExploredUrlCreateWithoutSourceInput[] | ExploredUrlUncheckedCreateWithoutSourceInput[]
+    connectOrCreate?: ExploredUrlCreateOrConnectWithoutSourceInput | ExploredUrlCreateOrConnectWithoutSourceInput[]
+    createMany?: ExploredUrlCreateManySourceInputEnvelope
+    connect?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
   }
 
   export type EnumSourceTypeFieldUpdateOperationsInput = {
@@ -15159,6 +16890,14 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -15179,6 +16918,20 @@ export namespace Prisma {
     deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
   }
 
+  export type ExploredUrlUpdateManyWithoutSourceNestedInput = {
+    create?: XOR<ExploredUrlCreateWithoutSourceInput, ExploredUrlUncheckedCreateWithoutSourceInput> | ExploredUrlCreateWithoutSourceInput[] | ExploredUrlUncheckedCreateWithoutSourceInput[]
+    connectOrCreate?: ExploredUrlCreateOrConnectWithoutSourceInput | ExploredUrlCreateOrConnectWithoutSourceInput[]
+    upsert?: ExploredUrlUpsertWithWhereUniqueWithoutSourceInput | ExploredUrlUpsertWithWhereUniqueWithoutSourceInput[]
+    createMany?: ExploredUrlCreateManySourceInputEnvelope
+    set?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    disconnect?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    delete?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    connect?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    update?: ExploredUrlUpdateWithWhereUniqueWithoutSourceInput | ExploredUrlUpdateWithWhereUniqueWithoutSourceInput[]
+    updateMany?: ExploredUrlUpdateManyWithWhereWithoutSourceInput | ExploredUrlUpdateManyWithWhereWithoutSourceInput[]
+    deleteMany?: ExploredUrlScalarWhereInput | ExploredUrlScalarWhereInput[]
+  }
+
   export type ArticleUncheckedUpdateManyWithoutSourceNestedInput = {
     create?: XOR<ArticleCreateWithoutSourceInput, ArticleUncheckedCreateWithoutSourceInput> | ArticleCreateWithoutSourceInput[] | ArticleUncheckedCreateWithoutSourceInput[]
     connectOrCreate?: ArticleCreateOrConnectWithoutSourceInput | ArticleCreateOrConnectWithoutSourceInput[]
@@ -15191,6 +16944,20 @@ export namespace Prisma {
     update?: ArticleUpdateWithWhereUniqueWithoutSourceInput | ArticleUpdateWithWhereUniqueWithoutSourceInput[]
     updateMany?: ArticleUpdateManyWithWhereWithoutSourceInput | ArticleUpdateManyWithWhereWithoutSourceInput[]
     deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
+  }
+
+  export type ExploredUrlUncheckedUpdateManyWithoutSourceNestedInput = {
+    create?: XOR<ExploredUrlCreateWithoutSourceInput, ExploredUrlUncheckedCreateWithoutSourceInput> | ExploredUrlCreateWithoutSourceInput[] | ExploredUrlUncheckedCreateWithoutSourceInput[]
+    connectOrCreate?: ExploredUrlCreateOrConnectWithoutSourceInput | ExploredUrlCreateOrConnectWithoutSourceInput[]
+    upsert?: ExploredUrlUpsertWithWhereUniqueWithoutSourceInput | ExploredUrlUpsertWithWhereUniqueWithoutSourceInput[]
+    createMany?: ExploredUrlCreateManySourceInputEnvelope
+    set?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    disconnect?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    delete?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    connect?: ExploredUrlWhereUniqueInput | ExploredUrlWhereUniqueInput[]
+    update?: ExploredUrlUpdateWithWhereUniqueWithoutSourceInput | ExploredUrlUpdateWithWhereUniqueWithoutSourceInput[]
+    updateMany?: ExploredUrlUpdateManyWithWhereWithoutSourceInput | ExploredUrlUpdateManyWithWhereWithoutSourceInput[]
+    deleteMany?: ExploredUrlScalarWhereInput | ExploredUrlScalarWhereInput[]
   }
 
   export type RewrittenArticleCreateNestedManyWithoutSystemPromptInput = {
@@ -15283,6 +17050,24 @@ export namespace Prisma {
     delete?: RewrittenArticleWhereInput | boolean
     connect?: RewrittenArticleWhereUniqueInput
     update?: XOR<XOR<RewrittenArticleUpdateToOneWithWhereWithoutOriginalArticleInput, RewrittenArticleUpdateWithoutOriginalArticleInput>, RewrittenArticleUncheckedUpdateWithoutOriginalArticleInput>
+  }
+
+  export type SourceCreateNestedOneWithoutExploredUrlsInput = {
+    create?: XOR<SourceCreateWithoutExploredUrlsInput, SourceUncheckedCreateWithoutExploredUrlsInput>
+    connectOrCreate?: SourceCreateOrConnectWithoutExploredUrlsInput
+    connect?: SourceWhereUniqueInput
+  }
+
+  export type EnumExploredUrlStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ExploredUrlStatus
+  }
+
+  export type SourceUpdateOneRequiredWithoutExploredUrlsNestedInput = {
+    create?: XOR<SourceCreateWithoutExploredUrlsInput, SourceUncheckedCreateWithoutExploredUrlsInput>
+    connectOrCreate?: SourceCreateOrConnectWithoutExploredUrlsInput
+    upsert?: SourceUpsertWithoutExploredUrlsInput
+    connect?: SourceWhereUniqueInput
+    update?: XOR<XOR<SourceUpdateToOneWithWhereWithoutExploredUrlsInput, SourceUpdateWithoutExploredUrlsInput>, SourceUncheckedUpdateWithoutExploredUrlsInput>
   }
 
   export type ArticleCreateNestedOneWithoutRewrittenArticleInput = {
@@ -15494,6 +17279,33 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -15523,6 +17335,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumArticleStatusFilter<$PrismaModel>
     _max?: NestedEnumArticleStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumExploredUrlStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExploredUrlStatus | EnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumExploredUrlStatusFilter<$PrismaModel> | $Enums.ExploredUrlStatus
+  }
+
+  export type NestedEnumExploredUrlStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ExploredUrlStatus | EnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ExploredUrlStatus[] | ListEnumExploredUrlStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumExploredUrlStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExploredUrlStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumExploredUrlStatusFilter<$PrismaModel>
+    _max?: NestedEnumExploredUrlStatusFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15946,6 +17775,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ExploredUrlCreateWithoutSourceInput = {
+    id?: string
+    url: string
+    title?: string | null
+    depth?: number
+    status?: $Enums.ExploredUrlStatus
+    errorMessage?: string | null
+    parentUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExploredUrlUncheckedCreateWithoutSourceInput = {
+    id?: string
+    url: string
+    title?: string | null
+    depth?: number
+    status?: $Enums.ExploredUrlStatus
+    errorMessage?: string | null
+    parentUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExploredUrlCreateOrConnectWithoutSourceInput = {
+    where: ExploredUrlWhereUniqueInput
+    create: XOR<ExploredUrlCreateWithoutSourceInput, ExploredUrlUncheckedCreateWithoutSourceInput>
+  }
+
+  export type ExploredUrlCreateManySourceInputEnvelope = {
+    data: ExploredUrlCreateManySourceInput | ExploredUrlCreateManySourceInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ArticleUpsertWithWhereUniqueWithoutSourceInput = {
     where: ArticleWhereUniqueInput
     update: XOR<ArticleUpdateWithoutSourceInput, ArticleUncheckedUpdateWithoutSourceInput>
@@ -15977,6 +17840,38 @@ export namespace Prisma {
     errorMessage?: StringNullableFilter<"Article"> | string | null
     sourceId?: StringFilter<"Article"> | string
     createdAt?: DateTimeFilter<"Article"> | Date | string
+  }
+
+  export type ExploredUrlUpsertWithWhereUniqueWithoutSourceInput = {
+    where: ExploredUrlWhereUniqueInput
+    update: XOR<ExploredUrlUpdateWithoutSourceInput, ExploredUrlUncheckedUpdateWithoutSourceInput>
+    create: XOR<ExploredUrlCreateWithoutSourceInput, ExploredUrlUncheckedCreateWithoutSourceInput>
+  }
+
+  export type ExploredUrlUpdateWithWhereUniqueWithoutSourceInput = {
+    where: ExploredUrlWhereUniqueInput
+    data: XOR<ExploredUrlUpdateWithoutSourceInput, ExploredUrlUncheckedUpdateWithoutSourceInput>
+  }
+
+  export type ExploredUrlUpdateManyWithWhereWithoutSourceInput = {
+    where: ExploredUrlScalarWhereInput
+    data: XOR<ExploredUrlUpdateManyMutationInput, ExploredUrlUncheckedUpdateManyWithoutSourceInput>
+  }
+
+  export type ExploredUrlScalarWhereInput = {
+    AND?: ExploredUrlScalarWhereInput | ExploredUrlScalarWhereInput[]
+    OR?: ExploredUrlScalarWhereInput[]
+    NOT?: ExploredUrlScalarWhereInput | ExploredUrlScalarWhereInput[]
+    id?: StringFilter<"ExploredUrl"> | string
+    url?: StringFilter<"ExploredUrl"> | string
+    title?: StringNullableFilter<"ExploredUrl"> | string | null
+    depth?: IntFilter<"ExploredUrl"> | number
+    status?: EnumExploredUrlStatusFilter<"ExploredUrl"> | $Enums.ExploredUrlStatus
+    errorMessage?: StringNullableFilter<"ExploredUrl"> | string | null
+    parentUrl?: StringNullableFilter<"ExploredUrl"> | string | null
+    sourceId?: StringFilter<"ExploredUrl"> | string
+    createdAt?: DateTimeFilter<"ExploredUrl"> | Date | string
+    updatedAt?: DateTimeFilter<"ExploredUrl"> | Date | string
   }
 
   export type RewrittenArticleCreateWithoutSystemPromptInput = {
@@ -16048,9 +17943,12 @@ export namespace Prisma {
     url: string
     type?: $Enums.SourceType
     isActive?: boolean
+    parserKey?: string | null
+    requestDelayMs?: number
     lastFetched?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    exploredUrls?: ExploredUrlCreateNestedManyWithoutSourceInput
   }
 
   export type SourceUncheckedCreateWithoutArticlesInput = {
@@ -16059,9 +17957,12 @@ export namespace Prisma {
     url: string
     type?: $Enums.SourceType
     isActive?: boolean
+    parserKey?: string | null
+    requestDelayMs?: number
     lastFetched?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    exploredUrls?: ExploredUrlUncheckedCreateNestedManyWithoutSourceInput
   }
 
   export type SourceCreateOrConnectWithoutArticlesInput = {
@@ -16113,9 +18014,12 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
     lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exploredUrls?: ExploredUrlUpdateManyWithoutSourceNestedInput
   }
 
   export type SourceUncheckedUpdateWithoutArticlesInput = {
@@ -16124,9 +18028,12 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
     lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exploredUrls?: ExploredUrlUncheckedUpdateManyWithoutSourceNestedInput
   }
 
   export type RewrittenArticleUpsertWithoutOriginalArticleInput = {
@@ -16160,6 +18067,78 @@ export namespace Prisma {
     processingTime?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemPromptId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SourceCreateWithoutExploredUrlsInput = {
+    id?: string
+    name: string
+    url: string
+    type?: $Enums.SourceType
+    isActive?: boolean
+    parserKey?: string | null
+    requestDelayMs?: number
+    lastFetched?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    articles?: ArticleCreateNestedManyWithoutSourceInput
+  }
+
+  export type SourceUncheckedCreateWithoutExploredUrlsInput = {
+    id?: string
+    name: string
+    url: string
+    type?: $Enums.SourceType
+    isActive?: boolean
+    parserKey?: string | null
+    requestDelayMs?: number
+    lastFetched?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    articles?: ArticleUncheckedCreateNestedManyWithoutSourceInput
+  }
+
+  export type SourceCreateOrConnectWithoutExploredUrlsInput = {
+    where: SourceWhereUniqueInput
+    create: XOR<SourceCreateWithoutExploredUrlsInput, SourceUncheckedCreateWithoutExploredUrlsInput>
+  }
+
+  export type SourceUpsertWithoutExploredUrlsInput = {
+    update: XOR<SourceUpdateWithoutExploredUrlsInput, SourceUncheckedUpdateWithoutExploredUrlsInput>
+    create: XOR<SourceCreateWithoutExploredUrlsInput, SourceUncheckedCreateWithoutExploredUrlsInput>
+    where?: SourceWhereInput
+  }
+
+  export type SourceUpdateToOneWithWhereWithoutExploredUrlsInput = {
+    where?: SourceWhereInput
+    data: XOR<SourceUpdateWithoutExploredUrlsInput, SourceUncheckedUpdateWithoutExploredUrlsInput>
+  }
+
+  export type SourceUpdateWithoutExploredUrlsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
+    lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articles?: ArticleUpdateManyWithoutSourceNestedInput
+  }
+
+  export type SourceUncheckedUpdateWithoutExploredUrlsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    type?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    parserKey?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDelayMs?: IntFieldUpdateOperationsInput | number
+    lastFetched?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articles?: ArticleUncheckedUpdateManyWithoutSourceNestedInput
   }
 
   export type ArticleCreateWithoutRewrittenArticleInput = {
@@ -16367,6 +18346,18 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type ExploredUrlCreateManySourceInput = {
+    id?: string
+    url: string
+    title?: string | null
+    depth?: number
+    status?: $Enums.ExploredUrlStatus
+    errorMessage?: string | null
+    parentUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ArticleUpdateWithoutSourceInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -16406,6 +18397,42 @@ export namespace Prisma {
     status?: EnumArticleStatusFieldUpdateOperationsInput | $Enums.ArticleStatus
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExploredUrlUpdateWithoutSourceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    depth?: IntFieldUpdateOperationsInput | number
+    status?: EnumExploredUrlStatusFieldUpdateOperationsInput | $Enums.ExploredUrlStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    parentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExploredUrlUncheckedUpdateWithoutSourceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    depth?: IntFieldUpdateOperationsInput | number
+    status?: EnumExploredUrlStatusFieldUpdateOperationsInput | $Enums.ExploredUrlStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    parentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExploredUrlUncheckedUpdateManyWithoutSourceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    depth?: IntFieldUpdateOperationsInput | number
+    status?: EnumExploredUrlStatusFieldUpdateOperationsInput | $Enums.ExploredUrlStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    parentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RewrittenArticleCreateManySystemPromptInput = {

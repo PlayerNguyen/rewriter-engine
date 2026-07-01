@@ -23,13 +23,15 @@ function SourcesRoute() {
           onCreated: () => setRefreshKey((k) => k + 1),
         })
       }
-      onEdit={(id, name, url, type, isActive) =>
+      onEdit={(id, name, url, type, isActive, parserKey, requestDelayMs) =>
         open('edit-source', {
           sourceId: id,
           currentName: name,
           currentUrl: url,
           currentType: type,
           currentIsActive: isActive,
+          currentParserKey: parserKey,
+          currentRequestDelayMs: requestDelayMs,
           onSaved: () => setRefreshKey((k) => k + 1),
         })
       }

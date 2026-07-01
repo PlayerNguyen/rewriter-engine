@@ -18,6 +18,8 @@ export class SourcesService {
     url: string;
     type?: SourceType;
     isActive?: boolean;
+    parserKey?: string | null;
+    requestDelayMs?: number;
   }): Promise<Source> {
     return db.source.create({
       data: {
@@ -25,13 +27,22 @@ export class SourcesService {
         url: data.url,
         ...(data.type !== undefined && { type: data.type }),
         ...(data.isActive !== undefined && { isActive: data.isActive }),
+        ...(data.parserKey !== undefined && { parserKey: data.parserKey }),
+        ...(data.requestDelayMs !== undefined && { requestDelayMs: data.requestDelayMs }),
       },
     });
   }
 
   async update(
     id: string,
-    data: Partial<{ name: string; url: string; type: SourceType; isActive: boolean }>,
+    data: Partial<{
+      name: string;
+      url: string;
+      type: SourceType;
+      isActive: boolean;
+      parserKey: string | null;
+      requestDelayMs: number;
+    }>,
   ): Promise<Source> {
     return db.source.update({
       where: { id },

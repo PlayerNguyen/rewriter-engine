@@ -5,6 +5,16 @@ import { EditSourceModal } from './EditSourceModal';
 
 const mockPatch = patchApiV1SourcesById as ReturnType<typeof mock>;
 
+const defaultProps = {
+  sourceId: 'abc-123',
+  currentName: 'TechCrunch',
+  currentUrl: 'https://techcrunch.com/feed/',
+  currentType: 'RSS',
+  currentIsActive: true,
+  currentParserKey: null as string | null,
+  currentRequestDelayMs: 1000,
+};
+
 describe('EditSourceModal', () => {
   beforeEach(() => {
     mockPatch.mockReset();
@@ -16,17 +26,7 @@ describe('EditSourceModal', () => {
   });
 
   it('pre-fills fields with current values', () => {
-    render(
-      <EditSourceModal
-        open
-        onClose={() => {}}
-        sourceId="abc-123"
-        currentName="TechCrunch"
-        currentUrl="https://techcrunch.com/feed/"
-        currentType="RSS"
-        currentIsActive={true}
-      />,
-    );
+    render(<EditSourceModal open onClose={() => {}} {...defaultProps} />);
 
     const nameInput = screen.getByLabelText(/name/i) as HTMLInputElement;
     const urlInput = screen.getByLabelText(/url/i) as HTMLInputElement;
@@ -36,17 +36,7 @@ describe('EditSourceModal', () => {
   });
 
   it('calls patchApiV1SourcesById with correct body on submit', async () => {
-    render(
-      <EditSourceModal
-        open
-        onClose={() => {}}
-        sourceId="abc-123"
-        currentName="TechCrunch"
-        currentUrl="https://techcrunch.com/feed/"
-        currentType="RSS"
-        currentIsActive={true}
-      />,
-    );
+    render(<EditSourceModal open onClose={() => {}} {...defaultProps} />);
 
     const saveButtons = screen.getAllByText('Save');
     const saveBtn = saveButtons[saveButtons.length - 1] as HTMLButtonElement;
@@ -58,6 +48,8 @@ describe('EditSourceModal', () => {
         url: 'https://techcrunch.com/feed/',
         type: 'RSS',
         isActive: true,
+        parserKey: null,
+        requestDelayMs: 1000,
       });
     });
   });
@@ -69,11 +61,7 @@ describe('EditSourceModal', () => {
       <EditSourceModal
         open
         onClose={() => {}}
-        sourceId="abc-123"
-        currentName="Test"
-        currentUrl="https://example.com"
-        currentType="RSS"
-        currentIsActive={true}
+        {...defaultProps}
         onSaved={() => {
           saved = true;
         }}
@@ -98,11 +86,7 @@ describe('EditSourceModal', () => {
         onClose={() => {
           closed = true;
         }}
-        sourceId="abc-123"
-        currentName="Test"
-        currentUrl="https://example.com"
-        currentType="RSS"
-        currentIsActive={true}
+        {...defaultProps}
       />,
     );
 
@@ -118,17 +102,7 @@ describe('EditSourceModal', () => {
   it('shows error on failed request', async () => {
     mockPatch.mockRejectedValue({ body: { message: 'Not found' } });
 
-    render(
-      <EditSourceModal
-        open
-        onClose={() => {}}
-        sourceId="abc-123"
-        currentName="Test"
-        currentUrl="https://example.com"
-        currentType="RSS"
-        currentIsActive={true}
-      />,
-    );
+    render(<EditSourceModal open onClose={() => {}} {...defaultProps} />);
 
     const saveButtons = screen.getAllByText('Save');
     const saveBtn = saveButtons[saveButtons.length - 1] as HTMLButtonElement;
@@ -141,15 +115,7 @@ describe('EditSourceModal', () => {
 
   it('renders nothing when open is false', () => {
     const { container } = render(
-      <EditSourceModal
-        open={false}
-        onClose={() => {}}
-        sourceId="abc-123"
-        currentName="Test"
-        currentUrl="https://example.com"
-        currentType="RSS"
-        currentIsActive={true}
-      />,
+      <EditSourceModal open={false} onClose={() => {}} {...defaultProps} />,
     );
     expect(container.textContent).toBe('');
   });

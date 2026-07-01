@@ -7,6 +7,7 @@
     "rewrites": "Rewrites",
     "configuration": "Configuration",
     "sources": "Sources",
+    "parsers": "Parsers",
     "prompts": "Prompts",
     "system": "System",
     "settings": "Settings",
@@ -49,7 +50,17 @@
     "deleteSuccess": "Source deleted successfully.",
     "yes": "Yes",
     "no": "No",
-    "createdAt": "Created"
+    "createdAt": "Created",
+    "parser": "Parser",
+    "autoDetect": "Auto (detect by URL)",
+    "requestDelay": "Request Delay (ms)"
+  },
+  "parsers": {
+    "title": "Parsers",
+    "key": "Key",
+    "name": "Name",
+    "urlPatterns": "URL Patterns",
+    "description": "Parsers are registered in code. Each source can optionally specify a parser key; otherwise the parser is auto-detected by URL pattern."
   },
   "languageSwitcher": {
     "label": "Language",

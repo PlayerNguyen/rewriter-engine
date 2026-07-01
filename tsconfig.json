@@ -49,7 +49,9 @@
       "@rewriter/sources": ["./packages/sources/core/src/index.ts"],
       "@rewriter/sources/*": ["./packages/sources/core/src/*"],
       "@rewriter/sources-ui": ["./packages/sources/ui/src/index.tsx"],
-      "@rewriter/sources-ui/*": ["./packages/sources/ui/src/*"]
+      "@rewriter/sources-ui/*": ["./packages/sources/ui/src/*"],
+      "@rewriter/parser": ["./packages/parser/src/index.ts"],
+      "@rewriter/parser/*": ["./packages/parser/src/*"]
     }
   }
 }
