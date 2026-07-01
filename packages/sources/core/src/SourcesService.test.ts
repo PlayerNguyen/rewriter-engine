@@ -24,6 +24,8 @@ const makeSource = (overrides: Partial<Source> = {}): Source => ({
   url: 'https://techcrunch.com/feed/',
   type: 'RSS',
   isActive: true,
+  parserKey: null,
+  requestDelayMs: 1000,
   lastFetched: null,
   createdAt: new Date(),
   updatedAt: new Date(),

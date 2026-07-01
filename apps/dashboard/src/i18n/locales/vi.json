@@ -7,6 +7,7 @@
     "rewrites": "Bài viết đã viết lại",
     "configuration": "Cấu hình",
     "sources": "Nguồn",
+    "parsers": "Trình phân tích",
     "prompts": "Prompt",
     "system": "Hệ thống",
     "settings": "Cài đặt",
@@ -49,7 +50,17 @@
     "deleteSuccess": "Đã xóa nguồn thành công.",
     "yes": "Có",
     "no": "Không",
-    "createdAt": "Ngày tạo"
+    "createdAt": "Ngày tạo",
+    "parser": "Trình phân tích",
+    "autoDetect": "Tự động (phát hiện theo URL)",
+    "requestDelay": "Độ trễ yêu cầu (ms)"
+  },
+  "parsers": {
+    "title": "Trình phân tích",
+    "key": "Khóa",
+    "name": "Tên",
+    "urlPatterns": "Mẫu URL",
+    "description": "Trình phân tích được đăng ký trong mã nguồn. Mỗi nguồn có thể chỉ định khóa trình phân tích; nếu không, trình phân tích sẽ được phát hiện tự động theo mẫu URL."
   },
   "languageSwitcher": {
     "label": "Ngôn ngữ",

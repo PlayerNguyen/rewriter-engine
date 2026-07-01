@@ -171,6 +171,44 @@
         "description": "Health check endpoint"
       }
     },
+    "/api/v1/parsers": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "List of parsers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "urlPatterns": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": ["key", "name", "urlPatterns"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getApiV1Parsers",
+        "tags": ["Parsers"],
+        "parameters": [],
+        "description": "List all available parsers"
+      }
+    },
     "/api/v1/settings/{key}": {
       "patch": {
         "responses": {
@@ -276,6 +314,12 @@
                     "isActive": {
                       "type": "boolean"
                     },
+                    "parserKey": {
+                      "type": ["string", "null"]
+                    },
+                    "requestDelayMs": {
+                      "type": "number"
+                    },
                     "lastFetched": {
                       "type": ["string", "null"]
                     },
@@ -292,6 +336,8 @@
                     "url",
                     "type",
                     "isActive",
+                    "parserKey",
+                    "requestDelayMs",
                     "lastFetched",
                     "createdAt",
                     "updatedAt"
@@ -330,6 +376,14 @@
                   "isActive": {
                     "type": "boolean",
                     "default": true
+                  },
+                  "parserKey": {
+                    "type": ["string", "null"]
+                  },
+                  "requestDelayMs": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 1000
                   }
                 },
                 "required": ["name", "url"]
@@ -366,6 +420,12 @@
                     "isActive": {
                       "type": "boolean"
                     },
+                    "parserKey": {
+                      "type": ["string", "null"]
+                    },
+                    "requestDelayMs": {
+                      "type": "number"
+                    },
                     "lastFetched": {
                       "type": ["string", "null"]
                     },
@@ -382,6 +442,8 @@
                     "url",
                     "type",
                     "isActive",
+                    "parserKey",
+                    "requestDelayMs",
                     "lastFetched",
                     "createdAt",
                     "updatedAt"
@@ -431,6 +493,13 @@
                   },
                   "isActive": {
                     "type": "boolean"
+                  },
+                  "parserKey": {
+                    "type": ["string", "null"]
+                  },
+                  "requestDelayMs": {
+                    "type": "integer",
+                    "minimum": 0
                   }
                 }
               }
@@ -464,6 +533,12 @@
                     "isActive": {
                       "type": "boolean"
                     },
+                    "parserKey": {
+                      "type": ["string", "null"]
+                    },
+                    "requestDelayMs": {
+                      "type": "number"
+                    },
                     "lastFetched": {
                       "type": ["string", "null"]
                     },
@@ -480,6 +555,8 @@
                     "url",
                     "type",
                     "isActive",
+                    "parserKey",
+                    "requestDelayMs",
                     "lastFetched",
                     "createdAt",
                     "updatedAt"

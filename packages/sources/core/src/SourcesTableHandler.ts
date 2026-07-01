@@ -3,7 +3,16 @@ import type { TableResponse } from '@rewriter/table-core';
 import { type DefaultTableRequest, TableHandler } from '@rewriter/table-core';
 import type { Context } from 'hono';
 
-const SORTABLE_FIELDS = ['name', 'url', 'type', 'isActive', 'createdAt', 'updatedAt'] as const;
+const SORTABLE_FIELDS = [
+  'name',
+  'url',
+  'type',
+  'isActive',
+  'parserKey',
+  'requestDelayMs',
+  'createdAt',
+  'updatedAt',
+] as const;
 
 /**
  * Table handler for the **sources** entity.

@@ -1,7 +1,12 @@
 import type { ModalBaseProps } from '@rewriter/modal';
-import { type PatchApiV1SourcesByIdBodyType, patchApiV1SourcesById } from '@rewriter/rest-client';
+import {
+  type GetApiV1Parsers200Item,
+  getApiV1Parsers,
+  type PatchApiV1SourcesByIdBodyType,
+  patchApiV1SourcesById,
+} from '@rewriter/rest-client';
 import { Button, Checkbox, Modal, Select, Stack, TextInput } from '@rewriter/ui';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface EditSourceModalCustomProps {
@@ -10,6 +15,8 @@ export interface EditSourceModalCustomProps {
   currentUrl: string;
   currentType: string;
   currentIsActive: boolean;
+  currentParserKey: string | null;
+  currentRequestDelayMs: number;
   onSaved?: () => void;
 }
 
@@ -33,6 +40,8 @@ const SOURCE_TYPE_OPTIONS = [
  *   currentUrl: 'https://techcrunch.com/feed/',
  *   currentType: 'RSS',
  *   currentIsActive: true,
+ *   currentParserKey: null,
+ *   currentRequestDelayMs: 1000,
  *   onSaved: () => setRefreshKey((k) => k + 1),
  * });
  * ```
@@ -45,6 +54,8 @@ export function EditSourceModal({
   currentUrl,
   currentType,
   currentIsActive,
+  currentParserKey,
+  currentRequestDelayMs,
   onSaved,
 }: ModalBaseProps & EditSourceModalCustomProps) {
   const { t } = useTranslation();
@@ -52,8 +63,19 @@ export function EditSourceModal({
   const [url, setUrl] = useState(currentUrl);
   const [type, setType] = useState(currentType);
   const [isActive, setIsActive] = useState(currentIsActive);
+  const [parserKey, setParserKey] = useState<string | null>(currentParserKey);
+  const [requestDelayMs, setRequestDelayMs] = useState(currentRequestDelayMs);
+  const [parsers, setParsers] = useState<GetApiV1Parsers200Item[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (open) {
+      getApiV1Parsers()
+        .then(setParsers)
+        .catch(() => {});
+    }
+  }, [open]);
 
   const handleSubmit = useCallback(async () => {
     setSaving(true);
@@ -64,6 +86,8 @@ export function EditSourceModal({
         url,
         type: type as PatchApiV1SourcesByIdBodyType,
         isActive,
+        parserKey,
+        requestDelayMs,
       });
       onSaved?.();
       onClose();
@@ -73,7 +97,12 @@ export function EditSourceModal({
     } finally {
       setSaving(false);
     }
-  }, [sourceId, name, url, type, isActive, onSaved, onClose]);
+  }, [sourceId, name, url, type, isActive, parserKey, requestDelayMs, onSaved, onClose]);
+
+  const parserOptions = [
+    { value: '', label: t('sources.autoDetect') },
+    ...parsers.map((p) => ({ value: p.key, label: `${p.name} (${p.key})` })),
+  ];
 
   return (
     <Modal open={open} onClose={onClose} size="md" title={t('sources.editSource')}>
@@ -97,6 +126,21 @@ export function EditSourceModal({
           value={type}
           onChange={setType}
           options={SOURCE_TYPE_OPTIONS}
+        />
+
+        <Select
+          label={t('sources.parser')}
+          value={parserKey ?? ''}
+          onChange={(v) => setParserKey(v === '' ? null : v)}
+          options={parserOptions}
+        />
+
+        <TextInput
+          label={t('sources.requestDelay')}
+          value={String(requestDelayMs)}
+          onChange={(e) => setRequestDelayMs(Number((e.target as HTMLInputElement).value) || 0)}
+          placeholder="1000"
+          type="number"
         />
 
         <Checkbox

@@ -161,6 +161,8 @@ exports.Prisma.SourceScalarFieldEnum = {
   url: 'url',
   type: 'type',
   isActive: 'isActive',
+  parserKey: 'parserKey',
+  requestDelayMs: 'requestDelayMs',
   lastFetched: 'lastFetched',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -188,6 +190,19 @@ exports.Prisma.ArticleScalarFieldEnum = {
   errorMessage: 'errorMessage',
   sourceId: 'sourceId',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.ExploredUrlScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  title: 'title',
+  depth: 'depth',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  parentUrl: 'parentUrl',
+  sourceId: 'sourceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.RewrittenArticleScalarFieldEnum = {
@@ -247,6 +262,14 @@ exports.ArticleStatus = exports.$Enums.ArticleStatus = {
   FAILED: 'FAILED'
 };
 
+exports.ExploredUrlStatus = exports.$Enums.ExploredUrlStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  EXPLORED: 'EXPLORED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Role: 'Role',
@@ -256,6 +279,7 @@ exports.Prisma.ModelName = {
   Source: 'Source',
   SystemPrompt: 'SystemPrompt',
   Article: 'Article',
+  ExploredUrl: 'ExploredUrl',
   RewrittenArticle: 'RewrittenArticle',
   Setting: 'Setting'
 };

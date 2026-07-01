@@ -1,6 +1,7 @@
 import type { SidebarConfigItem } from '@rewriter/ui';
 import {
   Bot,
+  Cpu,
   FileText,
   LayoutDashboard,
   Link,
@@ -30,6 +31,7 @@ export function configureSidebar(t: TFunction): SidebarConfigItem[] {
       label: t('sidebar.configuration'),
       children: [
         { icon: Link, label: t('sidebar.sources'), to: '/sources' },
+        { icon: Cpu, label: t('sidebar.parsers'), to: '/parsers' },
         { icon: Bot, label: t('sidebar.prompts'), to: '/prompts' },
       ],
     },

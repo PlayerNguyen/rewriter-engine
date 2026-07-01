@@ -7,6 +7,7 @@ export {
   Check,
   ChevronDown,
   ChevronRight,
+  Cpu,
   FileText,
   Languages,
   LayoutDashboard,

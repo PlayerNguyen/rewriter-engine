@@ -72,16 +72,19 @@ model RoleHasPermission {
 // ─── Content Sources ────────────────────────────────────────────
 
 model Source {
-  id          String     @id @default(uuid())
-  name        String
-  url         String
-  type        SourceType @default(RSS)
-  isActive    Boolean    @default(true)
-  lastFetched DateTime?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id             String     @id @default(uuid())
+  name           String
+  url            String
+  type           SourceType @default(RSS)
+  isActive       Boolean    @default(true)
+  parserKey      String? // Override parser key (e.g. "tuoitre-normal"). Null = auto-detect.
+  requestDelayMs Int        @default(1000) // Delay between HTTP requests to this source (ms)
+  lastFetched    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 
-  articles Article[]
+  articles     Article[]
+  exploredUrls ExploredUrl[]
 
   @@map("sources")
 }
@@ -138,6 +141,37 @@ enum ArticleStatus {
   PROCESSING
   COMPLETED
   FAILED
+}
+
+// ─── Explored URLs (from deep exploration) ──────────────────────
+
+model ExploredUrl {
+  id           String            @id @default(uuid())
+  url          String            @unique
+  title        String?
+  depth        Int               @default(0)
+  status       ExploredUrlStatus @default(PENDING)
+  errorMessage String?           @db.Text
+  parentUrl    String?
+
+  sourceId String
+  source   Source @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sourceId, status])
+  @@index([status])
+  @@index([url])
+  @@map("explored_urls")
+}
+
+enum ExploredUrlStatus {
+  PENDING
+  PROCESSING
+  EXPLORED
+  FAILED
+  SKIPPED
 }
 
 // ─── Rewritten Articles (output from LLM) ───────────────────────

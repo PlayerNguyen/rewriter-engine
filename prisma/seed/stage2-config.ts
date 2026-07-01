@@ -37,7 +37,10 @@ export async function seedConfig(prisma: PrismaClient, ctx: SeedContext) {
   const settings = [
     { key: 'llm.provider', value: 'openai' },
     { key: 'llm.model', value: 'gpt-4o-mini' },
-    { key: 'explorer.interval_minutes', value: 30 },
+    { key: 'explorer.period', value: 'PT30M' },
+    { key: 'explorer.cron_pattern', value: '*/1 * * * *' },
+    { key: 'explorer.max_depth', value: 2 },
+    { key: 'explorer.enabled', value: true },
     { key: 'rewriter.max_tokens', value: 4096 },
   ];
 
