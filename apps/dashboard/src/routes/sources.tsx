@@ -38,9 +38,13 @@ function SourcesRoute() {
           message: t('sources.deleteConfirm', { name }),
           confirmLabel: t('sources.delete'),
           onConfirm: () => {
-            deleteApiV1SourcesById(id).then(() => {
-              setRefreshKey((k) => k + 1);
-            });
+            deleteApiV1SourcesById(id)
+              .then(() => {
+                setRefreshKey((k) => k + 1);
+              })
+              .catch(() => {
+                alert(t('sources.deleteError'));
+              });
           },
         })
       }

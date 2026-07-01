@@ -2,6 +2,8 @@ import { Button } from './Button';
 import { Modal } from './Modal';
 
 export interface ConfirmModalProps {
+  open: boolean;
+  onClose: () => void;
   title?: string;
   message: string;
   confirmLabel?: string;
@@ -32,10 +34,7 @@ export function ConfirmModal({
   confirmLabel = 'Delete',
   cancelLabel = 'Cancel',
   onConfirm,
-}: {
-  open: boolean;
-  onClose: () => void;
-} & ConfirmModalProps) {
+}: ConfirmModalProps) {
   return (
     <Modal open={open} onClose={onClose} size="sm" title={title}>
       <p className="text-sm text-ink-subtle">{message}</p>

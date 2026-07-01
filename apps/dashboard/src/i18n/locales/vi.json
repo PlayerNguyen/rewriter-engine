@@ -44,7 +44,8 @@
     "saving": "Đang lưu...",
     "delete": "Xóa",
     "deleteSource": "Xóa nguồn",
-    "deleteConfirm": "Bạn có chắc muốn xóa \"{{name}}\"?"
+    "deleteConfirm": "Bạn có chắc muốn xóa \"{{name}}\"?",
+    "deleteError": "Xóa nguồn thất bại. Vui lòng thử lại."
   },
   "languageSwitcher": {
     "label": "Ngôn ngữ",
