@@ -1,6 +1,8 @@
 import type { ModalBaseProps } from '@rewriter/modal';
+import { type PatchApiV1SourcesByIdBodyType, patchApiV1SourcesById } from '@rewriter/rest-client';
 import { Button, Checkbox, Modal, Select, Stack, TextInput } from '@rewriter/ui';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface EditSourceModalCustomProps {
   sourceId: string;
@@ -45,6 +47,7 @@ export function EditSourceModal({
   currentIsActive,
   onSaved,
 }: ModalBaseProps & EditSourceModalCustomProps) {
+  const { t } = useTranslation();
   const [name, setName] = useState(currentName);
   const [url, setUrl] = useState(currentUrl);
   const [type, setType] = useState(currentType);
@@ -56,49 +59,48 @@ export function EditSourceModal({
     setSaving(true);
     setError(null);
     try {
-      const response = await fetch(`/api/v1/sources/${sourceId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, url, type, isActive }),
+      await patchApiV1SourcesById(sourceId, {
+        name,
+        url,
+        type: type as PatchApiV1SourcesByIdBodyType,
+        isActive,
       });
-
-      if (!response.ok) {
-        const body = await response.json().catch(() => null);
-        setError(body?.message ?? 'Request failed');
-        setSaving(false);
-        return;
-      }
-
       onSaved?.();
       onClose();
-    } catch {
-      setError('Request failed');
+    } catch (e: unknown) {
+      const err = e as { body?: { message?: string } };
+      setError(err?.body?.message ?? 'Request failed');
     } finally {
       setSaving(false);
     }
   }, [sourceId, name, url, type, isActive, onSaved, onClose]);
 
   return (
-    <Modal open={open} onClose={onClose} size="md" title="Edit Source">
+    <Modal open={open} onClose={onClose} size="md" title={t('sources.editSource')}>
       <Stack gap="md">
         <TextInput
-          label="Name"
+          label={t('sources.name')}
           value={name}
           onChange={(e) => setName((e.target as HTMLInputElement).value)}
           required
         />
 
         <TextInput
-          label="URL"
+          label={t('sources.url')}
           value={url}
           onChange={(e) => setUrl((e.target as HTMLInputElement).value)}
           required
         />
 
-        <Select label="Type" value={type} onChange={setType} options={SOURCE_TYPE_OPTIONS} />
+        <Select
+          label={t('sources.type')}
+          value={type}
+          onChange={setType}
+          options={SOURCE_TYPE_OPTIONS}
+        />
 
         <Checkbox
-          label="Active"
+          label={t('sources.active')}
           checked={isActive}
           onChange={(e) => setIsActive((e.target as HTMLInputElement).checked)}
         />
@@ -108,10 +110,10 @@ export function EditSourceModal({
 
       <div className="flex justify-end gap-2 mt-6">
         <Button variant="ghost" onClick={onClose} disabled={saving}>
-          Cancel
+          {t('sources.cancel')}
         </Button>
         <Button onClick={handleSubmit} disabled={saving || !name.trim() || !url.trim()}>
-          {saving ? 'Saving...' : 'Save'}
+          {saving ? t('sources.saving') : t('sources.save')}
         </Button>
       </div>
     </Modal>

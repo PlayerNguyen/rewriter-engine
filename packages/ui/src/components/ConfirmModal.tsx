@@ -1,4 +1,5 @@
-import { Button, Modal } from '@rewriter/ui';
+import { Button } from './Button';
+import { Modal } from './Modal';
 
 export interface ConfirmModalProps {
   title?: string;

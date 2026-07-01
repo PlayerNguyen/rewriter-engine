@@ -1,5 +1,6 @@
 import { DataTable } from '@rewriter/table-ui';
-import { Button, Stack, Text } from '@rewriter/ui';
+import { Button, Pencil, Plus, Stack, Text, Trash2 } from '@rewriter/ui';
+import { useTranslation } from 'react-i18next';
 
 export interface SourcesPageProps {
   onCreate?: () => void;
@@ -51,23 +52,26 @@ export interface SourcesPageProps {
  * ```
  */
 export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: SourcesPageProps) {
+  const { t } = useTranslation();
   return (
     <Stack gap="lg">
       <div className="flex items-center justify-between">
         <Text size="headline" weight={600}>
-          Sources
+          {t('sidebar.sources')}
         </Text>
-        <Button onClick={onCreate}>Add Source</Button>
+        <Button onClick={onCreate} icon={<Plus size={16} />} size="sm">
+          {t('sources.addSource')}
+        </Button>
       </div>
       <div key={refreshKey}>
         <DataTable
           tableId="sources"
           searchable
           columns={[
-            { accessorKey: 'name', header: 'Name' },
+            { accessorKey: 'name', header: t('sources.name') },
             {
               accessorKey: 'url',
-              header: 'URL',
+              header: t('sources.url'),
               cell: ({ getValue }) => {
                 const url = getValue() as string;
                 return (
@@ -79,7 +83,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
             },
             {
               accessorKey: 'type',
-              header: 'Type',
+              header: t('sources.type'),
               cell: ({ getValue }) => {
                 const t = getValue() as string;
                 return (
@@ -91,7 +95,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
             },
             {
               accessorKey: 'isActive',
-              header: 'Active',
+              header: t('sources.active'),
               cell: ({ getValue }) => {
                 const active = getValue() as boolean;
                 return (
@@ -103,7 +107,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
             },
             {
               accessorKey: 'lastFetched',
-              header: 'Last Fetched',
+              header: t('sources.lastFetched'),
               cell: ({ getValue }) => {
                 const v = getValue() as string | null;
                 return v ? new Date(v).toLocaleString() : '—';
@@ -126,6 +130,7 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                     <Button
                       variant="ghost"
                       size="sm"
+                      icon={<Pencil size={14} />}
                       onClick={() =>
                         onEdit?.(
                           source.id,
@@ -137,14 +142,15 @@ export function SourcesPage({ onCreate, onEdit, onDelete, refreshKey = 0 }: Sour
                         )
                       }
                     >
-                      Edit
+                      {t('sources.editSource')}
                     </Button>
                     <Button
-                      variant="ghost"
+                      variant="danger"
                       size="sm"
+                      icon={<Trash2 size={14} />}
                       onClick={() => onDelete?.(source.id, source.name, () => {})}
                     >
-                      Delete
+                      {t('sources.delete')}
                     </Button>
                   </div>
                 );

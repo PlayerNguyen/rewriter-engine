@@ -1,6 +1,8 @@
+import { deleteApiV1SourcesById } from '@rewriter/rest-client';
 import { SourcesPage } from '@rewriter/sources-ui';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useModal } from '../configs/configureModals';
 
 export const Route = createFileRoute('/sources')({
@@ -9,6 +11,7 @@ export const Route = createFileRoute('/sources')({
 
 function SourcesRoute() {
   const { open } = useModal();
+  const { t } = useTranslation();
   const [refreshKey, setRefreshKey] = useState(0);
 
   return (
@@ -31,11 +34,11 @@ function SourcesRoute() {
       }
       onDelete={(id, name) =>
         open('confirm', {
-          title: 'Delete Source',
-          message: `Are you sure you want to delete "${name}"?`,
-          confirmLabel: 'Delete',
+          title: t('sources.deleteSource'),
+          message: t('sources.deleteConfirm', { name }),
+          confirmLabel: t('sources.delete'),
           onConfirm: () => {
-            fetch(`/api/v1/sources/${id}`, { method: 'DELETE' }).then(() => {
+            deleteApiV1SourcesById(id).then(() => {
               setRefreshKey((k) => k + 1);
             });
           },

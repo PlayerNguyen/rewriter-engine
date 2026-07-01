@@ -1,6 +1,8 @@
 import type { ModalBaseProps } from '@rewriter/modal';
+import { type PostApiV1SourcesBodyType, postApiV1Sources } from '@rewriter/rest-client';
 import { Button, Checkbox, Modal, Select, Stack, TextInput } from '@rewriter/ui';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface CreateSourceModalCustomProps {
   onCreated?: () => void;
@@ -31,9 +33,10 @@ export function CreateSourceModal({
   onClose,
   onCreated,
 }: ModalBaseProps & CreateSourceModalCustomProps) {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
-  const [type, setType] = useState('RSS');
+  const [type, setType] = useState<PostApiV1SourcesBodyType>('RSS');
   const [isActive, setIsActive] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,24 +53,13 @@ export function CreateSourceModal({
     setSaving(true);
     setError(null);
     try {
-      const response = await fetch('/api/v1/sources', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, url, type, isActive }),
-      });
-
-      if (!response.ok) {
-        const body = await response.json().catch(() => null);
-        setError(body?.message ?? 'Request failed');
-        setSaving(false);
-        return;
-      }
-
+      await postApiV1Sources({ name, url, type, isActive });
       resetForm();
       onCreated?.();
       onClose();
-    } catch {
-      setError('Request failed');
+    } catch (e: unknown) {
+      const err = e as { body?: { message?: string } };
+      setError(err?.body?.message ?? 'Request failed');
     } finally {
       setSaving(false);
     }
@@ -81,11 +73,11 @@ export function CreateSourceModal({
         onClose();
       }}
       size="md"
-      title="Add Source"
+      title={t('sources.addSource')}
     >
       <Stack gap="md">
         <TextInput
-          label="Name"
+          label={t('sources.name')}
           value={name}
           onChange={(e) => setName((e.target as HTMLInputElement).value)}
           placeholder="e.g. TechCrunch RSS"
@@ -93,17 +85,22 @@ export function CreateSourceModal({
         />
 
         <TextInput
-          label="URL"
+          label={t('sources.url')}
           value={url}
           onChange={(e) => setUrl((e.target as HTMLInputElement).value)}
           placeholder="https://example.com/feed.xml"
           required
         />
 
-        <Select label="Type" value={type} onChange={setType} options={SOURCE_TYPE_OPTIONS} />
+        <Select
+          label={t('sources.type')}
+          value={type}
+          onChange={(v) => setType(v as PostApiV1SourcesBodyType)}
+          options={SOURCE_TYPE_OPTIONS}
+        />
 
         <Checkbox
-          label="Active"
+          label={t('sources.active')}
           checked={isActive}
           onChange={(e) => setIsActive((e.target as HTMLInputElement).checked)}
         />
@@ -120,10 +117,10 @@ export function CreateSourceModal({
           }}
           disabled={saving}
         >
-          Cancel
+          {t('sources.cancel')}
         </Button>
         <Button onClick={handleSubmit} disabled={saving || !name.trim() || !url.trim()}>
-          {saving ? 'Creating...' : 'Create'}
+          {saving ? t('sources.creating') : t('sources.create')}
         </Button>
       </div>
     </Modal>

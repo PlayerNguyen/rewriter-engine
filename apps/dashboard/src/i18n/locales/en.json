@@ -32,7 +32,6 @@
   "sources": {
     "addSource": "Add Source",
     "editSource": "Edit Source",
-    "deleteConfirm": "Are you sure you want to delete \"{name}\"?",
     "name": "Name",
     "url": "URL",
     "type": "Type",
@@ -42,7 +41,10 @@
     "cancel": "Cancel",
     "save": "Save",
     "creating": "Creating...",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "delete": "Delete",
+    "deleteSource": "Delete Source",
+    "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?"
   },
   "languageSwitcher": {
     "label": "Language",

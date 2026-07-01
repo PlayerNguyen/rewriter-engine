@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from '@rewriter/db';
 import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { resolver, validator as zValidator } from 'hono-openapi/zod';
@@ -31,12 +32,14 @@ const sourceResponseSchema = z.object({
   id: z.string(),
   name: z.string(),
   url: z.string(),
-  type: z.string(),
+  type: sourceTypeSchema,
   isActive: z.boolean(),
   lastFetched: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
+
+const idParamSchema = z.object({ id: z.string().uuid() });
 
 const sourcesRoute = new Hono();
 
@@ -79,15 +82,24 @@ sourcesRoute.patch(
           },
         },
       },
+      400: { description: 'Validation error' },
       404: { description: 'Source not found' },
     },
   }),
+  zValidator('param', idParamSchema),
   zValidator('json', updateSourceSchema),
   async (c) => {
-    const id = c.req.param('id');
+    const { id } = c.req.valid('param');
     const body = c.req.valid('json');
-    const source = await sourcesService.update(id, body);
-    return c.json(source);
+    try {
+      const source = await sourcesService.update(id, body);
+      return c.json(source);
+    } catch (e: unknown) {
+      if (e instanceof PrismaClientKnownRequestError && e.code === 'P2025') {
+        return c.json({ error: 'Source not found' }, 404);
+      }
+      throw e;
+    }
   },
 );
 
@@ -105,13 +117,22 @@ sourcesRoute.delete(
           },
         },
       },
+      400: { description: 'Validation error' },
       404: { description: 'Source not found' },
     },
   }),
+  zValidator('param', idParamSchema),
   async (c) => {
-    const id = c.req.param('id');
-    const source = await sourcesService.delete(id);
-    return c.json(source);
+    const { id } = c.req.valid('param');
+    try {
+      const source = await sourcesService.delete(id);
+      return c.json(source);
+    } catch (e: unknown) {
+      if (e instanceof PrismaClientKnownRequestError && e.code === 'P2025') {
+        return c.json({ error: 'Source not found' }, 404);
+      }
+      throw e;
+    }
   },
 );
 

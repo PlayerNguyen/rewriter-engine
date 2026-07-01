@@ -15,7 +15,8 @@
   "dependencies": {
     "@rewriter/rest-client": "workspace:*",
     "@rewriter/table-ui": "workspace:*",
-    "@rewriter/ui": "workspace:*"
+    "@rewriter/ui": "workspace:*",
+    "react-i18next": "^17.0.0"
   },
   "devDependencies": {
     "@rewriter/modal": "workspace:*",

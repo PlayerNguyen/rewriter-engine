@@ -1,18 +1,18 @@
-import { afterEach, beforeEach, describe, expect, it, mock } from 'bun:test';
+import { afterEach, beforeEach, describe, expect, it, type mock } from 'bun:test';
+import { postApiV1Sources } from '@rewriter/rest-client';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { CreateSourceModal } from './CreateSourceModal';
 
-const mockFetch = mock<typeof fetch>();
+const mockPost = postApiV1Sources as ReturnType<typeof mock>;
 
 describe('CreateSourceModal', () => {
   beforeEach(() => {
-    mockFetch.mockReset();
-    globalThis.fetch = mockFetch as unknown as typeof fetch;
+    mockPost.mockReset();
+    mockPost.mockResolvedValue({});
   });
 
   afterEach(() => {
     cleanup();
-    mockFetch.mockReset();
   });
 
   it('renders form fields', () => {
@@ -22,9 +22,7 @@ describe('CreateSourceModal', () => {
     expect(screen.getByLabelText(/url/i)).toBeDefined();
   });
 
-  it('calls fetch with correct body on submit', async () => {
-    mockFetch.mockResolvedValue({ ok: true } as Response);
-
+  it('calls postApiV1Sources with correct body on submit', async () => {
     render(<CreateSourceModal open onClose={() => {}} />);
 
     const nameInput = screen.getByLabelText(/name/i) as HTMLInputElement;
@@ -38,21 +36,16 @@ describe('CreateSourceModal', () => {
     fireEvent.click(createBtn);
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith('/api/v1/sources', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: 'TechCrunch',
-          url: 'https://techcrunch.com/feed/',
-          type: 'RSS',
-          isActive: true,
-        }),
+      expect(mockPost).toHaveBeenCalledWith({
+        name: 'TechCrunch',
+        url: 'https://techcrunch.com/feed/',
+        type: 'RSS',
+        isActive: true,
       });
     });
   });
 
   it('calls onCreated after success', async () => {
-    mockFetch.mockResolvedValue({ ok: true } as Response);
     let created = false;
 
     render(
@@ -81,7 +74,6 @@ describe('CreateSourceModal', () => {
   });
 
   it('calls onClose after success', async () => {
-    mockFetch.mockResolvedValue({ ok: true } as Response);
     let closed = false;
 
     render(
@@ -109,10 +101,7 @@ describe('CreateSourceModal', () => {
   });
 
   it('shows error on failed request', async () => {
-    mockFetch.mockResolvedValue({
-      ok: false,
-      json: () => Promise.resolve({ message: 'Duplicate URL' }),
-    } as Response);
+    mockPost.mockRejectedValue({ body: { message: 'Duplicate URL' } });
 
     render(<CreateSourceModal open onClose={() => {}} />);
 

@@ -29,6 +29,23 @@
     "language": "Ngôn ngữ",
     "logout": "Đăng xuất"
   },
+  "sources": {
+    "addSource": "Thêm nguồn",
+    "editSource": "Sửa nguồn",
+    "name": "Tên",
+    "url": "URL",
+    "type": "Loại",
+    "active": "Hoạt động",
+    "lastFetched": "Lần lấy cuối",
+    "create": "Tạo",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "creating": "Đang tạo...",
+    "saving": "Đang lưu...",
+    "delete": "Xóa",
+    "deleteSource": "Xóa nguồn",
+    "deleteConfirm": "Bạn có chắc muốn xóa \"{{name}}\"?"
+  },
   "languageSwitcher": {
     "label": "Ngôn ngữ",
     "en": "English",

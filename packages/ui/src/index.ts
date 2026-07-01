@@ -15,9 +15,12 @@ export {
   Newspaper,
   PanelLeftClose,
   PanelLeftOpen,
+  Pencil,
+  Plus,
   ScrollText,
   Search,
   Settings,
+  Trash2,
   X,
 } from 'lucide-react';
 export type { FocusRingProps } from './a11y/FocusRing';
