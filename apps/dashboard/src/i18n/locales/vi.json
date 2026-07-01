@@ -45,7 +45,8 @@
     "delete": "Xóa",
     "deleteSource": "Xóa nguồn",
     "deleteConfirm": "Bạn có chắc muốn xóa \"{{name}}\"?",
-    "deleteError": "Xóa nguồn thất bại. Vui lòng thử lại."
+    "deleteError": "Xóa nguồn thất bại. Vui lòng thử lại.",
+    "deleteSuccess": "Đã xóa nguồn thành công."
   },
   "languageSwitcher": {
     "label": "Ngôn ngữ",

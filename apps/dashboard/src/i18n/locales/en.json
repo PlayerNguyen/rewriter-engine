@@ -45,7 +45,8 @@
     "delete": "Delete",
     "deleteSource": "Delete Source",
     "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?",
-    "deleteError": "Failed to delete source. Please try again."
+    "deleteError": "Failed to delete source. Please try again.",
+    "deleteSuccess": "Source deleted successfully."
   },
   "languageSwitcher": {
     "label": "Language",

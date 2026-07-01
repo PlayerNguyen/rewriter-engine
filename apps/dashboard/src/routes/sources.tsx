@@ -1,5 +1,6 @@
 import { deleteApiV1SourcesById } from '@rewriter/rest-client';
 import { SourcesPage } from '@rewriter/sources-ui';
+import { toast } from '@rewriter/ui';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,9 +42,10 @@ function SourcesRoute() {
             deleteApiV1SourcesById(id)
               .then(() => {
                 setRefreshKey((k) => k + 1);
+                toast.success(t('sources.deleteSuccess'));
               })
               .catch(() => {
-                alert(t('sources.deleteError'));
+                toast.error(t('sources.deleteError'));
               });
           },
         })

@@ -98,6 +98,7 @@ export type { TextAreaProps } from './components/TextArea';
 export { TextArea } from './components/TextArea';
 export type { TextInputProps } from './components/TextInput';
 export { TextInput } from './components/TextInput';
+export { ToastProvider, toast } from './components/ToastProvider';
 export type { TooltipProps } from './components/Tooltip';
 export { Tooltip } from './components/Tooltip';
 // hooks
