@@ -13,6 +13,7 @@ function createPrismaClient() {
     connectionString: process.env.DATABASE_URL,
   });
 
+  console.info(`Bootstrapping an adapter for Postgres`);
   const adapter = new PrismaPg(pool);
 
   return new PrismaClient({
