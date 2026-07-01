@@ -21,23 +21,23 @@ export function ToastProvider() {
       toastOptions={{
         duration: 4000,
         style: {
-          background: 'var(--colors-surface-2)',
-          color: 'var(--colors-ink)',
-          border: '1px solid var(--colors-hairline)',
-          borderRadius: 'var(--rounded-md)',
+          background: 'var(--color-surface-2)',
+          color: 'var(--color-ink)',
+          border: '1px solid var(--color-hairline)',
+          borderRadius: '8px',
           fontSize: '14px',
           lineHeight: '1.5',
         },
         success: {
           iconTheme: {
-            primary: 'var(--colors-semantic-success)',
-            secondary: 'var(--colors-surface-2)',
+            primary: 'var(--color-semantic-success)',
+            secondary: 'var(--color-surface-2)',
           },
         },
         error: {
           iconTheme: {
-            primary: 'var(--colors-semantic-error)',
-            secondary: 'var(--colors-surface-2)',
+            primary: 'var(--color-semantic-error)',
+            secondary: 'var(--color-surface-2)',
           },
         },
       }}
