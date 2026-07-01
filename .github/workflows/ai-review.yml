@@ -29,6 +29,8 @@ jobs:
         run: echo "number=${{ github.event.inputs.pr_number }}" >> "$GITHUB_OUTPUT"
 
       - uses: anomalyco/opencode/github@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: opencode/deepseek-v4-flash-free
           use_github_token: true
