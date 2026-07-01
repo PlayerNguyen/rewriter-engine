@@ -146,3 +146,41 @@ UserProfile/
     ├── BioSection.tsx
     └── StatsPanel.tsx
 ```
+
+### Toast Notifications
+
+The dashboard uses `react-hot-toast` via `ToastProvider` and `toast` from `@rewriter/ui`. Toasts are styled to match the Linear-inspired dark theme (see `DESIGN.md`).
+
+**Mount once** at the app root (inside `ThemeProvider`):
+
+```tsx
+import { ThemeProvider, ToastProvider } from '@rewriter/ui';
+
+<ThemeProvider defaultTheme="dark">
+  <ToastProvider />
+  <App />
+</ThemeProvider>
+```
+
+**Use `toast` for user feedback** — never use native `alert()`:
+
+```tsx
+import { toast } from '@rewriter/ui';
+
+// Success
+toast.success(t('sources.deleteSuccess'));
+
+// Error
+toast.error(t('sources.deleteError'));
+
+// With a unique ID to prevent duplicates
+toast.success('Saved', { id: 'save-settings' });
+```
+
+**Every toast call must use an i18n key** — never hardcode English strings.
+
+**Toast IDs** — when a toast is triggered by a repeatable action (e.g. saving a form), pass a unique `id` option to prevent duplicate toasts:
+
+```tsx
+toast.success(t('settings.saved'), { id: 'settings-save' });
+```

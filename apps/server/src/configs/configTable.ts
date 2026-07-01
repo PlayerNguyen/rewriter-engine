@@ -1,8 +1,8 @@
 import { SettingsTableHandler } from '@rewriter/settings';
+import { SourcesTableHandler } from '@rewriter/sources';
 import { TableService, tableRegistryFactory } from '@rewriter/table-core';
 import { ArticlesTableHandler } from '../tables/articles';
 import { RewrittenArticlesTableHandler } from '../tables/rewritten-articles';
-import { SourcesTableHandler } from '../tables/sources';
 import { SystemPromptsTableHandler } from '../tables/system-prompts';
 
 const registry = tableRegistryFactory.create([

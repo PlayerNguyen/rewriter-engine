@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@rewriter/ui';
+import { ThemeProvider, ToastProvider } from '@rewriter/ui';
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -18,6 +18,7 @@ declare module '@tanstack/react-router' {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="dark">
+      <ToastProvider />
       <ModalProvider>
         <RouterProvider router={router} />
       </ModalProvider>

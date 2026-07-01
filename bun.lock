@@ -10,6 +10,7 @@
         "clsx": "^2.1.1",
         "dotenv": "^17.4.2",
         "pg": "^8.22.0",
+        "react-hot-toast": "^2.6.0",
       },
       "devDependencies": {
         "@biomejs/biome": "2.5.1",
@@ -24,7 +25,9 @@
       "version": "0.0.0",
       "dependencies": {
         "@rewriter/modal": "workspace:*",
+        "@rewriter/rest-client": "workspace:*",
         "@rewriter/settings-ui": "workspace:*",
+        "@rewriter/sources-ui": "workspace:*",
         "@rewriter/table-ui": "workspace:*",
         "@rewriter/ui": "workspace:*",
         "@tanstack/react-router": "^1.170.16",
@@ -58,6 +61,7 @@
         "@rewriter/db": "workspace:*",
         "@rewriter/logger": "workspace:*",
         "@rewriter/settings": "workspace:*",
+        "@rewriter/sources": "workspace:*",
         "@rewriter/table-core": "workspace:*",
         "@scalar/hono-api-reference": "^0.7.0",
         "hono": "^4",
@@ -163,6 +167,45 @@
         "react-dom": "^18 || ^19",
       },
     },
+    "packages/sources/core": {
+      "name": "@rewriter/sources",
+      "version": "0.0.1",
+      "dependencies": {
+        "@rewriter/db": "workspace:*",
+        "@rewriter/table-core": "workspace:*",
+        "hono": "^4",
+        "hono-openapi": "^0.4.0",
+        "zod": "^3.23.0",
+        "zod-openapi": "^4.0.0",
+      },
+      "devDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/sources/ui": {
+      "name": "@rewriter/sources-ui",
+      "version": "0.0.1",
+      "dependencies": {
+        "@rewriter/rest-client": "workspace:*",
+        "@rewriter/table-ui": "workspace:*",
+        "@rewriter/ui": "workspace:*",
+        "react-i18next": "^17.0.0",
+      },
+      "devDependencies": {
+        "@rewriter/modal": "workspace:*",
+        "@testing-library/react": "^16.0.0",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "happy-dom": "^20.0.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "typescript": "^5",
+      },
+      "peerDependencies": {
+        "react": "^18 || ^19",
+        "react-dom": "^18 || ^19",
+      },
+    },
     "packages/table-core": {
       "name": "@rewriter/table-core",
       "version": "0.0.1",
@@ -204,6 +247,7 @@
         "@tanstack/react-table": "^8",
         "clsx": "^2.1.1",
         "lucide-react": "^1.21.0",
+        "react-hot-toast": "^2.6.0",
       },
       "devDependencies": {
         "@storybook/addon-essentials": "^8.4.7",
@@ -471,6 +515,10 @@
     "@rewriter/settings": ["@rewriter/settings@workspace:packages/settings/core"],
 
     "@rewriter/settings-ui": ["@rewriter/settings-ui@workspace:packages/settings/ui"],
+
+    "@rewriter/sources": ["@rewriter/sources@workspace:packages/sources/core"],
+
+    "@rewriter/sources-ui": ["@rewriter/sources-ui@workspace:packages/sources/ui"],
 
     "@rewriter/table-core": ["@rewriter/table-core@workspace:packages/table-core"],
 
@@ -1217,6 +1265,8 @@
     "react-docgen-typescript": ["react-docgen-typescript@2.4.0", "", { "peerDependencies": { "typescript": ">= 4.3.x" } }, "sha512-ZtAp5XTO5HRzQctjPU0ybY0RRCQO19X/8fxn3w7y2VVTUbGHDKULPTL4ky3vB05euSgG5NpALhEhDPvQ56wvXg=="],
 
     "react-dom": ["react-dom@19.2.7", "", { "dependencies": { "scheduler": "^0.27.0" }, "peerDependencies": { "react": "^19.2.7" } }, "sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ=="],
+
+    "react-hot-toast": ["react-hot-toast@2.6.0", "", { "dependencies": { "csstype": "^3.1.3", "goober": "^2.1.16" }, "peerDependencies": { "react": ">=16", "react-dom": ">=16" } }, "sha512-bH+2EBMZ4sdyou/DPrfgIouFpcRLCJ+HoCA32UoAYHn6T3Ur5yfcDCeSr5mwldl6pFOsiocmrXMuoCJ1vV8bWg=="],
 
     "react-i18next": ["react-i18next@17.0.8", "", { "dependencies": { "@babel/runtime": "^7.29.2", "html-parse-stringify": "^3.0.1", "use-sync-external-store": "^1.6.0" }, "peerDependencies": { "i18next": ">= 26.2.0", "react": ">= 16.8.0", "typescript": "^5 || ^6" }, "optionalPeers": ["typescript"] }, "sha512-0ooKbGLU8JXhe1zwpQUWIeXSgLPOfwJmgheWRIUpcoA0CpyabpGhayjdG+/eA5esC1AQ8h2jWpXjJfzQzeDOCw=="],
 

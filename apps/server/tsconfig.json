@@ -6,6 +6,8 @@
       "@rewriter/db/*": ["../../packages/db/src/*"],
       "@rewriter/settings": ["../../packages/settings/core/src/index.ts"],
       "@rewriter/settings/*": ["../../packages/settings/core/src/*"],
+      "@rewriter/sources": ["../../packages/sources/core/src/index.ts"],
+      "@rewriter/sources/*": ["../../packages/sources/core/src/*"],
       "@rewriter/table-core": ["../../packages/table-core/src/index.ts"],
       "@rewriter/table-core/*": ["../../packages/table-core/src/*"]
     }

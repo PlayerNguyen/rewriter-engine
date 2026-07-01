@@ -15,9 +15,12 @@ export {
   Newspaper,
   PanelLeftClose,
   PanelLeftOpen,
+  Pencil,
+  Plus,
   ScrollText,
   Search,
   Settings,
+  Trash2,
   X,
 } from 'lucide-react';
 export type { FocusRingProps } from './a11y/FocusRing';
@@ -40,6 +43,8 @@ export type { CheckboxGroupProps, CheckboxProps } from './components/Checkbox';
 export { Checkbox, CheckboxGroup } from './components/Checkbox';
 export type { CommandInputProps } from './components/CommandInput';
 export { CommandInput } from './components/CommandInput';
+export type { ConfirmModalProps } from './components/ConfirmModal';
+export { ConfirmModal } from './components/ConfirmModal';
 export type { DashboardLayoutProps } from './components/DashboardLayout';
 export { DashboardLayout } from './components/DashboardLayout';
 export type { GridItemProps, GridProps } from './components/Grid';
@@ -93,6 +98,7 @@ export type { TextAreaProps } from './components/TextArea';
 export { TextArea } from './components/TextArea';
 export type { TextInputProps } from './components/TextInput';
 export { TextInput } from './components/TextInput';
+export { ToastProvider, toast } from './components/ToastProvider';
 export type { TooltipProps } from './components/Tooltip';
 export { Tooltip } from './components/Tooltip';
 // hooks

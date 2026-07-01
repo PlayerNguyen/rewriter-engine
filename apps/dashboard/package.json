@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@rewriter/modal": "workspace:*",
+    "@rewriter/rest-client": "workspace:*",
     "@rewriter/settings-ui": "workspace:*",
+    "@rewriter/sources-ui": "workspace:*",
     "@rewriter/table-ui": "workspace:*",
     "@rewriter/ui": "workspace:*",
     "@tanstack/react-router": "^1.170.16",
